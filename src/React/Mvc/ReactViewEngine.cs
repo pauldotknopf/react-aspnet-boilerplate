@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Razor;
 using Microsoft.AspNet.Mvc.Rendering;
+using React.Services;
 
 namespace React.Mvc
 {
@@ -13,25 +14,29 @@ namespace React.Mvc
     {
         public ViewEngineResult FindPartialView(ActionContext context, string partialViewName)
         {
-            return null;
-            //return ViewEngineResult.Found(partialViewName, );
+            return ViewEngineResult.Found(partialViewName, new ReactView { FunctionName = "RenderPartialView", Path=partialViewName });
         }
 
         public ViewEngineResult FindView(ActionContext context, string viewName)
         {
-            return null;
+            return ViewEngineResult.Found(viewName, new ReactView { FunctionName = "RenderView", Path = viewName });
         }
 
         class ReactView : IView
         {
-            public string Path
-            {
-                get; set;
-            }
+            public string Path { get; set; }
 
-            public Task RenderAsync(ViewContext context)
+            public string FunctionName { get; set; }
+
+            public async Task RenderAsync(ViewContext context)
             {
-                return null;
+                var jsEngine = context.HttpContext.Request.HttpContext.Items["JsEngine"] as IJsEngine;
+
+                if (jsEngine == null) throw new Exception("Couldn't get IJsEngine from the context request items.");
+                
+                var result = (string)jsEngine.CallFunction(FunctionName, Path, context.ViewData.Model);
+
+                await context.Writer.WriteAsync(result);
             }
         }
     }

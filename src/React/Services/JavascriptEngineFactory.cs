@@ -9,13 +9,14 @@ namespace React.Services
 {
     public class JavascriptEngineFactory : IJavascriptEngineFactory
     {
+        private IJavascriptEngineInitializer _engineInitializer;
         protected readonly ConcurrentDictionary<int, IJsEngine> _engines = new ConcurrentDictionary<int, IJsEngine>();
         private bool _disposed = false;
         private object _lock = new object();
 
-        public JavascriptEngineFactory()
+        public JavascriptEngineFactory(IJavascriptEngineInitializer engineInitializer)
         {
-
+            _engineInitializer = engineInitializer;
         }
         
         public virtual IJsEngine GetEngineForCurrentThread()
@@ -24,7 +25,7 @@ namespace React.Services
             return _engines.GetOrAdd(Thread.CurrentThread.ManagedThreadId, id =>
             {
                 var engine = new VroomJsEngine();
-                //InitialiseEngine(engine);
+                _engineInitializer.Initialize(engine);
                 return engine;
             });
         }

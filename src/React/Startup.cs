@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using React.Services;
 using React.Middleware;
+using Microsoft.AspNet.Mvc;
+using React.Mvc;
 
 namespace React
 {
@@ -38,6 +40,11 @@ namespace React
             services.AddSingleton<IJavascriptEngineFactory, JavascriptEngineFactory>();
             services.AddSingleton<IJavascriptEngineInitializer, JavascriptEngineInitializer>();
             services.AddMvc();
+
+            services.Configure<MvcViewOptions>(options => {
+                options.ViewEngines.Clear();
+                options.ViewEngines.Add(new ReactViewEngine());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
