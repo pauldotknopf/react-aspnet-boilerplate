@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using React.Services;
+using React.Middleware;
 
 namespace React
 {
@@ -25,6 +26,8 @@ namespace React
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            VroomJs.AssemblyLoader.EnsureLoaded();
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -32,6 +35,8 @@ namespace React
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IJavascriptEngineFactory, JavascriptEngineFactory>();
+            services.AddSingleton<IJavascriptEngineInitializer, JavascriptEngineInitializer>();
             services.AddMvc();
         }
 
@@ -40,6 +45,8 @@ namespace React
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseMiddleware<JavascriptEngineMiddleware>();
 
             if (env.IsDevelopment())
             {
