@@ -27,8 +27,10 @@ export function RenderView (path, model) {
       }).length > 0;
       result.status = isNotFound ? 404 : 200;
 
+      const component = (<RouterContext {...renderProps} />);
+
       // render the page
-      result.html = ReactDOM.renderToString(<RouterContext {...renderProps} />);
+      result.html = ReactDOM.renderToString(<Html component={component} />);
 
     } else {
       result.status = 404;
