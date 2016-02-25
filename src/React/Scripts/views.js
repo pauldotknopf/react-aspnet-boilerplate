@@ -1,8 +1,10 @@
 import React from 'react';
 import Home from './containers/Home/Home.js'
+import About from './containers/About/About.js'
 
 const Views = {
-    Index: Home
+    Index: Home,
+    About: About
 };
 
 export function FindView(view)

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using React.ViewModels;
+﻿using Microsoft.AspNet.Mvc;
 
 namespace React.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index(string greeting = "Hello!")
+        public IActionResult Index()
         {
-            return View(new GreetingViewModel { Greeting = greeting});
+            return View();
+        }
+
+        public IActionResult About()
+        {
+            return View();
         }
     }
 }
