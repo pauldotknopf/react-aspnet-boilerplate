@@ -4,10 +4,9 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using React.Services;
-using React.Middleware;
 using Microsoft.AspNet.Mvc;
-using React.Mvc;
+using JavaScriptViewEngine;
+using React.Services;
 
 namespace React
 {
@@ -37,13 +36,13 @@ namespace React
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IJavascriptEngineFactory, JavascriptEngineFactory>();
-            services.AddSingleton<IJavascriptEngineInitializer, JavascriptEngineInitializer>();
             services.AddMvc();
+
+            services.AddJsEngine<ReactEnvironmentInitializer>();
 
             services.Configure<MvcViewOptions>(options => {
                 options.ViewEngines.Clear();
-                options.ViewEngines.Add(new ReactViewEngine());
+                options.ViewEngines.Add(new JsViewEngine());
             });
         }
 
@@ -52,9 +51,7 @@ namespace React
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            app.UseMiddleware<JavascriptEngineMiddleware>();
-
+            
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -69,7 +66,9 @@ namespace React
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
             app.UseStaticFiles();
-            
+
+            app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

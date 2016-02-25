@@ -3,29 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using React.ViewModels;
 
 namespace React.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string greeting = "Hello!")
         {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
+            return View(new GreetingViewModel { Greeting = greeting});
         }
     }
 }
