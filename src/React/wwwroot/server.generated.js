@@ -8539,8 +8539,8 @@
 	    title: 'React Example',
 	    description: 'This is an example, using React with ASP.NET MVC.',
 	    head: {
-	      titleTemplate: 'React Redux Example: %s',
-	      meta: [{ name: 'description', content: 'All the modern best practices in one example.' }, { charset: 'utf-8' }, { property: 'og:site_name', content: 'React Redux Example' }, { property: 'og:image', content: 'https://react-redux.herokuapp.com/logo.jpg' }, { property: 'og:locale', content: 'en_US' }, { property: 'og:title', content: 'React Redux Example' }, { property: 'og:description', content: 'All the modern best practices in one example.' }, { property: 'og:card', content: 'summary' }, { property: 'og:site', content: '@erikras' }, { property: 'og:creator', content: '@erikras' }, { property: 'og:image:width', content: '200' }, { property: 'og:image:height', content: '200' }]
+	      titleTemplate: 'React Example: %s',
+	      meta: [{ name: 'description', content: 'This is an example, using React with ASP.NET MVC.' }]
 	    }
 	  }
 	};
@@ -14679,7 +14679,12 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_reactHelmet2.default, _config2.default.app.head),
-	        this.props.children
+	        this.props.children,
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'This is from the master app!'
+	        )
 	      );
 	    }
 	  }]);
@@ -14919,11 +14924,30 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function RenderView(path, model) {
-
 	  var history = (0, _createMemoryHistory2.default)(path);
-	  var result = "";
+	  var result = {
+	    html: null,
+	    status: 404,
+	    redirect: null
+	  };
 	  (0, _reactRouter.match)({ history: history, routes: (0, _routes2.default)(), location: path }, function (error, redirectLocation, renderProps) {
-	    result = _server2.default.renderToString(_react2.default.createElement(_RouterContext2.default, renderProps));
+	    if (redirectLocation) {
+	      result.redirect = redirectLocation.pathname + redirectLocation.search;
+	    } else if (error) {
+	      result.status = 500;
+	    } else if (renderProps) {
+
+	      // if this is the NotFoundRoute, then return a 404
+	      var isNotFound = renderProps.routes.filter(function (route) {
+	        return route.status === 404;
+	      }).length > 0;
+	      result.status = isNotFound ? 404 : 200;
+
+	      // render the page
+	      result.html = _server2.default.renderToString(_react2.default.createElement(_RouterContext2.default, renderProps));
+	    } else {
+	      result.status = 404;
+	    }
 	  });
 	  return result;
 	};
