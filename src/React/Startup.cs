@@ -65,6 +65,8 @@ namespace React
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
+            app.UseStatusCodePagesWithReExecute("/Status/Status/{0}");
+
             app.UseStaticFiles();
 
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
@@ -74,6 +76,11 @@ namespace React
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.Use((context, next) => {
+                context.Response.StatusCode = 404;
+                return next();
             });
         }
 
