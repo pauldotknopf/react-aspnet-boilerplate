@@ -26,6 +26,7 @@ export default class Html extends Component {
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{__html: content}}/>
+          <script src="/pack/client.generated.js" charSet="UTF-8"/>
         </body>
       </html>
     );

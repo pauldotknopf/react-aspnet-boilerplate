@@ -1,0 +1,10 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"folder_exclude_patterns": ["bower_components", "node_modules"],
+			"file_exclude_patterns": ["React.xproj*", "project.lock.json"]
+		}
+	]
+}
