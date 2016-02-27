@@ -7,13 +7,20 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNet.Mvc;
 using JavaScriptViewEngine;
 using React.Services;
+using JavaScriptViewEngine.Pool;
+using System.IO;
+using System.Collections.Generic;
 
 namespace React
 {
     public class Startup
     {
+        IHostingEnvironment _env;
+
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
+
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -39,10 +46,13 @@ namespace React
             services.AddMvc();
 
             services.AddJsEngine<ReactEnvironmentInitializer>();
-
-            services.Configure<MvcViewOptions>(options => {
-                options.ViewEngines.Clear();
-                options.ViewEngines.Add(new JsViewEngine());
+            services.Configure<JsPoolOptions>(options =>
+            {
+                options.WatchPath = _env.WebRootPath;
+                options.WatchFiles = new List<string>
+                {
+                     Path.Combine(_env.WebRootPath, "server.generated.js")
+                };
             });
         }
 

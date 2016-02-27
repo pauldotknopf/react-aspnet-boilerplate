@@ -10,7 +10,7 @@ namespace React.Controllers
     {
         public IActionResult Status(int statusCode)
         {
-            return View($"/statuscode{statusCode}");
+            return View($"js-/statuscode{statusCode}");
         }
     }
 }

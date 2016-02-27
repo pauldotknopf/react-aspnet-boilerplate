@@ -6,12 +6,12 @@ namespace React.Controllers
     {
         public IActionResult Index()
         {
-            return View("/");
+            return View("js-/");
         }
 
         public IActionResult About()
         {
-            return View("/about");
+            return View("js-/about");
         }
     }
 }
