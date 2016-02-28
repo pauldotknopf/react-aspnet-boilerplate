@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/server';
 import Html from './helpers/Html';
 import {FindView} from './views.js';
@@ -20,18 +20,14 @@ export function RenderView (path, model) {
     } else if (error) {
       result.status = 500;
     } else if (renderProps) {
-
       // if this is the NotFoundRoute, then return a 404
       const isNotFound = renderProps.routes.filter((route) => {
         return route.status === 404;
       }).length > 0;
       result.status = isNotFound ? 404 : 200;
-
       const component = (<RouterContext {...renderProps} />);
-
       // render the page
       result.html = ReactDOM.renderToString(<Html component={component} />);
-
     } else {
       result.status = 404;
     }
@@ -40,5 +36,5 @@ export function RenderView (path, model) {
 };
 
 export function RenderPartialView (path, model) {
-    return "TODO";
+  return "TODO";
 };
