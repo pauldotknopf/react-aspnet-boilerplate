@@ -23,6 +23,7 @@ export default class Html extends Component {
 
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link href="/pack/styles.css" media="screen, projection" rel="stylesheet" type="text/css" charSet="UTF-8"/>
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{__html: content}}/>
