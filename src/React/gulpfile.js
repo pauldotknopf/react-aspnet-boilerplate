@@ -1,24 +1,18 @@
-﻿"use strict";
+"use strict";
 
-/*
- *  Copyright (c) 2015, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree. An additional grant
- *  of patent rights can be found in the PATENTS file in the same directory.
- */
-
+var fs = require('fs');
 var gulp = require('gulp');
 var named = require('vinyl-named');
 var webpack = require('webpack');
 var webpackStream = require('webpack-stream');
 var uglify = require('gulp-uglify');
+var babelrc = JSON.parse(fs.readFileSync('./.babelrc'));
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var OUTPUT_DIR = './wwwroot/';
 
 gulp.task('default', ['build']);
-gulp.task('build', ['build-server-script']);
+gulp.task('build', ['build-server-script', 'build-client-script']);
 
 gulp.task('build-server-script', function() {
 	return gulp.src(['./Scripts/server.js'])
@@ -26,14 +20,11 @@ gulp.task('build-server-script', function() {
 		.pipe(webpackStream({
 			module: {
 				loaders: [
-					{
-						exclude: /node_modules/,
-						test: /\.js$/,
-						loader: 'babel',
-						query: {
-							presets: ['es2015', 'stage-0', 'react']
-						}
-					},
+					{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},
+					{ test: /\.css$/, loaders: [ 'style', 'css' ] },
+					{ test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
+					{ test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
+					{ test: /\.png$/, loader: "url-loader" }
 				]
 			},
 			output: {
@@ -45,8 +36,38 @@ gulp.task('build-server-script', function() {
 					'process.env.NODE_ENV': '"development"'
 				}),
 				new webpack.optimize.OccurenceOrderPlugin(),
-				new webpack.optimize.DedupePlugin()
+				new webpack.optimize.DedupePlugin(),
+				new ExtractTextPlugin("styles.css")
 			]
 		}))
 		.pipe(gulp.dest(OUTPUT_DIR));
+});
+
+gulp.task('build-client-script', function() {
+	return gulp.src(['./Scripts/client.js'])
+		.pipe(named())
+		.pipe(webpackStream({
+			module: {
+				loaders: [
+					{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},
+					{ test: /\.css$/, loaders: [ 'style', 'css' ] },
+					{ test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
+					{ test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
+					{ test: /\.png$/, loader: "url-loader" }
+				]
+			},
+			output: {
+				filename: '[name].generated.js',
+				libraryTarget: 'this'
+			},
+			plugins: [
+				new webpack.DefinePlugin({
+					'process.env.NODE_ENV': '"development"'
+				}),
+				new webpack.optimize.OccurenceOrderPlugin(),
+				new webpack.optimize.DedupePlugin(),
+				new ExtractTextPlugin("styles.css")
+			]
+		}))
+		.pipe(gulp.dest(OUTPUT_DIR + 'pack/'));
 });

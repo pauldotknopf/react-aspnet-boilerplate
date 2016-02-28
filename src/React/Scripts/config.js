@@ -5,7 +5,7 @@ export default  {
     head: {
       titleTemplate: 'React Example: %s',
       meta: [
-        {name: 'description', content: 'This is an example, using React with ASP.NET MVC.'},
+      {name: 'description', content: 'This is an example, using React with ASP.NET MVC.'},
       ]
     }
   }

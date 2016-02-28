@@ -1,11 +1,11 @@
 import React from 'react';
 import {IndexRoute, Route} from 'react-router';
 import {
-    App,
-    Home,
-    About,
-    NotFound
-  } from './containers';
+  App,
+  Home,
+  About,
+  NotFound
+} from './containers';
 
 export default () => {
   return (
