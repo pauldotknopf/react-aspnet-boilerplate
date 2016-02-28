@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 import getRoutes from './routes';
-import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
-const history = useScroll(() => browserHistory)();
+require("bootstrap-loader");
 
 ReactDOM.render(
-  <Router history={history}>
+  <Router history={browserHistory}>
     {getRoutes()}
   </Router>,
   document.getElementById('content')
