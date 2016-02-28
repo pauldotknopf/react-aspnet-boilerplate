@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import Html from './helpers/Html';
-import {FindView} from './views.js';
 import { match } from 'react-router';
 import getRoutes from './routes';
 import createHistory from 'react-router/lib/createMemoryHistory';
