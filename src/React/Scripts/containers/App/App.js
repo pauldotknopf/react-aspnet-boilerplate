@@ -13,13 +13,15 @@ export default class App extends Component {
   };
 
   render() {
+    var styles = require("./App.scss");
     return (
-      <div>
+      <div className={styles.app}>
         <Helmet {...config.app.head}/>
         <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
               <IndexLink to="/">
+                <div className={styles.brand}/>
                 <span>{config.app.title}</span>
               </IndexLink>
             </Navbar.Brand>

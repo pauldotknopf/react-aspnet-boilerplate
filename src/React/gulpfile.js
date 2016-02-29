@@ -15,14 +15,15 @@ gulp.task('default', ['build']);
 gulp.task('build', ['build-server-script', 'build-client-script']);
 
 gulp.task('build-server-script', function() {
+	var extractCSS = new ExtractTextPlugin('styles.css');
 	return gulp.src(['./Scripts/server.js'])
 		.pipe(named())
 		.pipe(webpackStream({
 			module: {
 				loaders: [
 					{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},
-					{ test: /\.css$/, loaders: [ 'style', 'css' ] },
-					{ test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
+					{ test: /\.css$/, loader: extractCSS.extract('style','css?modules') },
+					{ test: /\.scss$/, loader: extractCSS.extract('style', 'css?modules!sass') },
 					{ test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
 					{ test: /\.png$/, loader: "url-loader" }
 				]
@@ -32,26 +33,28 @@ gulp.task('build-server-script', function() {
 				libraryTarget: 'this'
 			},
 			plugins: [
-				new webpack.DefinePlugin({
-					'process.env.NODE_ENV': '"development"'
-				}),
-				new webpack.optimize.OccurenceOrderPlugin(),
-				new webpack.optimize.DedupePlugin(),
-				new ExtractTextPlugin("styles.css")
+				// We output the styles to nothing (''),
+				// because the server script doesn't need it.
+				// We are essentially removing embedded styles
+				// on the server script, because we don't need them.
+				// The client script outputs the style to the correct
+				// location and loads it into the browser correctly.
+				new ExtractTextPlugin('')
 			]
 		}))
 		.pipe(gulp.dest(OUTPUT_DIR));
 });
 
 gulp.task('build-client-script', function() {
+	var extractCSS = new ExtractTextPlugin('styles.css');
 	return gulp.src(['./Scripts/client.js'])
 		.pipe(named())
 		.pipe(webpackStream({
 			module: {
 				loaders: [
 					{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},
-					{ test: /\.css$/, loaders: [ 'style', 'css' ] },
-					{ test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
+					{ test: /\.css$/, loader: extractCSS.extract('style', 'css?modules') },
+					{ test: /\.scss$/, loader: extractCSS.extract('style', 'css?modules!sass') },
 					{ test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
 					{ test: /\.png$/, loader: "url-loader" }
 				]
@@ -61,12 +64,7 @@ gulp.task('build-client-script', function() {
 				libraryTarget: 'this'
 			},
 			plugins: [
-				new webpack.DefinePlugin({
-					'process.env.NODE_ENV': '"development"'
-				}),
-				new webpack.optimize.OccurenceOrderPlugin(),
-				new webpack.optimize.DedupePlugin(),
-				new ExtractTextPlugin("styles.css")
+				extractCSS
 			]
 		}))
 		.pipe(gulp.dest(OUTPUT_DIR + 'pack/'));
