@@ -13,7 +13,7 @@ export default class App extends Component {
   };
 
   render() {
-    var styles = require("./App.scss");
+    var styles = require('./App.scss');
     return (
       <div className={styles.app}>
         <Helmet {...config.app.head}/>
@@ -21,7 +21,7 @@ export default class App extends Component {
           <Navbar.Header>
             <Navbar.Brand>
               <IndexLink to="/">
-                <div className={styles.brand}/>
+                <div className={styles.brand} />
                 <span>{config.app.title}</span>
               </IndexLink>
             </Navbar.Brand>

@@ -24,8 +24,8 @@ gulp.task('build-server-script', function() {
 					{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},
 					{ test: /\.css$/, loader: extractCSS.extract('style','css?modules') },
 					{ test: /\.scss$/, loader: extractCSS.extract('style', 'css?modules!sass') },
-					{ test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
-					{ test: /\.png$/, loader: "url-loader" }
+					{ test: /\.(woff2?|ttf|eot|svg)$/, loader: 'file' },
+					{ test: /\.(jpeg|jpeg|gif|png|tiff)$/, loader: 'file' }
 				]
 			},
 			output: {
@@ -55,8 +55,8 @@ gulp.task('build-client-script', function() {
 					{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},
 					{ test: /\.css$/, loader: extractCSS.extract('style', 'css?modules') },
 					{ test: /\.scss$/, loader: extractCSS.extract('style', 'css?modules!sass') },
-					{ test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
-					{ test: /\.png$/, loader: "url-loader" }
+					{ test: /\.(woff2?|ttf|eot|svg)$/, loader: 'file' },
+					{ test: /\.(jpeg|jpeg|gif|png|tiff)$/, loader: 'file' }
 				]
 			},
 			output: {
