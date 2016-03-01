@@ -12,3 +12,9 @@ This approach is great for front-end developers because it gives them complete c
 
 Click the image below to view a quick video.
 [![ScreenShot](https://thumbs.gfycat.com/SaltySpiritedFoxterrier-poster.jpg)](https://gfycat.com/SaltySpiritedFoxterrier)
+
+## Next steps
+
+I will be adding features to this project as time goes on to help me get started with new React projects in .NET. So, expect some more things. I am also open to contributions or recommendations.
+
+I took a lot of things from [react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example), but not everything. As time goes on, expect to see more of the same patterns/technologies/techniques copied over.
