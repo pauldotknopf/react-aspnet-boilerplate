@@ -10,6 +10,7 @@ This approach is great for front-end developers because it gives them complete c
 
 ## In a nut shell
 
+Click the image below to view a quick video.
 [![ScreenShot](https://thumbs.gfycat.com/SaltySpiritedFoxterrier-poster.jpg)](https://gfycat.com/SaltySpiritedFoxterrier)
 
 https://gfycat.com/SaltySpiritedFoxterrier
