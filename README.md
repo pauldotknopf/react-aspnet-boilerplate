@@ -6,7 +6,7 @@ A starting point for building universal/isomorphin react applications with ASP.N
 1. Minimize .NET's usage - It's only usage should be for building REST endpoints (WebApi) and providing the initial state (pure POCO). No razor syntax *anywhere*.
 2. Client and server should render using the same files (javascript).
 
-This approach is great for front-end developers because it gives them complete control to build their app as they like. No .NET crutches (bundling/razor). No opinions. No gotchyas.
+This approach is great for front-end developers because it gives them complete control to build their app as they like. No .NET crutches (bundling/razor). No opinions. No gotchas.
 
 ## In a nut shell
 
