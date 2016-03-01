@@ -5,6 +5,8 @@ import { match } from 'react-router';
 import getRoutes from './routes';
 import createHistory from 'react-router/lib/createMemoryHistory';
 import RouterContext from 'react-router/lib/RouterContext';
+import configureStore from './store/configureStore';
+import {Provider} from 'react-redux';
 
 export function RenderView (path, model) {
   const history = createHistory(path);
@@ -19,14 +21,25 @@ export function RenderView (path, model) {
     } else if (error) {
       result.status = 500;
     } else if (renderProps) {
+
       // if this is the NotFoundRoute, then return a 404
       const isNotFound = renderProps.routes.filter((route) => {
         return route.status === 404;
       }).length > 0;
       result.status = isNotFound ? 404 : 200;
-      const component = (<RouterContext {...renderProps} />);
+
+      const store = configureStore(model); // create the store with our initial state
+
+      const component = 
+        (
+          <Provider store={store}>
+            <RouterContext {...renderProps} />
+          </Provider>
+        );
+
       // render the page
-      result.html = ReactDOM.renderToString(<Html component={component} />);
+      result.html = ReactDOM.renderToString(<Html component={component} store={store} />);
+      
     } else {
       result.status = 404;
     }
