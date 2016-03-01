@@ -13,6 +13,10 @@ This approach is great for front-end developers because it gives them complete c
 Click the image below to view a quick video.
 [![ScreenShot](https://thumbs.gfycat.com/SaltySpiritedFoxterrier-poster.jpg)](https://gfycat.com/SaltySpiritedFoxterrier)
 
+## Getting started
+
+There isn't really a "New Project" template for this. For now, download this repository and use it as your starting point. Then change your .sln and project names as you like.
+
 ## Next steps
 
 I will be adding features to this project as time goes on to help me get started with new React projects in .NET. So, expect some more things. I am also open to contributions or recommendations.
