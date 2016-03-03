@@ -235,4 +235,4 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 src/React/bower_components/
-src/
+src/React/wwwroot/

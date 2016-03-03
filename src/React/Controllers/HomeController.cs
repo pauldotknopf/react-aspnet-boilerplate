@@ -7,6 +7,7 @@ namespace React.Controllers
     {
         public IActionResult Index(string greeting = "Hello!")
         {
+            // make some database calls, w/e.
             return View("js-/", new GreetingViewModel
             {
                 Greeting = greeting
