@@ -52,7 +52,7 @@ namespace React
                 options.WatchPath = _env.WebRootPath;
                 options.WatchFiles = new List<string>
                 {
-                     Path.Combine(_env.WebRootPath, "server.generated.js")
+                     Path.Combine(_env.WebRootPath, "pack", "server.generated.js")
                 };
                 options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
             });

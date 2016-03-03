@@ -9,7 +9,7 @@ var uglify = require('gulp-uglify');
 var babelrc = JSON.parse(fs.readFileSync('./.babelrc'));
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var OUTPUT_DIR = './wwwroot/';
+var OUTPUT_DIR = './wwwroot/pack/';
 
 gulp.task('default', ['build']);
 gulp.task('build', ['build-server-script', 'build-client-script']);
@@ -57,5 +57,5 @@ gulp.task('build-client-script', function() {
 				extractCSS
 			]
 		}))
-		.pipe(gulp.dest(OUTPUT_DIR + 'pack/'));
+		.pipe(gulp.dest(OUTPUT_DIR));
 });

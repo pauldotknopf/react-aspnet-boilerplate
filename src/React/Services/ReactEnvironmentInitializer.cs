@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JavaScriptViewEngine;
 using Microsoft.AspNet.Hosting;
+using System.IO;
 
 namespace React.Services
 {
@@ -18,7 +19,7 @@ namespace React.Services
 
         public void Initialize(IJsEngine engine)
         {
-            engine.ExecuteFile(_hostingEnvironment.MapPath("server.generated.js"));
+            engine.ExecuteFile(Path.Combine(_hostingEnvironment.WebRootPath, "pack", "server.generated.js"));
         }
     }
 }
