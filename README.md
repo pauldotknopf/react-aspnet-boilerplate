@@ -15,7 +15,7 @@ Click the image below to view a quick video.
 
 ## Getting started
 
-To checkout this repository and see everything running...
+To checkout this demo...
 
 ```
 > cd src/React
