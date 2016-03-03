@@ -236,3 +236,4 @@ _Pvt_Extensions
 .fake/
 src/React/bower_components/
 src/React/wwwroot/
+src/React/React.sublime-workspace
