@@ -2,6 +2,7 @@ var fs = require('fs');
 var babelrc = JSON.parse(fs.readFileSync('./.babelrc'));
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractCSS = new ExtractTextPlugin('styles.css');
+var webpack = require("webpack");
 
 module.exports = {
   server : {
@@ -17,7 +18,13 @@ module.exports = {
     output: {
       filename: '[name].generated.js',
       libraryTarget: 'this'
-    }
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        __CLIENT__: false,
+        __SERVER__: true
+      })
+    ],
   },
   client: {
     entry: {
@@ -40,7 +47,11 @@ module.exports = {
       libraryTarget: 'this'
     },
     plugins: [
-      extractCSS
+      extractCSS,
+      new webpack.DefinePlugin({
+        __CLIENT__: true,
+        __SERVER__: false
+      })
     ],
     devtool: 'source-map'
   }

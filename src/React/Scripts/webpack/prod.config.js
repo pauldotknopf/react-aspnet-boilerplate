@@ -2,6 +2,7 @@ var fs = require('fs');
 var babelrc = JSON.parse(fs.readFileSync('./.babelrc'));
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractCSS = new ExtractTextPlugin('styles.css');
+var webpack = require("webpack");
 
 module.exports = {
   server : {
@@ -17,7 +18,23 @@ module.exports = {
     output: {
       filename: '[name].generated.js',
       libraryTarget: 'this'
-    }
+    },
+    plugins: [
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"'
+        },
+        __CLIENT__: false,
+        __SERVER__: true
+      })
+    ]
   },
   client: {
     entry: {
@@ -40,8 +57,21 @@ module.exports = {
       libraryTarget: 'this'
     },
     plugins: [
-      extractCSS
-    ],
-    devtool: 'source-map'
+      extractCSS,
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"'
+        },
+        __CLIENT__: true,
+        __SERVER__: false
+      })
+    ]
   }
 }
