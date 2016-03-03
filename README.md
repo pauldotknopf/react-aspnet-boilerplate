@@ -15,7 +15,19 @@ Click the image below to view a quick video.
 
 ## Getting started
 
+To checkout this repository and see everything running...
+
+```
+> cd src/React
+> npm install
+> gulp
+> dnu restore
+> dnx web
+```
+
 There isn't really a "New Project" template for this. For now, download this repository and use it as your starting point. Then change your .sln and project names as you like.
+
+## Demo
 
 ## Next steps
 
