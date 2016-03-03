@@ -40,6 +40,12 @@ gulp.task('build-client-script', function() {
 	return gulp.src(['./Scripts/client.js'])
 		.pipe(named())
 		.pipe(webpackStream({
+      entry: {
+        'client': [
+          'bootstrap-loader',
+          './Scripts/client.js'
+        ]
+      },
 			module: {
 				loaders: [
 					{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},

@@ -5,8 +5,6 @@ import getRoutes from './routes';
 import {Provider} from 'react-redux';
 import configureStore from './store/configureStore';
 
-require("bootstrap-loader");
-
 ReactDOM.render(
   <Provider store={configureStore(window.__data)}>
     <Router history={browserHistory}>
