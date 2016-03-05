@@ -1,17 +1,14 @@
-import { createStore } from 'redux'
+import { createStore } from 'redux';
 
 export default function configureStore(initialState) {
-  
   // you'll probally want to do some more advanced stuff
-
-  const store = createStore(function(state){
-    if(!state) {
+  const store = createStore((state) => {
+    if (!state) {
       return {
-        Greeting: "Hello!"
-      }
+        Greeting: 'Hello!'
+      };
     }
     return state;
   }, initialState);
-
   return store;
 }

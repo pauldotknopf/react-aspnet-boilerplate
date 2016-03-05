@@ -8,7 +8,7 @@ module.exports = {
   server : {
     module: {
       loaders: [
-        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},
+        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint']},
         { test: /\.css$/, loader: 'css/locals?module' },
         { test: /\.scss$/, loader: 'css/locals?module!sass' },
         { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'file' },
@@ -45,7 +45,7 @@ module.exports = {
     },
     module: {
       loaders: [
-        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc)]},
+        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint']},
         { test: /\.css$/, loader: extractCSS.extract('style', 'css?modules') },
         { test: /\.scss$/, loader: extractCSS.extract('style', 'css?modules!sass') },
         { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'file' },

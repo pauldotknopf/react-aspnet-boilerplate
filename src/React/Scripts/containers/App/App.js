@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import config from '../../config';
-import { Link, IndexLink } from 'react-router';
+import { IndexLink } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
@@ -13,10 +13,10 @@ export default class App extends Component {
   };
 
   render() {
-    var styles = require('./App.scss');
+    const styles = require('./App.scss');
     return (
       <div className={styles.app}>
-        <Helmet {...config.app.head}/>
+        <Helmet {...config.app.head} />
         <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
@@ -25,7 +25,7 @@ export default class App extends Component {
                 <span>{config.app.title}</span>
               </IndexLink>
             </Navbar.Brand>
-            <Navbar.Toggle/>
+            <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse eventKey={0}>
             <Nav navbar>

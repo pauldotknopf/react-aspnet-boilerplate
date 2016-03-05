@@ -1,9 +1,25 @@
-{
-	"ecmaFeatures": {
-		"jsx": true,
-	    "modules": true
-	},
-	"env": {
-		"es6": true
-	}
+{ 
+  "extends": "eslint-config-airbnb",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "plugins": [
+    "react", 
+    "import"
+  ],
+  "rules": {
+    "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
+    "indent": [2, 2, {"SwitchCase": 1}]
+  },
+  "settings": {
+    "import/resolve": {
+      moduleDirectory: ["node_modules", "src"]
+    }
+  },
+  "globals": {
+    "__CLIENT__": true,
+    "__SERVER__": true
+  }
 }

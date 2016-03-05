@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import config from '../../config';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 
 class Home extends Component {
+  static propTypes = {
+    Greeting: PropTypes.string.isRequired
+  };
   render() {
     return (
       <div className="container">
-        <Helmet title="Home"/>
+        <Helmet title="Home" />
         <h1>{config.app.title}</h1>
         <h2>{config.app.description}</h2>
         <div className="jumbotron">
@@ -36,10 +39,8 @@ function mapStateToProps(state) {
   return state;
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 export default connect(
