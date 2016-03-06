@@ -1,5 +1,5 @@
 # react-dot-net
-A starting point for building universal/isomorphin react applications with ASP.NET Core 1, leveraging existing front-end approaches. Uses the [JavaScriptViewEngine](https://github.com/pauldotknopf/javascriptviewengine).
+A starting point for building universal/isomorphic react applications with ASP.NET Core 1, leveraging existing front-end approaches. Uses the [JavaScriptViewEngine](https://github.com/pauldotknopf/javascriptviewengine).
 
 ## Goals
 
