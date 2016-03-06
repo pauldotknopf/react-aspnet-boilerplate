@@ -32,7 +32,7 @@ There isn't really a "New Project" template for this. For now, download this rep
 - [Html.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/helpers/Html.js) and [App.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/containers/App/App.js) - These files essentially represent the "React" version of MVC Razor's "_Layout.cshtml".
 - [HomeController.cs](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Controllers/HomeController.cs) - The endpoints for a each full GET request.
 
-## Next steps
+## What is next?
 
 I will be adding features to this project as time goes on to help me get started with new React projects in .NET. So, expect some more things. I am also open to contributions or recommendations.
 
