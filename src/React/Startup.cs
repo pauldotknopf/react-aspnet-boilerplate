@@ -11,6 +11,8 @@ using React.Services;
 using JavaScriptViewEngine.Pool;
 using System.IO;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
+using React.Models;
 
 namespace React
 {
@@ -56,6 +58,16 @@ namespace React
                 };
                 options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
             });
+
+            // Add framework services.
+            services.AddEntityFramework()
+                .AddSqlServer()
+                .AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +85,18 @@ namespace React
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
+                // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
+                try
+                {
+                    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                        .CreateScope())
+                    {
+                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
+                             .Database.Migrate();
+                    }
+                }
+                catch { }
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
@@ -81,11 +105,14 @@ namespace React
 
             app.UseStaticFiles();
 
+            app.UseIdentity();
+
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute("About", "about", new { controller = "Home", Action = "About" });
+                routes.MapRoute("Contact", "contact", new { controller = "Home", Action = "Contact" });
 
                 routes.MapRoute(
                     name: "default",
