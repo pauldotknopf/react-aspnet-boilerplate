@@ -2,10 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import config from '../../config';
 import { IndexLink } from 'react-router';
-import { LinkContainer } from 'react-router-bootstrap';
+import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
+
+require('./App.scss');
 
 export default class App extends Component {
   static propTypes = {
@@ -13,29 +15,39 @@ export default class App extends Component {
   };
 
   render() {
-    const styles = require('./App.scss');
     return (
-      <div className={styles.app}>
+      <div>
         <Helmet {...config.app.head} />
-        <Navbar>
+        <Navbar inverse fixedTop>
           <Navbar.Header>
             <Navbar.Brand>
               <IndexLink to="/">
-                <div className={styles.brand} />
-                <span>{config.app.title}</span>
+                {config.app.title}
               </IndexLink>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
-          <Navbar.Collapse eventKey={0}>
+          <Navbar.Collapse>
             <Nav navbar>
-              <LinkContainer to="/About">
+              <IndexLinkContainer to="/">
+                <NavItem>Home</NavItem>
+              </IndexLinkContainer>
+              <LinkContainer to="/about">
                 <NavItem>About</NavItem>
+              </LinkContainer>
+              <LinkContainer to="/contact">
+                <NavItem>Contact</NavItem>
               </LinkContainer>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        {this.props.children}
+        <div className="container body-content">
+          {this.props.children}
+          <hr />
+          <footer>
+            <p>&copy; 2016 - {config.app.title}</p>
+          </footer>
+        </div>
       </div>
     );
   }

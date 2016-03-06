@@ -18,5 +18,10 @@ namespace React.Controllers
         {
             return View("js-/about");
         }
+
+        public IActionResult Contact()
+        {
+            return View("js-/contact");
+        }
     }
 }
