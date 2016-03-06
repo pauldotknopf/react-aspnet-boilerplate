@@ -26,6 +26,12 @@ To checkout this demo...
 
 There isn't really a "New Project" template for this. For now, download this repository and use it as your starting point. Then change your .sln and project names as you like.
 
+## The interesting parts
+
+- [client.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/client.js) and [server.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/server.js) - The entry point for the client-side/server-side applications.
+- [Html.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/helpers/Html.js) and [App.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/containers/App/App.js) - These files essentially represent the "React" version of MVC Razor's "_Layout.cshtml".
+- [HomeController.cs](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Controllers/HomeController.cs) - The endpoints for a each full GET request.
+
 ## Next steps
 
 I will be adding features to this project as time goes on to help me get started with new React projects in .NET. So, expect some more things. I am also open to contributions or recommendations.
