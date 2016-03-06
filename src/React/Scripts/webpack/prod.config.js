@@ -17,7 +17,8 @@ module.exports = {
     },
     output: {
       filename: '[name].generated.js',
-      libraryTarget: 'this'
+      libraryTarget: 'this',
+      publicPath: '/pack/'
     },
     plugins: [
       new webpack.optimize.DedupePlugin(),
@@ -54,7 +55,8 @@ module.exports = {
     },
     output: {
       filename: '[name].generated.js',
-      libraryTarget: 'this'
+      libraryTarget: 'this',
+      publicPath: '/pack/'
     },
     plugins: [
       extractCSS,
