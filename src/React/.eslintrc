@@ -11,7 +11,8 @@
   ],
   "rules": {
     "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
-    "indent": [2, 2, {"SwitchCase": 1}]
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "react/prefer-stateless-function": 0
   },
   "settings": {
     "import/resolve": {
