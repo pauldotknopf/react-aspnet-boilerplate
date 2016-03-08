@@ -3,9 +3,15 @@ var babelrc = JSON.parse(fs.readFileSync('./.babelrc'));
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractCSS = new ExtractTextPlugin('styles.css');
 var webpack = require("webpack");
+var path = require('path');
 
 module.exports = {
   server : {
+    entry: {
+      'server': [
+        './Scripts/server.js'
+      ]
+    },
     module: {
       loaders: [
         { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint']},
@@ -18,6 +24,7 @@ module.exports = {
     output: {
       filename: '[name].generated.js',
       libraryTarget: 'this',
+      path: path.resolve(__dirname + "../../../wwwroot/pack"),
       publicPath: '/pack/'
     },
     plugins: [
@@ -46,6 +53,7 @@ module.exports = {
     output: {
       filename: '[name].generated.js',
       libraryTarget: 'this',
+      path: path.resolve(__dirname + "../../../wwwroot/pack"),
       publicPath: '/pack/'
     },
     plugins: [

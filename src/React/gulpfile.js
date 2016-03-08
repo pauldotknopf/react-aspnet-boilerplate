@@ -1,52 +1,53 @@
 "use strict";
 
+var isProduction = process.env.NODE_ENV == 'production';
+console.log('isProduction=' + isProduction);
+
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var named = require('vinyl-named');
 var extend = require('lodash').extend;
-var webpackStream = require('webpack-stream');
+var webpack = require('webpack');
 var webpackConfig = {
-  dev : require("./Scripts/webpack/dev.config.js"),
-  prod : require("./Scripts/webpack/prod.config.js")
-}
-var watch = false;
-
-var OUTPUT_DIR = './wwwroot/pack/';
+  config: require("./Scripts/webpack/" + (isProduction ? "prod" : "dev") + ".config.js")
+};
 
 gulp.task('default', ['build']);
-gulp.task('build', ['build-dev']);
+gulp.task('build', ['build-client', 'build-server']);
+gulp.task('watch', ['watch-client', 'watch-server'])
 
-gulp.task('build-dev', ['build-server-script-dev', 'build-client-script-dev']);
-
-gulp.task('build-server-script-dev', function() {
-	return gulp.src(['./Scripts/server.js'])
-		.pipe(named())
-		.pipe(webpackStream(extend({}, webpackConfig.dev.server, {watch:watch})))
-		.pipe(gulp.dest(OUTPUT_DIR));
+// client
+gulp.task('watch-client', ['build-client'], function(){
+  gulp.watch(["Scripts/**/*"], ["build-client"]);
+})
+gulp.task('build-client-compiler', function() {
+  if(!webpackConfig.clientCompiler)
+    webpackConfig.clientCompiler = webpack(webpackConfig.config.client);
+});
+gulp.task('build-client', ['build-client-compiler'], function(cb) {
+  webpackConfig.clientCompiler.run(function(err, stats) {
+    if(err) throw new gutil.PluginError("build-client", err);
+    gutil.log("[build-client]", stats.toString({
+      colors: true
+    }));
+    cb();
+  });
 });
 
-gulp.task('build-client-script-dev', function() {
-	return gulp.src(['./Scripts/client.js'])
-		.pipe(named())
-		.pipe(webpackStream(extend({}, webpackConfig.dev.client, {watch:watch})))
-		.pipe(gulp.dest(OUTPUT_DIR));
+// server
+gulp.task('watch-server', ['build-server'], function(){
+  gulp.watch(["Scripts/**/*"], ["build-server"]);
+})
+gulp.task('build-server-compiler', function() {
+  if(!webpackConfig.serverCompiler)
+    webpackConfig.serverCompiler = webpack(webpackConfig.config.server);
 });
-
-gulp.task('build-prod', ['build-server-script-prod', 'build-client-script-prod']);
-
-gulp.task('build-server-script-prod', function() {
-  return gulp.src(['./Scripts/server.js'])
-    .pipe(named())
-    .pipe(webpackStream(extend({}, webpackConfig.prod.server, {watch:watch})))
-    .pipe(gulp.dest(OUTPUT_DIR));
-});
-
-gulp.task('build-client-script-prod', function() {
-  return gulp.src(['./Scripts/client.js'])
-    .pipe(named())
-    .pipe(webpackStream(extend({}, webpackConfig.prod.client, {watch:watch})))
-    .pipe(gulp.dest(OUTPUT_DIR));
-});
-
-gulp.task('watch', function() {
-  watch = true;
+gulp.task('build-server', ['build-server-compiler'], function(cb) {
+  webpackConfig.serverCompiler.run(function(err, stats) {
+    if(err) throw new gutil.PluginError("build-server", err);
+    gutil.log("[build-server]", stats.toString({
+      colors: true
+    }));
+    cb();
+  });
 });
