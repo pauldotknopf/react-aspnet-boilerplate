@@ -1,12 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Carousel, CarouselItem } from 'react-bootstrap';
 
 class Home extends Component {
-  static propTypes = {
-    Greeting: PropTypes.string.isRequired
-  };
   render() {
     return (
       <div>

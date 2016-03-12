@@ -1,14 +1,16 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { reducer as formReducer } from 'redux-form';
+import thunk from 'redux-thunk';
 
-export default function configureStore(initialState) {
-  // you'll probally want to do some more advanced stuff
-  const store = createStore((state) => {
-    if (!state) {
-      return {
-        Greeting: 'Hello!'
-      };
-    }
-    return state;
-  }, initialState);
-  return store;
+const reducers = {
+  form: formReducer
+};
+
+const reducer = combineReducers(reducers);
+
+export default function configureStore() {
+  return createStore(
+    reducer,
+    applyMiddleware(thunk)
+  );
 }

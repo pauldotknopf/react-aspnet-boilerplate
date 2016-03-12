@@ -39,6 +39,11 @@ export default class App extends Component {
                 <NavItem>Contact</NavItem>
               </LinkContainer>
             </Nav>
+            <Nav navbar pullRight>
+              <LinkContainer to="/register">
+                <NavItem>Register</NavItem>
+              </LinkContainer>
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
         <div className="container body-content">
