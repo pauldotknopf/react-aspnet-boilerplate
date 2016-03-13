@@ -111,9 +111,6 @@ namespace React
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute("About", "about", new { controller = "Home", Action = "About" });
-                routes.MapRoute("Contact", "contact", new { controller = "Home", Action = "Contact" });
-
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

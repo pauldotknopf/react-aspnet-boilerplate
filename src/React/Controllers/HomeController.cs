@@ -14,11 +14,13 @@ namespace React.Controllers
             });
         }
 
+        [Route("about")]
         public IActionResult About()
         {
             return View("js-/about");
         }
 
+        [Route("contact")]
         public IActionResult Contact()
         {
             return View("js-/contact");
