@@ -5,7 +5,7 @@ import { match } from 'react-router';
 import getRoutes from './routes';
 import createHistory from 'react-router/lib/createMemoryHistory';
 import RouterContext from 'react-router/lib/RouterContext';
-import configureStore from './store/configureStore';
+import createStore from './redux/createStore';
 import { Provider } from 'react-redux';
 
 export function RenderView(path, model) {
@@ -26,7 +26,7 @@ export function RenderView(path, model) {
         // if this is the NotFoundRoute, then return a 404
         const isNotFound = renderProps.routes.filter((route) => route.status === 404).length > 0;
         result.status = isNotFound ? 404 : 200;
-        const store = configureStore(model);
+        const store = createStore(model);
         const component =
           (
             <Provider store={store}>
