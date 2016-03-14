@@ -1,64 +1,33 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 import { register } from '../../redux/modules/register';
+import Input from '../../components/Input';
 
-const validate = values => {
-  const errors = {};
-  if (!values.userName) {
-    errors.userName = 'Required';
-  } else if (values.userName.length > 15) {
-    errors.userName = 'Must be 15 characters or less';
-  }
-  if (!values.email) {
-    errors.email = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
-  return errors;
-};
-
-const submit = () =>
-  new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject({ userName: ['User does not exist', 'another error'], _error: 'Login failed!' });
-    }, 1000); // simulate server latency
-  });
+const submit = (values, dispatch) => dispatch(register(values));
 
 class Register extends Component {
-  onSubmit(values) {
-    console.log(values);
-    this.props.onRegisterClick(values);
-  }
   render() {
     const {
       fields: { userName, email, password, passwordConfirm },
       handleSubmit
     } = this.props;
-    console.log(userName);
     return (
-      <form onSubmit={handleSubmit(submit)}>
-        <div>
-          <label>User name</label>
-          <input type="text" placeholder="User name" {...userName} />
-          {userName.touched && userName.error && <div>{userName.error}</div>}
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="email" placeholder="Email" {...email} />
-          {email.touched && email.error && <div>{email.error}</div>}
-        </div>
-        <div>
-          <label>Password</label>
-          <input type="password" placeholder="Password" {...password} />
-          {password.touched && password.error && <div>{password.error}</div>}
-        </div>
-        <div>
-          <label>Confirm</label>
-          <input type="password" placeholder="Confirm" {...passwordConfirm} />
-          {passwordConfirm.touched && passwordConfirm.error && <div>{passwordConfirm.error}</div>}
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      <div>
+        <h2>Register</h2>
+        <form onSubmit={handleSubmit(submit)} className="form-horizontal">
+          <h4>Create a new account.</h4>
+          <hr />
+          <Input field={userName} label="User name" />
+          <Input field={email} label="Email" />
+          <Input field={password} label="Password" />
+          <Input field={passwordConfirm} label="Confirm" />
+          <div className="form-group">
+              <div className="col-md-offset-2 col-md-10">
+                  <button type="submit" className="btn btn-default">Register</button>
+              </div>
+          </div>
+        </form>
+      </div>
     );
   }
 }
@@ -75,8 +44,7 @@ function mapDispatchToProps() {
 
 Register = reduxForm({
   form: 'register',
-  fields: ['userName', 'email', 'password', 'passwordConfirm'],
-  validate
+  fields: ['userName', 'email', 'password', 'passwordConfirm']
 },
 mapStateToProps,
 mapDispatchToProps

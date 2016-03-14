@@ -11,6 +11,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "bootstrap-loader": "^1.0.8",
     "bootstrap-sass": "^3.3.6",
+    "classnames": "^2.2.3",
     "css-loader": "^0.23.1",
     "eslint": "^2.2.0",
     "eslint-config-airbnb": "^6.0.2",

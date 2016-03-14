@@ -1,8 +1,5 @@
 import request from 'superagent';
 
-console.log('testtt');
-
-
 export default {
   register(body, success, failure) {
     request

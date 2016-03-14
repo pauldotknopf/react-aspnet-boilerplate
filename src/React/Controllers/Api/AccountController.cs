@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.OptionsModel;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using React.Models;
 using System;
 using System.Collections.Generic;
@@ -14,6 +17,7 @@ namespace React.Controllers.Api
     {
         UserManager<ApplicationUser> _userManager;
         SignInManager<ApplicationUser> _signInManager;
+        CamelCasePropertyNamesContractResolver _camelCasePropertNamesContractResolver = new CamelCasePropertyNamesContractResolver();
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
@@ -34,7 +38,7 @@ namespace React.Controllers.Api
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return new
                     {
-                        succes = true
+                        success = true
                     };
                 }
                 foreach (var error in result.Errors)
@@ -45,7 +49,8 @@ namespace React.Controllers.Api
 
             return new
             {
-                errors = ModelState.Values
+                success = false,
+                errors = ModelState.ToDictionary(x => string.IsNullOrEmpty(x.Key) ? "_global" : _camelCasePropertNamesContractResolver.GetResolvedPropertyName(x.Key), x => x.Value.Errors.Select(y => y.ErrorMessage))
             };
         }
     }
