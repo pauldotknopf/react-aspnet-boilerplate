@@ -1,14 +1,32 @@
-export function modelStateErrorToFormFields(initialState, modelState) {
-  const response = {};
-  for (const field in modelState) {
-    if (modelState.hasOwnProperty(field)) {
-      response[field] = { // eslint-disable-line no-param-reassign
-        submitError: {
-          errors: modelState[field]
-        },
-        ...initialState[field]
-      };
-    }
+import _ from 'lodash';
+import u from 'updeep';
+
+function updateField(current, errors) {
+  if (!errors) return current;
+  if (errors.length === 0) {
+    return current;
   }
-  return response;
+  return u({
+    submitError: {
+      errors
+    }
+  }, current);
+}
+
+export function modelStateErrorToFormFields(initialState, modelState) {
+  let updatedModelState = _.omit(modelState, '_global');
+  updatedModelState = _.mapValues(updatedModelState, (value, key) =>
+    updateField(
+      initialState.hasOwnProperty(key) ? initialState[key] : {},
+      modelState[key])
+  );
+  if (modelState.hasOwnProperty('_global') && modelState._global.length !== 0) {
+    updatedModelState._error = {
+      errors: modelState._global
+    };
+  } else {
+    updatedModelState._error = null;
+  }
+  console.log(updatedModelState);
+  return updatedModelState;
 }
