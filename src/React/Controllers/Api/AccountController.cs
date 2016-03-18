@@ -23,6 +23,7 @@ namespace React.Controllers.Api
             SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [Route("register")]
