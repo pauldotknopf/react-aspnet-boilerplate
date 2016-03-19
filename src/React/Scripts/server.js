@@ -26,7 +26,7 @@ export function RenderView(path, model) {
         // if this is the NotFoundRoute, then return a 404
         const isNotFound = renderProps.routes.filter((route) => route.status === 404).length > 0;
         result.status = isNotFound ? 404 : 200;
-        const store = configureStore(history, model);
+        const store = configureStore(model, history);
         const component =
           (
             <Provider store={store}>
