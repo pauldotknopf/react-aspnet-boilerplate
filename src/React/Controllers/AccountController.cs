@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
+using React.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,12 +8,19 @@ using System.Threading.Tasks;
 
 namespace React.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        [Route("register")]
-        public ActionResult Register()
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
+            :base(userManager, 
+                 signInManager)
         {
-            return View("js-/register");
+        }
+
+        [Route("register")]
+        public async Task<IActionResult> Register()
+        {
+            return View("js-/register", await BuildState());
         }
     }
 }

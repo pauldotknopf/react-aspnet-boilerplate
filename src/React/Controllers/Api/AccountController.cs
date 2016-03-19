@@ -39,7 +39,8 @@ namespace React.Controllers.Api
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return new
                     {
-                        success = true
+                        success = true,
+                        user = Models.Api.User.From(user)
                     };
                 }
                 foreach (var error in result.Errors)
