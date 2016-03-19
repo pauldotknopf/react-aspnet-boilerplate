@@ -3,10 +3,20 @@ import { reduxForm } from 'redux-form';
 import { register } from '../../redux/modules/register';
 import Input from '../../components/Input';
 import { Glyphicon } from 'react-bootstrap';
+import { push } from 'react-router-redux';
 
 const submit = (values, dispatch) => dispatch(register(values));
 
 class Register extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.user && nextProps.user) {
+      // login
+      this.props.pushState('/');
+    } else if (this.props.user && !nextProps.user) {
+      // logout
+      this.props.pushState('/');
+    }
+  }
   renderErrorList(error) {
     if (!error) {
       return null;
@@ -46,9 +56,9 @@ class Register extends Component {
           <Input field={password} label="Password" />
           <Input field={passwordConfirm} label="Confirm" />
           <div className="form-group">
-              <div className="col-md-offset-2 col-md-10">
-                  <button type="submit" className="btn btn-default">Register</button>
-              </div>
+            <div className="col-md-offset-2 col-md-10">
+              <button type="submit" className="btn btn-default">Register</button>
+            </div>
           </div>
         </form>
       </div>
@@ -57,12 +67,8 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
-  return state.register;
-}
-
-function mapDispatchToProps() {
   return {
-    register
+    user: state.auth.user
   };
 }
 
@@ -71,7 +77,7 @@ Register = reduxForm({
   fields: ['userName', 'email', 'password', 'passwordConfirm']
 },
 mapStateToProps,
-mapDispatchToProps
+{ register, pushState: push }
 )(Register);
 
 export default Register;

@@ -14,6 +14,9 @@ function updateField(current, errors) {
 }
 
 export function modelStateErrorToFormFields(initialState, modelState) {
+  if (!modelState) {
+    return null;
+  }
   let updatedModelState = _.omit(modelState, '_global');
   updatedModelState = _.mapValues(updatedModelState, (value, key) =>
     updateField(
@@ -27,6 +30,5 @@ export function modelStateErrorToFormFields(initialState, modelState) {
   } else {
     updatedModelState._error = null;
   }
-  console.log(updatedModelState);
   return updatedModelState;
 }
