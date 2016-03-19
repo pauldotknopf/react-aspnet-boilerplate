@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import config from '../../config';
 import { IndexLink } from 'react-router';
@@ -9,12 +10,15 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 
 require('./App.scss');
 
-export default class App extends Component {
+class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired
   };
 
   render() {
+    const {
+      user
+    } = this.props;
     return (
       <div>
         <Helmet {...config.app.head} />
@@ -39,6 +43,8 @@ export default class App extends Component {
                 <NavItem>Contact</NavItem>
               </LinkContainer>
             </Nav>
+            {user &&
+            <p>Logged in as <strong>{user.userName}</strong>.</p>}
             <Nav navbar pullRight>
               <LinkContainer to="/register">
                 <NavItem>Register</NavItem>
@@ -57,3 +63,8 @@ export default class App extends Component {
     );
   }
 }
+
+export default connect(
+state => ({ user: state.auth.user }),
+{}
+)(App);

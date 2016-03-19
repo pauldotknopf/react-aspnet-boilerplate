@@ -16,5 +16,5 @@ export default function configureStore(initialState, history) {
     applyMiddleware(middleware),
     devTools
   )(createStore);
-  return enhancer(reducer);
+  return enhancer(reducer, initialState);
 }
