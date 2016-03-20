@@ -1,4 +1,4 @@
-# react-dot-net
+# react-aspnet-boilerplate
 A starting point for building universal/isomorphic React applications with ASP.NET Core 1, leveraging existing front-end approaches. Uses the [JavaScriptViewEngine](https://github.com/pauldotknopf/javascriptviewengine).
 
 ## Goals
