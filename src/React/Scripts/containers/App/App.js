@@ -15,14 +15,19 @@ class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired
   };
-  renderLoggedInLinks() {
+  renderLoggedInLinks(user) {
     return (
       <Nav navbar pullRight>
-        <button type="submit"
-          className="btn btn-link navbar-btn navbar-link"
-          onClick={this.props.logoff}>
-          Log off
-        </button>
+        <li>
+          <p className="navbar-text">Hello {user.userName}!</p>
+        </li>
+        <li>
+          <button type="submit"
+            className="btn btn-link navbar-btn navbar-link"
+            onClick={this.props.logoff}>
+            Log off
+          </button>
+        </li>
       </Nav>
     );
   }
@@ -44,7 +49,7 @@ class App extends Component {
     } = this.props;
     let loginLinks;
     if (user) {
-      loginLinks = this.renderLoggedInLinks();
+      loginLinks = this.renderLoggedInLinks(user);
     } else {
       loginLinks = this.renderAnonymousLinks();
     }
