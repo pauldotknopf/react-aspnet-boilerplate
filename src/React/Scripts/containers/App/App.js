@@ -32,6 +32,9 @@ class App extends Component {
         <LinkContainer to="/register">
           <NavItem>Register</NavItem>
         </LinkContainer>
+        <LinkContainer to="/login">
+          <NavItem>Login</NavItem>
+        </LinkContainer>
       </Nav>
     );
   }

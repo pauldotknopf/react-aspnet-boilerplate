@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Carousel, CarouselItem } from 'react-bootstrap';
-import { LoginForm } from 'components';
 
 class Home extends Component {
   render() {
@@ -69,7 +68,6 @@ class Home extends Component {
             </div>
           </CarouselItem>
         </Carousel>
-        <LoginForm />
       </div>
     );
   }

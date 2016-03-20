@@ -6,7 +6,8 @@ import {
   About,
   Contact,
   NotFound,
-  Register
+  Register,
+  Login
 } from './containers';
 
 export default () => (
@@ -18,6 +19,7 @@ export default () => (
     <Route path="about" component={About} />
     <Route path="contact" component={Contact} />
     <Route path="register" components={Register} />
+    <Route path="login" components={Login} />
 
     { /* Catch all route */ }
     <Route path="*" component={NotFound} status={404} />
