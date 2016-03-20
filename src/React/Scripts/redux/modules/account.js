@@ -54,3 +54,20 @@ export function registerFormPlugin(state = {}, action = {}) {
       return state;
   }
 }
+
+export function loginFormPlugin(state = {}, action = {}) {
+  switch (action.type) {
+    case LOGIN_COMPLETE:
+      return {
+        ...state,
+        ...modelStateErrorToFormFields(state, action.result.errors)
+      };
+    case LOGOFF_ERROR:
+      return {
+        ...state,
+        ...modelStateErrorToFormFields(state, action.result.errors)
+      };
+    default:
+      return state;
+  }
+}

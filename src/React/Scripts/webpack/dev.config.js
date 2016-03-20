@@ -13,6 +13,10 @@ module.exports = {
       ]
     },
     resolve: {
+      modulesDirectories: [
+        'Scripts',
+        'node_modules'
+      ],
       alias: {
         superagent: path.resolve(__dirname + "/../utils/superagent-server.js")
       },
@@ -44,6 +48,12 @@ module.exports = {
       'client': [
         'bootstrap-loader',
         './Scripts/client.js'
+      ]
+    },
+    resolve: {
+      modulesDirectories: [
+        'Scripts',
+        'node_modules'
       ]
     },
     module: {

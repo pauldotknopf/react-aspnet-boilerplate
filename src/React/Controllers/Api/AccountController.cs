@@ -13,11 +13,10 @@ using System.Threading.Tasks;
 namespace React.Controllers.Api
 {
     [Route("api/account")]
-    public class AccountController : Controller
+    public class AccountController : BaseApiController
     {
         UserManager<ApplicationUser> _userManager;
         SignInManager<ApplicationUser> _signInManager;
-        CamelCasePropertyNamesContractResolver _camelCasePropertNamesContractResolver = new CamelCasePropertyNamesContractResolver();
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
@@ -52,7 +51,64 @@ namespace React.Controllers.Api
             return new
             {
                 success = false,
-                errors = ModelState.ToDictionary(x => string.IsNullOrEmpty(x.Key) ? "_global" : _camelCasePropertNamesContractResolver.GetResolvedPropertyName(x.Key), x => x.Value.Errors.Select(y => y.ErrorMessage))
+                errors = GetModelState()
+            };
+        }
+
+        [Route("login")]
+        public async Task<object> Login([FromBody]LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.UserName);
+                if(user == null)
+                {
+                    ModelState.AddModelError("UserName", "No user found with the given user name.");
+                    return new
+                    {
+                        success = false,
+                        errors = GetModelState()
+                    };
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return new
+                    {
+                        success = true,
+                        user = Models.Api.User.From(user)
+                    };
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    // maybe later?
+                    throw new NotSupportedException();
+                }
+                if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError(string.Empty, "You are currently locked out.");
+                    return new
+                    {
+                        success = false,
+                        errors = GetModelState()
+                    };
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return new
+                    {
+                        success = false,
+                        errors = GetModelState()
+                    };
+                }
+            }
+
+            return new
+            {
+                success = false,
+                errors = GetModelState()
             };
         }
 
