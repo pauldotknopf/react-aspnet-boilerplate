@@ -5,8 +5,10 @@ import getRoutes from './routes';
 import { Provider } from 'react-redux';
 import configureStore from './redux/configureStore';
 import { syncHistoryWithStore } from 'react-router-redux';
+import ApiClient from './helpers/ApiClient';
 
-const store = configureStore(window.__data, browserHistory);
+const client = new ApiClient();
+const store = configureStore(window.__data, browserHistory, client);
 const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render(

@@ -40,6 +40,7 @@ function registerStart() {
 function registerComplete(response) {
   return { type: REGISTER_COMPLETE, ...response };
 }
+
 function registerError(response) {
   return { type: REGISTER_ERROR, ...response };
 }
@@ -48,13 +49,7 @@ export function register(body) {
   return dispatch => {
     dispatch(registerStart());
     accountApi.register(body,
-      (response) => {
-        dispatch(registerComplete(response.body));
-        if (response.body.success) {
-          // the user was registered, and also logged in
-          dispatch(setAuthUser(response.body.user));
-        }
-      },
-      (response) => dispatch(registerError(response.body)));
+      (response) => dispatch(registerComplete(response)),
+      (response) => dispatch(registerError(response)));
   };
 }

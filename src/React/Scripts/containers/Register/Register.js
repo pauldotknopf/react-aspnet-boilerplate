@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-import { register } from '../../redux/modules/register';
+import { register } from '../../redux/modules/account';
 import Input from '../../components/Input';
 import { Glyphicon } from 'react-bootstrap';
 import { push } from 'react-router-redux';
 
-const submit = (values, dispatch) => dispatch(register(values));
+const submit = (values, dispatch) => {
+  dispatch(register(values));
+};
 
 class Register extends Component {
   componentWillReceiveProps(nextProps) {

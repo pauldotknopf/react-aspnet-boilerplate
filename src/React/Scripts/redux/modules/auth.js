@@ -1,7 +1,4 @@
-const AUTH_SET_USER = 'react/auth/AUTH_SET_USER';
-const AUTH_UNSET_USER = 'react/auth/AUTH_SET_USER';
-
-import accountApi from '../../api/account';
+import { REGISTER_COMPLETE, LOGIN_COMPLETE, LOGOFF_COMPLETE } from './account';
 
 const initialState = {
   loggedIn: false,
@@ -10,13 +7,20 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case AUTH_SET_USER:
+    case REGISTER_COMPLETE:
+    case LOGIN_COMPLETE:
+      if (!action.result.success) {
+        return state;
+      }
       return {
         ...state,
-        user: action.user,
+        user: action.result.user,
         loggedIn: true
       };
-    case AUTH_UNSET_USER:
+    case LOGOFF_COMPLETE:
+      if (!action.result.success) {
+        return state;
+      }
       return {
         ...state,
         user: null,
@@ -25,23 +29,4 @@ export default function reducer(state = initialState, action = {}) {
     default:
       return state;
   }
-}
-
-export function setAuthUser(user) {
-  return { type: AUTH_SET_USER, user };
-}
-export function unsetAuthUser() {
-  return { type: AUTH_SET_USER };
-}
-
-export function logout() {
-  return dispatch => {
-    accountApi.logoff(
-      () => {
-        dispatch(unsetAuthUser());
-      },
-      () => {
-        // TODO: handle error
-      });
-  };
 }

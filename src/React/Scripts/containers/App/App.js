@@ -7,7 +7,7 @@ import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
-import { logout } from '../../redux/modules/auth';
+import { logoff } from '../../redux/modules/account';
 
 require('./App.scss');
 
@@ -20,7 +20,7 @@ class App extends Component {
       <Nav navbar pullRight>
         <button type="submit"
           className="btn btn-link navbar-btn navbar-link"
-          onClick={this.props.logout}>
+          onClick={this.props.logoff}>
           Log off
         </button>
       </Nav>
@@ -86,5 +86,5 @@ class App extends Component {
 
 export default connect(
 state => ({ user: state.auth.user }),
-{ logout }
+{ logoff }
 )(App);
