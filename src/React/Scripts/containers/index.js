@@ -5,3 +5,4 @@ export Contact from './Contact/Contact';
 export NotFound from './NotFound/NotFound';
 export Register from './Register/Register';
 export Login from './Login/Login';
+export ForgotPassword from './ForgotPassword/ForgotPassword';

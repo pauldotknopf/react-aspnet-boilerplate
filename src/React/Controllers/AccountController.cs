@@ -28,5 +28,11 @@ namespace React.Controllers
         {
             return View("js-/login", await BuildState());
         }
+
+        [Route("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View("js-/forgotpassword", await BuildState());
+        }
     }
 }

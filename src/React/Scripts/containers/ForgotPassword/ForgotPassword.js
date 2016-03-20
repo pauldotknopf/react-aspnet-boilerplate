@@ -1,0 +1,36 @@
+import React, { Component } from 'react';
+import { ForgotPasswordForm } from 'components';
+import { connect } from 'react-redux';
+
+class ForgotPassword extends Component {
+  onForgotPasswordFormCompleted() {
+    console.log('completed...');
+  }
+  renderForm() {
+    return (
+      <ForgotPasswordForm onCompleted={this.onForgotPasswordFormCompleted} />
+    );
+  }
+  renderComfirmation() {
+    return (
+      <p>
+        Please check your email to reset your password.
+      </p>
+    );
+  }
+  render() {
+    return (
+      <div>
+        <h2>Forgot your password?</h2>
+        <h4>Enter your email.</h4>
+        <hr />
+        <ForgotPasswordForm />
+      </div>
+    );
+  }
+}
+
+export default connect(
+state => ({ user: state.auth.user }),
+{ }
+)(ForgotPassword);

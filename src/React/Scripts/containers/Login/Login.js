@@ -20,6 +20,9 @@ class Register extends Component {
         <p>
           <Link to="/register">Register as a new user?</Link>
         </p>
+        <p>
+          <Link to="/forgotpassword">Forgot your password?</Link>
+        </p>
       </div>
     );
   }
