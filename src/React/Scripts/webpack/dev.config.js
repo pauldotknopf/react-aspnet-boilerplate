@@ -12,6 +12,11 @@ module.exports = {
         './Scripts/server.js'
       ]
     },
+    resolve: {
+      alias: {
+        superagent: path.resolve(__dirname + "/../utils/superagent-server.js")
+      },
+    },
     module: {
       loaders: [
         { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint']},

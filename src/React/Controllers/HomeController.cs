@@ -1,22 +1,37 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNet.Mvc;
 using React.ViewModels;
+using System.Threading.Tasks;
+using React.Models.Api;
+using Microsoft.AspNet.Identity;
+using React.Models;
 
 namespace React.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        public IActionResult Index(string greeting = "Hello!")
+        public HomeController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
+            :base(userManager, 
+                 signInManager)
         {
-            // make some database calls, w/e.
-            return View("js-/", new GreetingViewModel
-            {
-                Greeting = greeting
-            });
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> Index(string greeting = "Hello!")
         {
-            return View("js-/about");
+            return View("js-/", await BuildState());
+        }
+
+        [Route("about")]
+        public async Task<IActionResult> About()
+        {
+            return View("js-/about", await BuildState());
+        }
+
+        [Route("contact")]
+        public async Task<IActionResult> Contact()
+        {
+            return View("js-/contact", await BuildState());
         }
     }
 }
