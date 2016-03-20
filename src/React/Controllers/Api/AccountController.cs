@@ -55,5 +55,16 @@ namespace React.Controllers.Api
                 errors = ModelState.ToDictionary(x => string.IsNullOrEmpty(x.Key) ? "_global" : _camelCasePropertNamesContractResolver.GetResolvedPropertyName(x.Key), x => x.Value.Errors.Select(y => y.ErrorMessage))
             };
         }
+
+        [Route("logoff")]
+        [HttpPost]
+        public async Task<object> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return new
+            {
+                success = true
+            };
+        }
     }
 }

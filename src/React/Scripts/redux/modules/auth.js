@@ -1,6 +1,8 @@
 const AUTH_SET_USER = 'react/auth/AUTH_SET_USER';
 const AUTH_UNSET_USER = 'react/auth/AUTH_SET_USER';
 
+import accountApi from '../../api/account';
+
 const initialState = {
   loggedIn: false,
   user: null
@@ -30,4 +32,16 @@ export function setAuthUser(user) {
 }
 export function unsetAuthUser() {
   return { type: AUTH_SET_USER };
+}
+
+export function logout() {
+  return dispatch => {
+    accountApi.logoff(
+      () => {
+        dispatch(unsetAuthUser());
+      },
+      () => {
+        // TODO: handle error
+      });
+  };
 }

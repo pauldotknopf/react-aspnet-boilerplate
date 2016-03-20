@@ -15,5 +15,19 @@ export default {
           }
         }
       });
+  },
+  logoff(success, failure) {
+    request
+      .post('/api/account/logoff')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        if (err && failure) {
+          failure(err);
+        } else {
+          if (success) {
+            success(res);
+          }
+        }
+      });
   }
 };

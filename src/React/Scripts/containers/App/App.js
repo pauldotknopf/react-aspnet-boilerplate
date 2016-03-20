@@ -7,6 +7,7 @@ import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
+import { logout } from '../../redux/modules/auth';
 
 require('./App.scss');
 
@@ -14,11 +15,36 @@ class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired
   };
-
+  renderLoggedInLinks() {
+    return (
+      <Nav navbar pullRight>
+        <button type="submit"
+          className="btn btn-link navbar-btn navbar-link"
+          onClick={this.props.logout}>
+          Log off
+        </button>
+      </Nav>
+    );
+  }
+  renderAnonymousLinks() {
+    return (
+      <Nav navbar pullRight>
+        <LinkContainer to="/register">
+          <NavItem>Register</NavItem>
+        </LinkContainer>
+      </Nav>
+    );
+  }
   render() {
     const {
       user
     } = this.props;
+    let loginLinks;
+    if (user) {
+      loginLinks = this.renderLoggedInLinks();
+    } else {
+      loginLinks = this.renderAnonymousLinks();
+    }
     return (
       <div>
         <Helmet {...config.app.head} />
@@ -43,13 +69,7 @@ class App extends Component {
                 <NavItem>Contact</NavItem>
               </LinkContainer>
             </Nav>
-            {user &&
-            <p>Logged in as <strong>{user.userName}</strong>.</p>}
-            <Nav navbar pullRight>
-              <LinkContainer to="/register">
-                <NavItem>Register</NavItem>
-              </LinkContainer>
-            </Nav>
+            {loginLinks}
           </Navbar.Collapse>
         </Navbar>
         <div className="container body-content">
@@ -66,5 +86,5 @@ class App extends Component {
 
 export default connect(
 state => ({ user: state.auth.user }),
-{}
+{ logout }
 )(App);
