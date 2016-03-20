@@ -2,26 +2,33 @@ import React, { Component } from 'react';
 import { Glyphicon } from 'react-bootstrap';
 import { modelStateErrorToFormFields } from '../utils/modelState';
 
-export function handleApiSubmit(action) {
-  return (values, dispatch) =>
-    new Promise((resolve, reject) => {
-      dispatch(action(values))
-        .then(
-        (result) => {
-          if (result.success) {
-            resolve();
-          } else {
-            reject(modelStateErrorToFormFields(result.errors));
-          }
-        },
-        (result) => {
-          reject(modelStateErrorToFormFields(result.errors));
-        });
-    });
-}
-
 class Form extends Component {
-  renderGlobalErrorList(error) {
+  handleApiSubmit(action) {
+    const {
+      handleSubmit
+    } = this.props;
+    return handleSubmit((values, dispatch) => {
+      console.log('temp');
+      return new Promise((resolve, reject) => {
+        dispatch(action(values))
+          .then(
+          (result) => {
+            if (result.success) {
+              resolve();
+            } else {
+              reject(modelStateErrorToFormFields(result.errors));
+            }
+          },
+          (result) => {
+            reject(modelStateErrorToFormFields(result.errors));
+          });
+      });
+    });
+  }
+  renderGlobalErrorList() {
+    const {
+      error
+    } = this.props;
     if (!error) {
       return null;
     }

@@ -1,19 +1,17 @@
 import React from 'react';
-import Form, { handleApiSubmit } from 'components/Form';
+import Form from 'components/Form';
 import { reduxForm } from 'redux-form';
-import { login } from 'redux/modules/account';
 import { Input } from 'components';
+import { login } from 'redux/modules/account';
 
 class LoginForm extends Form {
   render() {
     const {
-      fields: { userName, password },
-      handleSubmit,
-      error
+      fields: { userName, password }
     } = this.props;
     return (
-      <form onSubmit={handleSubmit(handleApiSubmit(login))} className="form-horizontal">
-        {this.renderGlobalErrorList(error)}
+      <form onSubmit={this.handleApiSubmit(login)} className="form-horizontal">
+        {this.renderGlobalErrorList()}
         <Input field={userName} label="User name" />
         <Input field={password} label="Password" />
         <div className="form-group">

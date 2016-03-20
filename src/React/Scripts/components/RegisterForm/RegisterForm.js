@@ -1,19 +1,17 @@
 import React from 'react';
-import Form, { handleApiSubmit } from 'components/Form';
+import Form from 'components/Form';
 import { reduxForm } from 'redux-form';
-import { register } from 'redux/modules/account';
 import { Input } from 'components';
+import { register } from 'redux/modules/account';
 
 class RegisterForm extends Form {
   render() {
     const {
-      fields: { userName, email, password, passwordConfirm },
-      handleSubmit,
-      error
+      fields: { userName, email, password, passwordConfirm }
     } = this.props;
     return (
-      <form onSubmit={handleSubmit(handleApiSubmit(register))} className="form-horizontal">
-        {this.renderGlobalErrorList(error)}
+      <form onSubmit={this.handleApiSubmit(register)} className="form-horizontal">
+        {this.renderGlobalErrorList()}
         <Input field={userName} label="User name" />
         <Input field={email} label="Email" />
         <Input field={password} label="Password" />
@@ -33,7 +31,7 @@ RegisterForm = reduxForm({
   fields: ['userName', 'email', 'password', 'passwordConfirm']
 },
 (state) => state,
-{ register }
+{ }
 )(RegisterForm);
 
 export default RegisterForm;
