@@ -1,35 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Form, { handleApiSubmit } from 'components/Form';
 import { reduxForm } from 'redux-form';
-import { register } from '../../redux/modules/account';
+import { register } from 'redux/modules/account';
 import { Input } from 'components';
-import { Glyphicon } from 'react-bootstrap';
 
-const submit = (values, dispatch) => {
-  dispatch(register(values));
-};
-
-class Register extends Component {
-  renderErrorList(error) {
-    if (!error) {
-      return null;
-    }
-    if (!error.errors) {
-      return null;
-    }
-    return (
-      <div className="alert alert-danger">
-        {error.errors.map((err, i) =>
-          (
-            <p key={i}>
-              <Glyphicon glyph="exclamation-sign" />
-              {' '}
-              {err}
-            </p>
-          )
-        )}
-      </div>
-    );
-  }
+class RegisterForm extends Form {
   render() {
     const {
       fields: { userName, email, password, passwordConfirm },
@@ -37,8 +12,8 @@ class Register extends Component {
       error
     } = this.props;
     return (
-      <form onSubmit={handleSubmit(submit)} className="form-horizontal">
-        {this.renderErrorList(error)}
+      <form onSubmit={handleSubmit(handleApiSubmit(register))} className="form-horizontal">
+        {this.renderGlobalErrorList(error)}
         <Input field={userName} label="User name" />
         <Input field={email} label="Email" />
         <Input field={password} label="Password" />
@@ -53,12 +28,12 @@ class Register extends Component {
   }
 }
 
-Register = reduxForm({
+RegisterForm = reduxForm({
   form: 'register',
   fields: ['userName', 'email', 'password', 'passwordConfirm']
 },
 (state) => state,
 { register }
-)(Register);
+)(RegisterForm);
 
-export default Register;
+export default RegisterForm;

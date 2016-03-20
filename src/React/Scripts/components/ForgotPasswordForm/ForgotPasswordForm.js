@@ -1,37 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Form, { handleApiSubmit } from 'components/Form';
 import { reduxForm } from 'redux-form';
+import { forgotPassword } from 'redux/modules/account';
 import { Input } from 'components';
-import { Glyphicon } from 'react-bootstrap';
 
-class ForgotPasswordForm extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (!this.success && nextProps.succes) {
-      this.props.onCompleted();
-    }
-  }
-  submit() {
-  }
-  renderErrorList(error) {
-    if (!error) {
-      return null;
-    }
-    if (!error.errors) {
-      return null;
-    }
-    return (
-      <div className="alert alert-danger">
-        {error.errors.map((err, i) =>
-          (
-            <p key={i}>
-              <Glyphicon glyph="exclamation-sign" />
-              {' '}
-              {err}
-            </p>
-          )
-        )}
-      </div>
-    );
-  }
+class ForgotPasswordForm extends Form {
   render() {
     const {
       fields: { email },
@@ -39,8 +12,8 @@ class ForgotPasswordForm extends Component {
       error
     } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.submit.bind(this))} className="form-horizontal">
-        {this.renderErrorList(error)}
+      <form onSubmit={handleSubmit(handleApiSubmit(forgotPassword))} className="form-horizontal">
+        {this.renderGlobalErrorList(error)}
         <Input field={email} label="Email" />
         <div className="form-group">
           <div className="col-md-offset-2 col-md-10">

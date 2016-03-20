@@ -1,5 +1,3 @@
-import { modelStateErrorToFormFields } from '../utils';
-
 export const REGISTER_START = 'react/account/REGISTER_START';
 export const REGISTER_COMPLETE = 'react/account/REGISTER_COMPLETE';
 export const REGISTER_ERROR = 'react/account/REGISTER_ERROR';
@@ -49,57 +47,4 @@ export function forgotPassword(body) {
     types: [FORGOTPASSWORD_START, FORGOTPASSWORD_COMPLETE, FORGOTPASSWORD_ERROR],
     promise: (client) => client.post('/api/account/forgotpassword', { data: body })
   };
-}
-
-export function registerFormPlugin(state = {}, action = {}) {
-  switch (action.type) {
-    case REGISTER_COMPLETE:
-      return {
-        ...state,
-        ...modelStateErrorToFormFields(state, action.result.errors)
-      };
-    case REGISTER_ERROR:
-      return {
-        ...state,
-        ...modelStateErrorToFormFields(state, action.result.errors)
-      };
-    default:
-      return state;
-  }
-}
-
-export function loginFormPlugin(state = {}, action = {}) {
-  switch (action.type) {
-    case LOGIN_COMPLETE:
-      return {
-        ...state,
-        ...modelStateErrorToFormFields(state, action.result.errors)
-      };
-    case LOGOFF_ERROR:
-      return {
-        ...state,
-        ...modelStateErrorToFormFields(state, action.result.errors)
-      };
-    default:
-      return state;
-  }
-}
-
-export function forgotPasswordFormPlugin(state = { success: false }, action = {}) {
-  switch (action.type) {
-    case FORGOTPASSWORD_COMPLETE:
-      return {
-        ...state,
-        ...modelStateErrorToFormFields(state, action.result.errors),
-        success: action.result.success
-      };
-    case FORGOTPASSWORD_ERROR:
-      return {
-        ...state,
-        ...modelStateErrorToFormFields(state, action.result.errors),
-        success: false
-      };
-    default:
-      return state;
-  }
 }
