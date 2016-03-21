@@ -20,19 +20,25 @@ namespace React.Controllers
         [Route("register")]
         public async Task<IActionResult> Register()
         {
-            return View("js-/register", await BuildState());
+            return View("js-{auto}", await BuildState());
         }
 
         [Route("login")]
         public async Task<IActionResult> Login()
         {
-            return View("js-/login", await BuildState());
+            return View("js-{auto}", await BuildState());
         }
 
         [Route("forgotpassword")]
         public async Task<IActionResult> ForgotPassword()
         {
-            return View("js-/forgotpassword", await BuildState());
+            return View("js-{auto}", await BuildState());
+        }
+
+        [Route("resetpassword")]
+        public async Task<IActionResult> ResetPassword()
+        {
+            return View("js-{auto}", await BuildState());
         }
     }
 }

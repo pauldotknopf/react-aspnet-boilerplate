@@ -8,7 +8,8 @@ import {
   NotFound,
   Register,
   Login,
-  ForgotPassword
+  ForgotPassword,
+  ResetPassword
 } from './containers';
 
 export default () => (
@@ -22,6 +23,7 @@ export default () => (
     <Route path="register" components={Register} />
     <Route path="login" components={Login} />
     <Route path="forgotpassword" components={ForgotPassword} />
+    <Route path="resetpassword" components={ResetPassword} />
 
     { /* Catch all route */ }
     <Route path="*" component={NotFound} status={404} />

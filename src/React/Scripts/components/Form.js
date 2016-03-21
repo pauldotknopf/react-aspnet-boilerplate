@@ -3,13 +3,16 @@ import { Glyphicon } from 'react-bootstrap';
 import { modelStateErrorToFormFields } from '../utils/modelState';
 
 class Form extends Component {
+  modifyValues(values) {
+    return values;
+  }
   handleApiSubmit(action, success, error) {
     const {
       handleSubmit
     } = this.props;
     return handleSubmit((values, dispatch) =>
       new Promise((resolve, reject) => {
-        dispatch(action(values))
+        dispatch(action(this.modifyValues(values)))
           .then(
           (result) => {
             if (result.success) {

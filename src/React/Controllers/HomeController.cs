@@ -19,19 +19,19 @@ namespace React.Controllers
 
         public async Task<IActionResult> Index(string greeting = "Hello!")
         {
-            return View("js-/", await BuildState());
+            return View("js-{auto}", await BuildState());
         }
 
         [Route("about")]
         public async Task<IActionResult> About()
         {
-            return View("js-/about", await BuildState());
+            return View("js-{auto}", await BuildState());
         }
 
         [Route("contact")]
         public async Task<IActionResult> Contact()
         {
-            return View("js-/contact", await BuildState());
+            return View("js-{auto}", await BuildState());
         }
     }
 }

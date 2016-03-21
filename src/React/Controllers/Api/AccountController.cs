@@ -133,7 +133,7 @@ namespace React.Controllers.Api
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -152,6 +152,48 @@ namespace React.Controllers.Api
                 {
                     success = true
                 };
+            }
+
+            return new
+            {
+                success = false,
+                errors = GetModelState()
+            };
+        }
+
+        [Route("resetpassword")]
+        [HttpPost]
+        public async Task<object> ResetPassword([FromBody]ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new
+                {
+                    success = false,
+                    errors = GetModelState()
+                };
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return new
+                {
+                    success = true
+                };
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return new
+                {
+                    success = true
+                };
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
             }
 
             return new

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { ForgotPasswordForm } from 'components';
+import { ResetPasswordForm } from 'components';
 import { connect } from 'react-redux';
 
-class ForgotPassword extends Component {
+class ResetPassword extends Component {
   render() {
     return (
       <div>
-        <h2>Forgot your password?</h2>
-        <h4>Enter your email.</h4>
+        <h2>Reset password</h2>
+        <h4>Reset your password.</h4>
         <hr />
-        <ForgotPasswordForm />
+        <ResetPasswordForm />
       </div>
     );
   }
@@ -18,4 +18,4 @@ class ForgotPassword extends Component {
 export default connect(
 state => ({ user: state.auth.user }),
 { }
-)(ForgotPassword);
+)(ResetPassword);

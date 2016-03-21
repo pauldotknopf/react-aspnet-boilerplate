@@ -1,6 +1,7 @@
 export LoginForm from './LoginForm/LoginForm';
 export RegisterForm from './RegisterForm/RegisterForm';
 export ForgotPasswordForm from './ForgotPasswordForm/ForgotPasswordForm';
+export ResetPasswordForm from './ResetPasswordForm/ResetPasswordForm';
 export Input from './Input';
 // There is a bug in babel. When exporting types that will be inherited,
 // you must import them directly from the component. You can't proxy

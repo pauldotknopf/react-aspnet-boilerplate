@@ -14,6 +14,10 @@ export const FORGOTPASSWORD_START = 'react/account/FORGOTPASSWORD_START';
 export const FORGOTPASSWORD_COMPLETE = 'react/account/FORGOTPASSWORD_COMPLETE';
 export const FORGOTPASSWORD_ERROR = 'react/account/FORGOTPASSWORD_ERROR';
 
+export const RESETPASSWORD_START = 'react/account/RESETPASSWORD_START';
+export const RESETPASSWORD_COMPLETE = 'react/account/RESETPASSWORD_COMPLETE';
+export const RESETPASSWORD_ERROR = 'react/account/RESETPASSWORD_ERROR';
+
 const initialState = {
 };
 
@@ -46,5 +50,12 @@ export function forgotPassword(body) {
   return {
     types: [FORGOTPASSWORD_START, FORGOTPASSWORD_COMPLETE, FORGOTPASSWORD_ERROR],
     promise: (client) => client.post('/api/account/forgotpassword', { data: body })
+  };
+}
+
+export function resetPassword(body) {
+  return {
+    types: [RESETPASSWORD_START, RESETPASSWORD_COMPLETE, RESETPASSWORD_ERROR],
+    promise: (client) => client.post('/api/account/resetpassword', { data: body })
   };
 }

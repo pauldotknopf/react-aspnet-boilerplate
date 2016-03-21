@@ -7,7 +7,6 @@ import createMiddleware from './middleware/clientMiddleware';
 let devTools = f => f;
 if (typeof window === 'object'
   && typeof window.devToolsExtension !== 'undefined') {
-  console.log('dev tools present...');
   devTools = window.devToolsExtension();
 }
 
