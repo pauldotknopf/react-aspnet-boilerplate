@@ -9,7 +9,8 @@ import {
   Register,
   Login,
   ForgotPassword,
-  ResetPassword
+  ResetPassword,
+  ConfirmEmail
 } from './containers';
 
 export default () => (
@@ -24,6 +25,7 @@ export default () => (
     <Route path="login" components={Login} />
     <Route path="forgotpassword" components={ForgotPassword} />
     <Route path="resetpassword" components={ResetPassword} />
+    <Route path="confirmemail" components={ConfirmEmail} />
 
     { /* Catch all route */ }
     <Route path="*" component={NotFound} status={404} />

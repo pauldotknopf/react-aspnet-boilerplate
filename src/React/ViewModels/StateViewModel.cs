@@ -16,5 +16,7 @@ namespace React.ViewModels
 
         [JsonProperty("auth")]
         public AuthViewModel Auth { get; set; }
+
+        public object temp { get; set; }
     }
 }
