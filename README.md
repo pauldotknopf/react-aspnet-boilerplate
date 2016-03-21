@@ -23,6 +23,7 @@ To checkout this demo...
 > npm install
 > gulp
 > dnu restore
+> dnx ef database update
 > dnx web
 ```
 
