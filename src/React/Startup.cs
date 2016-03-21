@@ -49,6 +49,7 @@ namespace React
             services.AddMvc();
 
             services.AddJsEngine<ReactEnvironmentInitializer>();
+            services.AddSingleton<IJsEngineInvoker, Services.JsEngineInvoker>();
             services.Configure<JsPoolOptions>(options =>
             {
                 options.WatchPath = _env.WebRootPath;
