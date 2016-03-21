@@ -1,4 +1,8 @@
 # react-aspnet-boilerplate
+<p align="center">
+<img src="/resources/preview-thumbnail.jpg" />
+</p>
+
 A starting point for building universal/isomorphic React applications with ASP.NET Core 1, leveraging existing front-end approaches. Uses the [JavaScriptViewEngine](https://github.com/pauldotknopf/javascriptviewengine).
 
 ## Goals
