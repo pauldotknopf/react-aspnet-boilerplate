@@ -59,7 +59,6 @@ ResetPasswordForm = reduxForm({
 },
 (state) => {
   let code = null;
-  console.log(state.routing.locationBeforeTransitions);
   if (state.routing.locationBeforeTransitions) {
     if (state.routing.locationBeforeTransitions.query) {
       code = state.routing.locationBeforeTransitions.query.code;

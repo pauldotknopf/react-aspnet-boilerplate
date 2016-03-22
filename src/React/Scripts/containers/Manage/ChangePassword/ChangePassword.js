@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { ChangePasswordForm } from 'components';
 import { connect } from 'react-redux';
 
-console.log(typeof ChangePasswordForm);
-
 class ChangePassword extends Component {
   render() {
     return (
