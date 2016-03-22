@@ -18,9 +18,9 @@ class App extends Component {
   renderLoggedInLinks(user) {
     return (
       <Nav navbar pullRight>
-        <li>
-          <p className="navbar-text">Hello {user.userName}!</p>
-        </li>
+        <LinkContainer to="/manage">
+          <NavItem>Hello {user.userName}!</NavItem>
+        </LinkContainer>
         <li>
           <button type="submit"
             className="btn btn-link navbar-btn navbar-link"

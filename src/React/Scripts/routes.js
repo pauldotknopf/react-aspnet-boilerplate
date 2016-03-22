@@ -10,7 +10,10 @@ import {
   Login,
   ForgotPassword,
   ResetPassword,
-  ConfirmEmail
+  ConfirmEmail,
+  Manage,
+  ManageIndex,
+  ManageChangePassword
 } from './containers';
 
 export default () => (
@@ -26,6 +29,11 @@ export default () => (
     <Route path="forgotpassword" components={ForgotPassword} />
     <Route path="resetpassword" components={ResetPassword} />
     <Route path="confirmemail" components={ConfirmEmail} />
+
+    <Route path="manage" component={Manage}>
+      <IndexRoute component={ManageIndex} />
+      <Route path="changepassword" component={ManageChangePassword} />
+    </Route>
 
     { /* Catch all route */ }
     <Route path="*" component={NotFound} status={404} />

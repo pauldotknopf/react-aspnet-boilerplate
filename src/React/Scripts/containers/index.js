@@ -8,3 +8,6 @@ export Login from './Login/Login';
 export ForgotPassword from './ForgotPassword/ForgotPassword';
 export ResetPassword from './ResetPassword/ResetPassword';
 export ConfirmEmail from './ConfirmEmail/ConfirmEmail';
+export Manage from './Manage/Manage';
+export ManageIndex from './Manage/Index/Index';
+export ManageChangePassword from './Manage/ChangePassword/ChangePassword';

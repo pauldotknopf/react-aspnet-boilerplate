@@ -23,6 +23,7 @@ namespace React.Controllers.Api
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
+            :base(userManager, signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
