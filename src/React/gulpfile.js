@@ -28,7 +28,8 @@ gulp.task('build-client', ['build-client-compiler'], function(cb) {
   webpackConfig.clientCompiler.run(function(err, stats) {
     if(err) throw new gutil.PluginError("build-client", err);
     gutil.log("[build-client]", stats.toString({
-      colors: true
+      colors: true,
+      chunks: false
     }));
     cb();
   });
@@ -46,7 +47,8 @@ gulp.task('build-server', ['build-server-compiler'], function(cb) {
   webpackConfig.serverCompiler.run(function(err, stats) {
     if(err) throw new gutil.PluginError("build-server", err);
     gutil.log("[build-server]", stats.toString({
-      colors: true
+      colors: true,
+      chunks: false
     }));
     cb();
   });
