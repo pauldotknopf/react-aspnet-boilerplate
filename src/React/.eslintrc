@@ -1,4 +1,4 @@
-{ 
+{
   "extends": "eslint-config-airbnb",
   "env": {
     "browser": true,
@@ -6,7 +6,7 @@
   },
   "parser": "babel-eslint",
   "plugins": [
-    "react", 
+    "react",
     "import"
   ],
   "rules": {
@@ -15,7 +15,8 @@
     "react/prefer-stateless-function": 0,
     "react/prop-types": 0,
     "react/jsx-closing-bracket-location": 0,
-    "no-console": 0
+    "no-console": 0,
+    "prefer-template": 0
   },
   "settings": {
     "import/resolve": {

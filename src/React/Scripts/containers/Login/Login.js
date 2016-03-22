@@ -4,10 +4,14 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
 
-class Register extends Component {
+class Login extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
-      this.props.pushState('/');
+      if (this.props.location.query.returnUrl) {
+        this.props.pushState(this.props.location.query.returnUrl);
+      } else {
+        this.props.pushState('/');
+      }
     }
   }
   render() {
@@ -31,4 +35,4 @@ class Register extends Component {
 export default connect(
 state => ({ user: state.auth.user }),
 { pushState: push }
-)(Register);
+)(Login);
