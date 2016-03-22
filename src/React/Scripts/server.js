@@ -10,13 +10,14 @@ import { Provider } from 'react-redux';
 
 export function RenderView(path, model) {
   const history = createHistory(path);
+  const store = configureStore(model, history);
   const result = {
     html: null,
     status: 404,
     redirect: null
   };
   match(
-    { history, routes: getRoutes(), location: path },
+    { history, routes: getRoutes(store), location: path },
     (error, redirectLocation, renderProps) => {
       if (redirectLocation) {
         result.redirect = redirectLocation.pathname + redirectLocation.search;
@@ -26,7 +27,6 @@ export function RenderView(path, model) {
         // if this is the NotFoundRoute, then return a 404
         const isNotFound = renderProps.routes.filter((route) => route.status === 404).length > 0;
         result.status = isNotFound ? 404 : 200;
-        const store = configureStore(model, history);
         const component =
           (
             <Provider store={store}>
