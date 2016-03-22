@@ -13,7 +13,7 @@ class LoginForm extends Form {
       <form onSubmit={this.handleApiSubmit(login)} className="form-horizontal">
         {this.renderGlobalErrorList()}
         <Input field={userName} label="User name" />
-        <Input field={password} label="Password" />
+        <Input field={password} type="password" label="Password" />
         <div className="form-group">
           <div className="col-md-offset-2 col-md-10">
             <button type="submit" className="btn btn-default">Login</button>

@@ -2,9 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import { Glyphicon } from 'react-bootstrap';
 
-export default class Input extends Component {
+class Input extends Component {
   static propTypes = {
-    field: PropTypes.object.isRequired
+    field: PropTypes.object.isRequired,
+    type: React.PropTypes.oneOf([
+      'password',
+      'text'
+    ]),
   };
   renderErrorList(errors) {
     if (!errors) {
@@ -23,6 +27,15 @@ export default class Input extends Component {
           )
         )}
       </div>
+    );
+  }
+  renderInput() {
+    return (
+      <input type={this.props.type}
+        className="form-control"
+        placeholder={this.props.label}
+        {...this.props.field}
+      />
     );
   }
   render() {
@@ -47,14 +60,16 @@ export default class Input extends Component {
       <div className={rowClass}>
         <label className="col-md-2 control-label">{this.props.label}</label>
         <div className="col-md-10">
-          <input type="text"
-            className="form-control"
-            placeholder={this.props.label}
-            {...this.props.field}
-          />
+          {this.renderInput()}
           {this.renderErrorList(errors)}
         </div>
       </div>
     );
   }
 }
+
+Input.defaultProps = {
+  type: 'text'
+};
+
+export default Input;

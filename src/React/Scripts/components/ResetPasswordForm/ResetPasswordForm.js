@@ -39,8 +39,8 @@ class ResetPasswordForm extends Form {
             className="form-horizontal">
             {this.renderGlobalErrorList()}
             <Input field={email} label="Email" />
-            <Input field={password} label="Password" />
-            <Input field={passwordConfirm} label="Confirm" />
+            <Input field={password} type="password" label="Password" />
+            <Input field={passwordConfirm} type="password" label="Confirm" />
             <div className="form-group">
               <div className="col-md-offset-2 col-md-10">
                 <button type="submit" className="btn btn-default">Reset</button>
