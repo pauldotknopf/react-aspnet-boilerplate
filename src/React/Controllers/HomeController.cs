@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
-using React.ViewModels;
 using System.Threading.Tasks;
 using React.Models.Api;
 using Microsoft.AspNet.Identity;

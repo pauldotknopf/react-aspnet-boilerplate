@@ -2,12 +2,9 @@
 using Microsoft.AspNet.Mvc;
 using React.Models;
 using React.Models.Api;
-using React.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using React.State;
 
 namespace React.Controllers
 {
