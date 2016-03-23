@@ -11,7 +11,10 @@ using React.Services;
 using JavaScriptViewEngine.Pool;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Extensions.WebEncoders;
 using React.Models;
 
 namespace React
@@ -108,6 +111,23 @@ namespace React
             app.UseStaticFiles();
 
             app.UseIdentity();
+
+            app.UseGoogleAuthentication(options =>
+            {
+                options.Events = new OAuthEvents()
+                {
+                    OnRedirectToAuthorizationEndpoint = (context) =>
+                    {
+                        if (context.HttpContext.Items.ContainsKey("OnRedirectToAuthorizationEndpointRequest")
+                            && (bool) context.HttpContext.Items["OnRedirectToAuthorizationEndpointRequest"])
+                        {
+                            context.HttpContext.Items["OnRedirectToAuthorizationEndpoint"] = context;
+                        }
+                        return Task.FromResult(0);
+                    }
+                };
+
+            });
 
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 

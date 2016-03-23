@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Linq;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using React.Models;
 using React.Models.Api;
@@ -31,6 +32,14 @@ namespace React.Controllers
                 state.Auth.User = user;
                 state.Auth.LoggedIn = true;
             }
+
+            state.ExternalLogin.LoginProviders
+                .AddRange(_signInManager.GetExternalAuthenticationSchemes()
+                .Select(x => new ExternalLoginState.ExternalLoginProvider
+                {
+                    Scheme = x.AuthenticationScheme,
+                    DisplayName = x.DisplayName
+                }));
 
             return state;
         }

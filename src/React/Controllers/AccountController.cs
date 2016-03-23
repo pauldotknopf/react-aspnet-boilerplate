@@ -6,12 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Authentication;
+using Microsoft.AspNet.Authentication.OAuth;
 
 namespace React.Controllers
 {
     public class AccountController : BaseController
     {
         UserManager<ApplicationUser> _userManager;
+        SignInManager<ApplicationUser> _signInManager;
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
@@ -78,6 +81,13 @@ namespace React.Controllers
             };
 
             return View("js-{auto}", state);
+        }
+
+        [HttpGet]
+        [Route("externallogincallback")]
+        public async Task<IActionResult> ExternalLoginCallback(string provider, string returnUrl)
+        {
+            return null;
         }
     }
 }

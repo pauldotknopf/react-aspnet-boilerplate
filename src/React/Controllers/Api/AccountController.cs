@@ -10,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Authentication.OAuth;
+using Microsoft.AspNet.Http.Authentication;
+using Microsoft.AspNet.Http.Features.Authentication;
 using React.Controllers.Api.Models;
 
 namespace React.Controllers.Api
@@ -207,6 +210,31 @@ namespace React.Controllers.Api
             {
                 success = false,
                 errors = GetModelState()
+            };
+        }
+
+        [Route("externallogin")]
+        [HttpPost]
+        public async Task<object> ExternalLogin([FromBody]ExternalLoginModel model)
+        {
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(model.Provider, "/account/externallogincallback");
+
+            HttpContext.Items["OnRedirectToAuthorizationEndpointRequest"] = true;
+            await HttpContext.Authentication.ChallengeAsync(model.Provider, properties);
+
+            if (HttpContext.Items.ContainsKey("OnRedirectToAuthorizationEndpoint"))
+            {
+                var redirectContext = (OAuthRedirectToAuthorizationContext)HttpContext.Items["OnRedirectToAuthorizationEndpoint"];
+                return new
+                {
+                    success = true,
+                    redirectUri = redirectContext.RedirectUri
+                };
+            }
+
+            return new
+            {
+                success = false
             };
         }
     }
