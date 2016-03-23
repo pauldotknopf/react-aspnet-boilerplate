@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace React.ViewModels
 {
-    public class AuthViewModel
+    public class AuthState
     {
         [JsonProperty("user")]
         public User User { get; set; }

@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace React.ViewModels
 {
-    public class StateViewModel
+    public class GlobalState
     {
-        public StateViewModel()
+        public GlobalState()
         {
-            Auth = new AuthViewModel();
+            Auth = new AuthState();
         }
 
         [JsonProperty("auth")]
-        public AuthViewModel Auth { get; set; }
+        public AuthState Auth { get; set; }
 
         public object temp { get; set; }
     }

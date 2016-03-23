@@ -23,9 +23,9 @@ namespace React.Controllers
             _signInManager = signInManager;
         }
 
-        protected async Task<StateViewModel> BuildState()
+        protected async Task<GlobalState> BuildState()
         {
-            var state = new StateViewModel();
+            var state = new GlobalState();
 
             var user = await GetCurrentUserAsync();
 
