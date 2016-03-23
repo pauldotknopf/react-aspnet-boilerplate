@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using React.Controllers.Api.Models;
 
 namespace React.Controllers.Api
 {
@@ -49,7 +50,7 @@ namespace React.Controllers.Api
                     return new
                     {
                         success = true,
-                        user = Models.Api.User.From(user)
+                        user = React.Models.Api.User.From(user)
                     };
                 }
                 foreach (var error in result.Errors)
@@ -66,7 +67,7 @@ namespace React.Controllers.Api
         }
 
         [Route("login")]
-        public async Task<object> Login([FromBody]LoginViewModel model)
+        public async Task<object> Login([FromBody]LoginModel model)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +88,7 @@ namespace React.Controllers.Api
                     return new
                     {
                         success = true,
-                        user = Models.Api.User.From(user)
+                        user = React.Models.Api.User.From(user)
                     };
                 }
                 if (result.RequiresTwoFactor)
@@ -135,7 +136,7 @@ namespace React.Controllers.Api
 
         [Route("forgotpassword")]
         [HttpPost]
-        public async Task<object> ForgotPassword([FromBody]ForgotPasswordViewModel model)
+        public async Task<object> ForgotPassword([FromBody]ForgotPasswordModel model)
         {
             if (ModelState.IsValid)
             {
@@ -169,7 +170,7 @@ namespace React.Controllers.Api
 
         [Route("resetpassword")]
         [HttpPost]
-        public async Task<object> ResetPassword([FromBody]ResetPasswordViewModel model)
+        public async Task<object> ResetPassword([FromBody]ResetPasswordModel model)
         {
             if (!ModelState.IsValid)
             {

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.Data.Entity.Metadata.Internal;
+using React.Controllers.Api.Models;
 using React.Models;
 using React.Services;
 
