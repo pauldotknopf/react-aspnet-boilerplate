@@ -34,9 +34,9 @@ class ExternalLogin extends Component {
 
     return (
       <p>
-        {loginProviders.map((loginProvider) =>
+        {loginProviders.map((loginProvider, i) =>
           (
-            <a className="btn btn-default"
+            <a key={i} className="btn btn-default"
               onClick={this.loginClick(loginProvider.scheme, returnUrl)}>
               {loginProvider.displayName}
             </a>
