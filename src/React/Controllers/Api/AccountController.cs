@@ -9,6 +9,7 @@ using React.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authentication.OAuth;
@@ -218,7 +219,7 @@ namespace React.Controllers.Api
         [HttpPost]
         public async Task<object> ExternalLogin([FromBody]ExternalLoginModel model)
         {
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(model.Provider, "/externallogincallback");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(model.Provider, "/externallogincallback?returnUrl=" + WebUtility.UrlEncode(model.ReturnUrl));
 
             HttpContext.Items["OnRedirectToAuthorizationEndpointRequest"] = true;
             await HttpContext.Authentication.ChallengeAsync(model.Provider, properties);

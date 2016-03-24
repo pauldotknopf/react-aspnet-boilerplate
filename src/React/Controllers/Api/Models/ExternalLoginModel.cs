@@ -11,5 +11,8 @@ namespace React.Controllers.Api.Models
     {
         [JsonProperty("provider")]
         public string Provider { get; set; }
+
+        [JsonProperty("returnUrl")]
+        public string ReturnUrl { get; set; }
     }
 }

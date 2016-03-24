@@ -5,6 +5,7 @@ using React.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authentication;
@@ -90,7 +91,7 @@ namespace React.Controllers
         {
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
-                return Redirect("/login");
+                return Redirect("/login?returnUrl=" + WebUtility.UrlEncode(returnUrl));
 
             // Sign in the user with this external login provider if the user already has a login.
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
