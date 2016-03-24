@@ -9,6 +9,7 @@ using React.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Http.Authentication;
@@ -217,7 +218,7 @@ namespace React.Controllers.Api
         [HttpPost]
         public async Task<object> ExternalLogin([FromBody]ExternalLoginModel model)
         {
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(model.Provider, "/account/externallogincallback");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(model.Provider, "/externallogincallback");
 
             HttpContext.Items["OnRedirectToAuthorizationEndpointRequest"] = true;
             await HttpContext.Authentication.ChallengeAsync(model.Provider, properties);
@@ -235,6 +236,52 @@ namespace React.Controllers.Api
             return new
             {
                 success = false
+            };
+        }
+
+        [Route("externalloginregister")]
+        [HttpPost]
+        public async Task<object> ExternalLoginRegister([FromBody]ExternalLoginConfirmationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get the information about the user from the external login provider
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Unsuccessful login with service");
+                    return new
+                    {
+                        success = false,
+                        errors = GetModelState()
+                    };
+                }
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var result = await _userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    result = await _userManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, false);
+                        return new
+                        {
+                            success = true,
+                            errors = GetModelState(),
+                            user = React.Models.Api.User.From(user)
+                        };
+                    }
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            return new
+            {
+                success = false,
+                errors = GetModelState()
             };
         }
     }

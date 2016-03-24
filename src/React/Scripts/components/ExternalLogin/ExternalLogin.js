@@ -12,7 +12,7 @@ class ExternalLogin extends Component {
       event.preventDefault();
       this.props.externalLogin({ provider: scheme })
         .then(result => {
-          if(result.success) {
+          if (result.success) {
             window.location = result.redirectUri;
           }
         });

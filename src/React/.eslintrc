@@ -16,7 +16,8 @@
     "react/prop-types": 0,
     "react/jsx-closing-bracket-location": 0,
     "no-console": 0,
-    "prefer-template": 0
+    "prefer-template": 0,
+    "max-len": 0
   },
   "settings": {
     "import/resolve": {

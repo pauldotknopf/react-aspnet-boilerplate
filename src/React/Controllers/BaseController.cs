@@ -59,5 +59,10 @@ namespace React.Controllers
 
             return Models.Api.User.From(user);
         }
+
+        protected IActionResult RedirectToLocal(string returnUrl)
+        {
+            return Redirect(Url.IsLocalUrl(returnUrl) ? returnUrl : "/");
+        }
     }
 }

@@ -13,7 +13,8 @@ import {
   ConfirmEmail,
   Manage,
   ManageIndex,
-  ManageChangePassword
+  ManageChangePassword,
+  ExternalLoginCallback
 } from './containers';
 
 export default (store) => {
@@ -39,6 +40,7 @@ export default (store) => {
       <Route path="forgotpassword" components={ForgotPassword} />
       <Route path="resetpassword" components={ResetPassword} />
       <Route path="confirmemail" components={ConfirmEmail} />
+      <Route path="externallogincallback" components={ExternalLoginCallback} />
 
       <Route path="manage" component={Manage} onEnter={requireLogin}>
         <IndexRoute component={ManageIndex} />

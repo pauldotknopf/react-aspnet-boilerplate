@@ -5,6 +5,7 @@ using React.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
@@ -22,6 +23,7 @@ namespace React.Controllers
                  signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [Route("register")]
@@ -82,12 +84,46 @@ namespace React.Controllers
 
             return View("js-{auto}", state);
         }
-
-        [HttpGet]
+        
         [Route("externallogincallback")]
-        public async Task<IActionResult> ExternalLoginCallback(string provider, string returnUrl)
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null)
         {
-            return null;
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+                return Redirect("/login");
+
+            // Sign in the user with this external login provider if the user already has a login.
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            if (result.Succeeded)
+            {
+                return RedirectToLocal(returnUrl);
+            }
+            if (result.RequiresTwoFactor)
+            {
+                // TODO
+                throw new NotImplementedException();
+            }
+            if (result.IsLockedOut)
+            {
+                // TODO
+                throw new NotImplementedException();
+            }
+
+            // If the user does not have an account, then ask the user to create an account.
+
+            var email = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Email);
+            var userName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Name);
+            if (!string.IsNullOrEmpty(userName))
+                userName = userName.Replace(" ", "_");
+
+            var state = await BuildState();
+            state.temp = new
+            {
+                externalLoginEmail = email,
+                proposedUserName = userName
+            };
+
+            return View("js-{auto}", state);
         }
     }
 }

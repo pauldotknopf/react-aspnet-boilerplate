@@ -112,23 +112,31 @@ namespace React
 
             app.UseIdentity();
 
-            app.UseGoogleAuthentication(options =>
+            var googleClientId = Configuration.Get<string>("Authentication:Google:ClientId");
+            var googleClientSecret = Configuration.Get<string>("Authentication:Google:ClientSecret");
+            if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
             {
-                options.Events = new OAuthEvents()
+                app.UseGoogleAuthentication(options =>
                 {
-                    OnRedirectToAuthorizationEndpoint = (context) =>
+                    options.ClientId = googleClientId;
+                    options.ClientSecret = googleClientSecret;
+                    options.Events = new OAuthEvents
                     {
-                        if (context.HttpContext.Items.ContainsKey("OnRedirectToAuthorizationEndpointRequest")
-                            && (bool) context.HttpContext.Items["OnRedirectToAuthorizationEndpointRequest"])
+                        OnRedirectToAuthorizationEndpoint = (context) =>
                         {
-                            context.HttpContext.Items["OnRedirectToAuthorizationEndpoint"] = context;
+                            if (context.HttpContext.Items.ContainsKey("OnRedirectToAuthorizationEndpointRequest")
+                                && (bool)context.HttpContext.Items["OnRedirectToAuthorizationEndpointRequest"])
+                            {
+                                context.HttpContext.Items["OnRedirectToAuthorizationEndpoint"] = context;
+                            }
+                            return Task.FromResult(0);
                         }
-                        return Task.FromResult(0);
-                    }
-                };
-
-            });
-
+                    };
+                    options.Scope.Add("email");
+                    options.Scope.Add("profile");
+                });
+            }
+            
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>
