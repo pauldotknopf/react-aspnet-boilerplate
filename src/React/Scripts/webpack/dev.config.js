@@ -27,8 +27,8 @@ module.exports = {
         { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint']},
         { test: /\.css$/, loader: 'css/locals?module' },
         { test: /\.scss$/, loader: 'css/locals?module!sass' },
-        { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'file' },
-        { test: /\.(jpeg|jpeg|gif|png|tiff)$/, loader: 'file' }
+        { test: /\.(woff2?|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' },
+        { test: /\.(jpeg|jpeg|gif|png|tiff)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' }
       ]
     },
     output: {
@@ -62,8 +62,8 @@ module.exports = {
         { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint']},
         { test: /\.css$/, loader: extractCSS.extract('style', 'css?modules') },
         { test: /\.scss$/, loader: extractCSS.extract('style', 'css?modules!sass') },
-        { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'file' },
-        { test: /\.(jpeg|jpeg|gif|png|tiff)$/, loader: 'file' }
+        { test: /\.(woff2?|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' },
+        { test: /\.(jpeg|jpeg|gif|png|tiff)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' }
       ]
     },
     output: {
