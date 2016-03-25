@@ -40,18 +40,49 @@ namespace React.Controllers.Api
         [HttpPost]
         public async Task<object> Register([FromBody]RegisterModel model)
         {
+            ExternalLoginInfo externalLoginInfo = null;
+            if (model.LinkExternalLogin)
+            {
+                externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
+                if (externalLoginInfo == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Unsuccessful login with service");
+                }
+                else
+                {
+                    var existingLogin = await _userManager.FindByLoginAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey);
+                    if (existingLogin != null)
+                    {
+                        ModelState.AddModelError(string.Empty, "An account is already associated with this login server.");
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                        "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+                    await _emailSender.SendEmailAsync(model.Email, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    // add the external login to the account
+                    if (externalLoginInfo != null)
+                    {
+                        var addLoginResult = await _userManager.AddLoginAsync(user, externalLoginInfo);
+                        if (!addLoginResult.Succeeded)
+                        {
+                            foreach (var error in addLoginResult.Errors)
+                            {
+                                // TODO: log
+                            }
+                        }
+                    }
+                   
+                    await _signInManager.SignInAsync(user, false);
                     return new
                     {
                         success = true,

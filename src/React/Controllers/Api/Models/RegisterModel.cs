@@ -22,5 +22,8 @@ namespace React.Controllers.Api.Models
         [JsonProperty("passwordConfirm")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string PasswordConfirm { get; set; }
+
+        [JsonProperty("linkExternalLogin")]
+        public bool LinkExternalLogin { get; set; }
     }
 }

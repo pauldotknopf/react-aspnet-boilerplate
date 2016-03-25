@@ -4,6 +4,8 @@ export const EXTERNALAUTHENTICATE_START = 'react/externalLogin/EXTERNALAUTHENTIC
 export const EXTERNALAUTHENTICATE_COMPLETE = 'react/externalLogin/EXTERNALAUTHENTICATE_COMPLETE';
 export const EXTERNALAUTHENTICATE_ERROR = 'react/externalLogin/EXTERNALAUTHENTICATE_ERROR';
 
+export const EXTERNALAUTHENTICATE_CLEAR = 'react/externalLogin/EXTERNALAUTHENTICATE_CLEAR';
+
 export const EXTERNALLOGIN_START = 'react/externalLogin/EXTERNALLOGIN_START';
 export const EXTERNALLOGIN_COMPLETE = 'react/externalLogin/EXTERNALLOGIN_COMPLETE';
 export const EXTERNALLOGIN_ERROR = 'react/externalLogin/EXTERNALLOGIN_ERROR';
@@ -13,11 +15,43 @@ export const EXTERNALLOGINREGISTER_COMPLETE = 'react/externalLogin/EXTERNALLOGIN
 export const EXTERNALLOGINREGISTER_ERROR = 'react/externalLogin/EXTERNALLOGINREGISTER_ERROR';
 
 const initialState = {
-  loginProviders: [] // it is up to the server to provide these values
+  loginProviders: [], // it is up to the server to provide these values
+  externalAuthenticated: false,
+  externalAuthenticatedProvider: null,
+  requiresTwoFactor: false,
+  lockedOut: false,
+  signedIn: false,
+  proposedEmail: '',
+  proposedUserName: ''
 };
 
-export default function reducer(state = initialState) {
-  return state;
+export default function reducer(state = initialState, action = {}) {
+  switch (action.type) {
+    case EXTERNALAUTHENTICATE_COMPLETE:
+      return {
+        ...state,
+        externalAuthenticated: action.result.externalAuthenticated,
+        externalAuthenticatedProvider: action.result.loginProvider,
+        requiresTwoFactor: action.result.requiresTwoFactor,
+        lockedOut: action.result.lockedOut,
+        signedIn: action.result.signedIn,
+        proposedEmail: action.result.proposedEmail,
+        proposedUserName: action.result.proposedUserName
+      };
+    case EXTERNALAUTHENTICATE_CLEAR:
+      return {
+        ...state,
+        externalAuthenticated: false,
+        externalAuthenticatedProvider: null,
+        requiresTwoFactor: false,
+        lockedOut: false,
+        signedIn: false,
+        proposedEmail: '',
+        proposedUserName: ''
+      };
+    default:
+      return state;
+  }
 }
 
 export function authenticate(provider) {
@@ -31,6 +65,12 @@ export function authenticate(provider) {
           reject({});
         });
     })
+  };
+}
+
+export function clearAuthentication() {
+  return {
+    type: EXTERNALAUTHENTICATE_CLEAR
   };
 }
 

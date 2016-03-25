@@ -127,6 +127,18 @@ namespace React.Controllers
                 // unable to authenticate with an external login
                 return Content(callbackTemplate(data), "text/html");
 
+            if (string.IsNullOrEmpty(info.ProviderDisplayName))
+            {
+                info.ProviderDisplayName =
+                    _signInManager.GetExternalAuthenticationSchemes()
+                        .SingleOrDefault(x => x.AuthenticationScheme.Equals(info.LoginProvider))?
+                        .DisplayName;
+                if (string.IsNullOrEmpty(info.ProviderDisplayName))
+                {
+                    info.ProviderDisplayName = info.LoginProvider;
+                }
+            }
+
             data.loginProvider = new
             {
                 scheme = info.LoginProvider,

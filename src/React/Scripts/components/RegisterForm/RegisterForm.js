@@ -3,15 +3,50 @@ import Form from 'components/Form';
 import { reduxForm } from 'redux-form';
 import { Input } from 'components';
 import { register } from 'redux/modules/account';
+import { clearAuthentication as clearExternalAuthentication } from 'redux/modules/externalLogin';
+import { Button, Col } from 'react-bootstrap';
+
+const bootstrapSocial = require('bootstrap-social');
+const fontAwesome = require('font-awesome/scss/font-awesome.scss');
 
 class RegisterForm extends Form {
+  modifyValues(values) {
+    return {
+      ...values,
+      linkExternalLogin: this.props.externalLogin.externalAuthenticated
+    };
+  }
+  onRemoveExternalAuthClick(action) {
+    return (event) => {
+      event.preventDefault();
+      action();
+    };
+  }
   render() {
     const {
-      fields: { userName, email, password, passwordConfirm }
+      fields: { userName, email, password, passwordConfirm },
+      externalLogin: { externalAuthenticated, externalAuthenticatedProvider }
     } = this.props;
+    console.log(fontAwesome);
     return (
       <form onSubmit={this.handleApiSubmit(register)} className="form-horizontal">
         {this.renderGlobalErrorList()}
+        {externalAuthenticated &&
+          <div className="form-group">
+            <Col md={2} />
+            <Col md={10}>
+              <Button className={bootstrapSocial['btn-google']}>
+                <span className={fontAwesome.fa + ' ' + fontAwesome['fa-google']}></span>
+                {' Registering with '}
+                {externalAuthenticatedProvider.displayName}
+              </Button>
+              {' '}
+              <Button onClick={this.onRemoveExternalAuthClick(this.props.clearExternalAuthentication)}>
+                Cancel
+              </Button>
+            </Col>
+          </div>
+        }
         <Input field={userName} label="User name" />
         <Input field={email} label="Email" />
         <Input field={password} type="password" label="Password" />
@@ -30,8 +65,11 @@ RegisterForm = reduxForm({
   form: 'register',
   fields: ['userName', 'email', 'password', 'passwordConfirm']
 },
-(state) => state,
-{ }
+(state) => ({
+  externalLogin: state.externalLogin,
+  initialValues: { userName: state.externalLogin.proposedUserName, email: state.externalLogin.proposedEmail }
+}),
+{ clearExternalAuthentication }
 )(RegisterForm);
 
 export default RegisterForm;

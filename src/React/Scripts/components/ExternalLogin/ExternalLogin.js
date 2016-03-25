@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { authenticate } from 'redux/modules/externalLogin';
+import { Button } from 'react-bootstrap';
+
+const bootstrapSocial = require('bootstrap-social');
+const fontAwesome = require('font-awesome/scss/font-awesome.scss');
 
 class ExternalLogin extends Component {
   constructor(props) {
@@ -21,10 +25,13 @@ class ExternalLogin extends Component {
       <p>
         {loginProviders.map((loginProvider, i) =>
           (
-            <a key={i} className="btn btn-default"
+            <Button key={i}
+              className={bootstrapSocial['btn-google']}
               onClick={this.loginClick(loginProvider.scheme)}>
+              <span className={fontAwesome.fa + ' ' + fontAwesome['fa-google']}></span>
+              {' ' + this.props.leadingText + ' '}
               {loginProvider.displayName}
-            </a>
+            </Button>
           )
         )}
       </p>
