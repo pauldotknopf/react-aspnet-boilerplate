@@ -1,4 +1,5 @@
 import promiseWindow from 'promise-window';
+import { LOGOFF_COMPLETE } from 'redux/modules/account';
 
 export const EXTERNALAUTHENTICATE_START = 'react/externalLogin/EXTERNALAUTHENTICATE_START';
 export const EXTERNALAUTHENTICATE_COMPLETE = 'react/externalLogin/EXTERNALAUTHENTICATE_COMPLETE';
@@ -39,6 +40,7 @@ export default function reducer(state = initialState, action = {}) {
         proposedUserName: action.result.proposedUserName
       };
     case EXTERNALAUTHENTICATE_CLEAR:
+    case LOGOFF_COMPLETE:
       return {
         ...state,
         externalAuthenticated: false,
