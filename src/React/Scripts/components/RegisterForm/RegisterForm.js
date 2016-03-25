@@ -27,7 +27,6 @@ class RegisterForm extends Form {
       fields: { userName, email, password, passwordConfirm },
       externalLogin: { externalAuthenticated, externalAuthenticatedProvider }
     } = this.props;
-    console.log(fontAwesome);
     return (
       <form onSubmit={this.handleApiSubmit(register)} className="form-horizontal">
         {this.renderGlobalErrorList()}
