@@ -1,5 +1,5 @@
 import { REGISTER_COMPLETE, LOGIN_COMPLETE, LOGOFF_COMPLETE } from './account';
-import { EXTERNALLOGINREGISTER_COMPLETE } from './externalLogin';
+import { EXTERNALLOGINREGISTER_COMPLETE, EXTERNALAUTHENTICATE_COMPLETE } from './externalLogin';
 
 const initialState = {
   loggedIn: false,
@@ -28,6 +28,15 @@ export default function reducer(state = initialState, action = {}) {
         user: null,
         loggedIn: false
       };
+    case EXTERNALAUTHENTICATE_COMPLETE:
+      if (action.result.signedIn) {
+        return {
+          ...state,
+          user: action.result.user,
+          loggedIn: true
+        };
+      }
+      return state;
     default:
       return state;
   }

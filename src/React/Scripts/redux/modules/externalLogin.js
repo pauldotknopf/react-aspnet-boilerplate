@@ -1,3 +1,9 @@
+import promiseWindow from 'promise-window';
+
+export const EXTERNALAUTHENTICATE_START = 'react/externalLogin/EXTERNALAUTHENTICATE_START';
+export const EXTERNALAUTHENTICATE_COMPLETE = 'react/externalLogin/EXTERNALAUTHENTICATE_COMPLETE';
+export const EXTERNALAUTHENTICATE_ERROR = 'react/externalLogin/EXTERNALAUTHENTICATE_ERROR';
+
 export const EXTERNALLOGIN_START = 'react/externalLogin/EXTERNALLOGIN_START';
 export const EXTERNALLOGIN_COMPLETE = 'react/externalLogin/EXTERNALLOGIN_COMPLETE';
 export const EXTERNALLOGIN_ERROR = 'react/externalLogin/EXTERNALLOGIN_ERROR';
@@ -12,6 +18,20 @@ const initialState = {
 
 export default function reducer(state = initialState) {
   return state;
+}
+
+export function authenticate(provider) {
+  return {
+    types: [EXTERNALAUTHENTICATE_START, EXTERNALAUTHENTICATE_COMPLETE, EXTERNALAUTHENTICATE_ERROR],
+    promise: () => new Promise((result, reject) => {
+      promiseWindow.open('/externalloginredirect?provider=' + provider)
+        .then((windowResult) => {
+          result(windowResult);
+        }, () => {
+          reject({});
+        });
+    })
+  };
 }
 
 export function externalLogin(body) {

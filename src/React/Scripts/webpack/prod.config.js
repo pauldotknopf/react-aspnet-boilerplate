@@ -18,7 +18,8 @@ module.exports = {
         'node_modules'
       ],
       alias: {
-        superagent: path.resolve(__dirname + "/../utils/superagent-server.js")
+        "superagent": path.resolve(__dirname + "/../utils/superagent-server.js"),
+        "promise-window": path.resolve(__dirname + "/../utils/promise-window-server.js")
       },
     },
     module: {

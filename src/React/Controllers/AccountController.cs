@@ -4,12 +4,16 @@ using Newtonsoft.Json;
 using React.Models;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authentication;
 using Microsoft.AspNet.Authentication.OAuth;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace React.Controllers
 {
@@ -20,7 +24,7 @@ namespace React.Controllers
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
-            :base(userManager, 
+            : base(userManager,
                  signInManager)
         {
             _userManager = userManager;
@@ -85,46 +89,92 @@ namespace React.Controllers
 
             return View("js-{auto}", state);
         }
-        
+
         [Route("externallogincallback")]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null)
+        public async Task<IActionResult> ExternalLoginCallback()
         {
+            var callbackTemplate = new Func<object, string>(x =>
+            {
+                var serializerSettings = HttpContext
+                   .RequestServices
+                   .GetRequiredService<IOptions<MvcJsonOptions>>()
+                   .Value
+                   .SerializerSettings;
+                var serialized = JsonConvert.SerializeObject(x, serializerSettings);
+                return
+                $@"<html lang=""en-us"">
+                    <head>
+                        <script type=""text/javascript"">
+                            opener.postMessage({serialized}, location.origin);
+                        </script>
+                    </head>
+                    <body></body>
+                </html>";
+            });
+
+            dynamic data = new ExpandoObject();
+            data.externalAuthenticated = false;
+            data.loginProvider = null;
+            data.user = null;
+            data.requiresTwoFactor = false;
+            data.lockedOut = false;
+            data.signedIn = false;
+            data.proposedEmail = "";
+            data.proposedUserName = "";
+
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
-                return Redirect("/login?returnUrl=" + WebUtility.UrlEncode(returnUrl));
+                // unable to authenticate with an external login
+                return Content(callbackTemplate(data), "text/html");
 
-            // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-            if (result.Succeeded)
+            data.loginProvider = new
             {
-                return RedirectToLocal(returnUrl);
-            }
-            if (result.RequiresTwoFactor)
-            {
-                // TODO
-                throw new NotImplementedException();
-            }
-            if (result.IsLockedOut)
-            {
-                // TODO
-                throw new NotImplementedException();
-            }
+                scheme = info.LoginProvider,
+                displayName = info.ProviderDisplayName
+            };
 
-            // If the user does not have an account, then ask the user to create an account.
+            data.externalAuthenticated = true;
 
+            // sign in the user with this external login provider if the user already has a login.
+            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            if (user != null)
+            {
+                data.user = Models.Api.User.From(user);
+
+                var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+
+                if (result.Succeeded)
+                {
+                    data.signedIn = true;
+                    return Content(callbackTemplate(data), "text/html");
+                }
+
+                data.signInError = true;
+
+                if (result.RequiresTwoFactor)
+                    data.requiresTwoFactor = true;
+                if (result.IsLockedOut)
+                    data.lockedOut = true;
+                
+                return Content(callbackTemplate(data), "text/html");
+            }
+            
             var email = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Email);
             var userName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Name);
             if (!string.IsNullOrEmpty(userName))
                 userName = userName.Replace(" ", "_");
 
-            var state = await BuildState();
-            state.temp = new
-            {
-                externalLoginEmail = email,
-                proposedUserName = userName
-            };
+            data.proposedEmail = email;
+            data.proposedUserName = userName;
 
-            return View("js-{auto}", state);
+            return Content(callbackTemplate(data), "text/html");
+        }
+
+        [Route("externalloginredirect")]
+        public IActionResult ExternalLoginRedirect(string provider)
+        {
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, "/externallogincallback");
+            return new ChallengeResult(provider, properties);
         }
     }
 }

@@ -214,32 +214,7 @@ namespace React.Controllers.Api
                 errors = GetModelState()
             };
         }
-
-        [Route("externallogin")]
-        [HttpPost]
-        public async Task<object> ExternalLogin([FromBody]ExternalLoginModel model)
-        {
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(model.Provider, "/externallogincallback?returnUrl=" + WebUtility.UrlEncode(model.ReturnUrl));
-
-            HttpContext.Items["OnRedirectToAuthorizationEndpointRequest"] = true;
-            await HttpContext.Authentication.ChallengeAsync(model.Provider, properties);
-
-            if (HttpContext.Items.ContainsKey("OnRedirectToAuthorizationEndpoint"))
-            {
-                var redirectContext = (OAuthRedirectToAuthorizationContext)HttpContext.Items["OnRedirectToAuthorizationEndpoint"];
-                return new
-                {
-                    success = true,
-                    redirectUri = redirectContext.RedirectUri
-                };
-            }
-
-            return new
-            {
-                success = false
-            };
-        }
-
+        
         [Route("externalloginregister")]
         [HttpPost]
         public async Task<object> ExternalLoginRegister([FromBody]ExternalLoginConfirmationModel model)

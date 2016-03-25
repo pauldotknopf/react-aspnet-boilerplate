@@ -25,6 +25,7 @@
     "gulp-uglify": "^1.5.3",
     "lodash": "^4.6.1",
     "node-sass": "^3.4.2",
+    "promise-window": "^1.0.0",
     "react": "^0.14.7",
     "react-bootstrap": "^0.28.3",
     "react-dom": "^0.14.7",

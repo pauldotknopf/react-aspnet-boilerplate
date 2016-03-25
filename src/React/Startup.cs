@@ -120,18 +120,6 @@ namespace React
                 {
                     options.ClientId = googleClientId;
                     options.ClientSecret = googleClientSecret;
-                    options.Events = new OAuthEvents
-                    {
-                        OnRedirectToAuthorizationEndpoint = (context) =>
-                        {
-                            if (context.HttpContext.Items.ContainsKey("OnRedirectToAuthorizationEndpointRequest")
-                                && (bool)context.HttpContext.Items["OnRedirectToAuthorizationEndpointRequest"])
-                            {
-                                context.HttpContext.Items["OnRedirectToAuthorizationEndpoint"] = context;
-                            }
-                            return Task.FromResult(0);
-                        }
-                    };
                     options.Scope.Add("email");
                     options.Scope.Add("profile");
                 });
