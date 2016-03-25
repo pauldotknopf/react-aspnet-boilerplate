@@ -124,7 +124,18 @@ namespace React
                     options.Scope.Add("profile");
                 });
             }
-            
+
+            var facebookAppId = Configuration["Authentication:Facebook:AppId"];
+            var facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            if (!string.IsNullOrEmpty(facebookAppId) && !string.IsNullOrEmpty(facebookAppSecret))
+            {
+                app.UseFacebookAuthentication(options =>
+                {
+                    options.AppId = facebookAppId;
+                    options.AppSecret = facebookAppSecret;
+                });
+            }
+
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>

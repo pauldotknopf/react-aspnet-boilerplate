@@ -34,8 +34,8 @@ class RegisterForm extends Form {
           <div className="form-group">
             <Col md={2} />
             <Col md={10}>
-              <Button className={bootstrapSocial['btn-google']}>
-                <span className={fontAwesome.fa + ' ' + fontAwesome['fa-google']}></span>
+              <Button className={bootstrapSocial['btn-social'] + ' ' + bootstrapSocial['btn-' + externalAuthenticatedProvider.scheme.toLowerCase()]}>
+                <span className={fontAwesome.fa + ' ' + fontAwesome['fa-' + externalAuthenticatedProvider.scheme.toLowerCase()]}></span>
                 {' Registering with '}
                 {externalAuthenticatedProvider.displayName}
               </Button>

@@ -26,9 +26,10 @@ class ExternalLogin extends Component {
         {loginProviders.map((loginProvider, i) =>
           (
             <Button key={i}
-              className={bootstrapSocial['btn-google']}
+              block
+              className={bootstrapSocial['btn-social'] + ' ' + bootstrapSocial['btn-' + loginProvider.scheme.toLowerCase()]}
               onClick={this.loginClick(loginProvider.scheme)}>
-              <span className={fontAwesome.fa + ' ' + fontAwesome['fa-google']}></span>
+              <span className={fontAwesome.fa + ' ' + fontAwesome['fa-' + loginProvider.scheme.toLowerCase()]}></span>
               {' ' + this.props.leadingText + ' '}
               {loginProvider.displayName}
             </Button>
