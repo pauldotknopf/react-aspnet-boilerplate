@@ -11,3 +11,4 @@ export ConfirmEmail from './ConfirmEmail/ConfirmEmail';
 export Manage from './Manage/Manage';
 export ManageIndex from './Manage/Index/Index';
 export ManageChangePassword from './Manage/ChangePassword/ChangePassword';
+export ManageLogins from './Manage/Logins/Logins';

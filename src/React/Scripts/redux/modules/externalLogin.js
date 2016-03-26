@@ -15,6 +15,27 @@ export const EXTERNALLOGINREGISTER_START = 'react/externalLogin/EXTERNALLOGINREG
 export const EXTERNALLOGINREGISTER_COMPLETE = 'react/externalLogin/EXTERNALLOGINREGISTER_COMPLETE';
 export const EXTERNALLOGINREGISTER_ERROR = 'react/externalLogin/EXTERNALLOGINREGISTER_ERROR';
 
+function popupWindowSize(provider) {
+  switch (provider.toLowerCase()) {
+    case 'facebook':
+      return { width: 580, height: 400 };
+    case 'google':
+      return { width: 452, height: 633 };
+    case 'github':
+      return { width: 1020, height: 618 };
+    case 'linkedin':
+      return { width: 527, height: 582 };
+    case 'twitter':
+      return { width: 495, height: 645 };
+    case 'live':
+      return { width: 500, height: 560 };
+    case 'yahoo':
+      return { width: 559, height: 519 };
+    default:
+      return { width: 1020, height: 618 };
+  }
+}
+
 const initialState = {
   loginProviders: [], // it is up to the server to provide these values
   externalAuthenticated: false,
@@ -60,7 +81,8 @@ export function authenticate(provider) {
   return {
     types: [EXTERNALAUTHENTICATE_START, EXTERNALAUTHENTICATE_COMPLETE, EXTERNALAUTHENTICATE_ERROR],
     promise: () => new Promise((result, reject) => {
-      promiseWindow.open('/externalloginredirect?provider=' + provider)
+      const windowSize = popupWindowSize(provider);
+      promiseWindow.open('/externalloginredirect?provider=' + provider, { ...windowSize })
         .then((windowResult) => {
           result(windowResult);
         }, () => {

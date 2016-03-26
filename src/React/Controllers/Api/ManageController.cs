@@ -6,6 +6,10 @@ using Microsoft.Data.Entity.Metadata.Internal;
 using React.Controllers.Api.Models;
 using React.Models;
 using React.Services;
+using React.State;
+using React.State.Manage;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace React.Controllers.Api
 {
@@ -53,6 +57,34 @@ namespace React.Controllers.Api
             {
                 success = false,
                 errors = GetModelState()
+            };
+        }
+
+        [Route("externallogins")]
+        public async Task<object> ExternalLogins()
+        {
+            var user = await GetCurrentUserAsync();
+            var userLogins = await _userManager.GetLoginsAsync(user);
+            foreach (var userLogin in userLogins)
+            {
+                if (string.IsNullOrEmpty(userLogin.ProviderDisplayName))
+                {
+                    userLogin.ProviderDisplayName =
+                    _signInManager.GetExternalAuthenticationSchemes()
+                        .SingleOrDefault(x => x.AuthenticationScheme.Equals(userLogin.LoginProvider))?
+                        .DisplayName;
+                    if (string.IsNullOrEmpty(userLogin.ProviderDisplayName))
+                    {
+                        userLogin.ProviderDisplayName = userLogin.LoginProvider;
+                    }
+                }
+            }
+            var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
+
+            return new ExternalLoginsState
+            {
+                CurrentLogins = userLogins.Select(x => new ExternalLoginsState.ExternalLogin {ProviderKey = x.ProviderKey, LoginProvider = x.LoginProvider, LoginProviderDisplayName = x.ProviderDisplayName}).ToList(),
+                OtherLogins = otherLogins.Select(x => new ExternalLoginState.ExternalLoginProvider {DisplayName = x.DisplayName, Scheme = x.AuthenticationScheme}).ToList()
             };
         }
     }

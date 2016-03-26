@@ -25,5 +25,11 @@ namespace React.Controllers
         {
             return View("js-{auto}", await BuildState());
         }
+
+        [Route("logins")]
+        public async Task<ActionResult> Logins()
+        {
+            return View("js-{auto}", await BuildState());
+        }
     }
 }
