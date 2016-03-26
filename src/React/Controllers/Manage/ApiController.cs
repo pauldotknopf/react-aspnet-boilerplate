@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
@@ -19,7 +20,7 @@ namespace React.Controllers.Manage
 
         public ApiController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
-            :base(userManager, signInManager)
+            : base(userManager, signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -77,7 +78,8 @@ namespace React.Controllers.Manage
                 return new
                 {
                     success = false,
-                    error = "Enable to authenticate with service."
+                    externalLogins = await GetExternalLoginsState(),
+                    errors = new List<string> { "Enable to authenticate with service." }
                 };
             }
             var result = await _userManager.AddLoginAsync(user, info);
@@ -94,7 +96,8 @@ namespace React.Controllers.Manage
             return new
             {
                 success = false,
-                error = result.Errors.Select(x => x.Description)
+                externalLogins = await GetExternalLoginsState(),
+                errors = result.Errors.Select(x => x.Description)
             };
         }
 

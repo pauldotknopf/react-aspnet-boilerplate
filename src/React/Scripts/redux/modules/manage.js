@@ -36,7 +36,8 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         externalLogins: {
           loading: false,
-          ...action.result.externalLogins
+          ...action.result.externalLogins,
+          errors: action.result.errors
         }
       };
     case LOADEXTERNALLOGINS_ERROR:

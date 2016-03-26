@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { loadExternalLogins, destroyExternalLogins, addExternalLogin, removeExternalLogin } from 'redux/modules/manage';
 import { authenticate as externalAuthenticate, clearAuthentication as clearExternalAuthentication } from 'redux/modules/externalLogin';
 import { Button } from 'react-bootstrap';
-import { ExternalLoginButton, Spinner } from 'components';
+import { ExternalLoginButton, Spinner, ErrorList } from 'components';
 
 class Logins extends Component {
   constructor(props) {
@@ -52,11 +52,13 @@ class Logins extends Component {
     }
     const {
       currentLogins,
-      otherLogins
+      otherLogins,
+      errors
     } = this.props.externalLogins;
     return (
       <div>
         <h2>Manage your external logins</h2>
+        <ErrorList errors={errors} />
         {(currentLogins.length > 0) &&
           <div>
             <h4>Current logins</h4>
