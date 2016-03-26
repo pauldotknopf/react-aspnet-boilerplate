@@ -1,11 +1,13 @@
 import promiseWindow from 'promise-window';
 import { LOGOFF_COMPLETE } from 'redux/modules/account';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 export const EXTERNALAUTHENTICATE_START = 'react/externalLogin/EXTERNALAUTHENTICATE_START';
 export const EXTERNALAUTHENTICATE_COMPLETE = 'react/externalLogin/EXTERNALAUTHENTICATE_COMPLETE';
 export const EXTERNALAUTHENTICATE_ERROR = 'react/externalLogin/EXTERNALAUTHENTICATE_ERROR';
 
 export const EXTERNALAUTHENTICATE_CLEAR = 'react/externalLogin/EXTERNALAUTHENTICATE_CLEAR';
+export const EXTERNALAUTHENTICATE_REHYDATE = 'react/externalLogin/EXTERNALAUTHENTICATE_REHYDATE';
 
 export const EXTERNALLOGIN_START = 'react/externalLogin/EXTERNALLOGIN_START';
 export const EXTERNALLOGIN_COMPLETE = 'react/externalLogin/EXTERNALLOGIN_COMPLETE';
@@ -49,6 +51,11 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case EXTERNALAUTHENTICATE_REHYDATE:
+      return {
+        ...state,
+        ...action.result
+      };
     case EXTERNALAUTHENTICATE_COMPLETE:
       return {
         ...state,
@@ -62,6 +69,7 @@ export default function reducer(state = initialState, action = {}) {
       };
     case EXTERNALAUTHENTICATE_CLEAR:
     case LOGOFF_COMPLETE:
+    case LOCATION_CHANGE: // when the user navigates to different pages, we want to clear the user's logged in provider.
       return {
         ...state,
         externalAuthenticated: false,
@@ -89,6 +97,13 @@ export function authenticate(provider) {
           reject({});
         });
     })
+  };
+}
+
+export function rehydrateLogin(login) {
+  return {
+    type: EXTERNALAUTHENTICATE_REHYDATE,
+    result: login
   };
 }
 

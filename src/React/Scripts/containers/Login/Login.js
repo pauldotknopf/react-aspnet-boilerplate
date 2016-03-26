@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
+import { rehydrateLogin } from 'redux/modules/externalLogin';
 
 class Login extends Component {
   componentWillReceiveProps(nextProps) {
@@ -19,11 +20,18 @@ class Login extends Component {
     // if the user was externally authenticated, but wasn't registered,
     // redirect the user to the register.
     if (!this.props.externalLogin.externalAuthenticated && nextProps.externalLogin.externalAuthenticated) {
+      let registerUrl = '/register';
       if (this.props.location.query.returnUrl) {
-        this.props.pushState('/register?returnUrl=' + this.props.location.query.returnUrl);
-      } else {
-        this.props.pushState('/register');
+        registerUrl += '?returnUrl=' + this.props.location.query.returnUrl;
       }
+      this.props.pushState(registerUrl);
+      // whenever we navigate to a new page, the external login info is cleared.
+      // however, when we navigate to the register page, we want to this info
+      // so that the register page can associte the external login to the new
+      // account.
+      // So, every the `pushState` call clears out `externalLogin`, we will
+      // need to put it back in
+      this.props.rehydrateLogin(nextProps.externalLogin);
       return;
     }
   }
@@ -53,5 +61,5 @@ class Login extends Component {
 
 export default connect(
 state => ({ user: state.auth.user, externalLogin: state.externalLogin }),
-{ pushState: push }
+{ pushState: push, rehydrateLogin }
 )(Login);
