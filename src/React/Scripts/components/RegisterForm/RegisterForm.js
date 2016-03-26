@@ -62,7 +62,7 @@ RegisterForm = reduxForm({
 },
 (state) => ({
   externalLogin: state.externalLogin,
-  initialValues: { userName: state.externalLogin.proposedUserName, email: state.externalLogin.proposedEmail }
+  initialValues: { userName: (state.externalLogin.proposedUserName ? state.externalLogin.proposedUserName : ''), email: (state.externalLogin.proposedEmail ? state.externalLogin.proposedEmail : '') }
 }),
 { clearExternalAuthentication }
 )(RegisterForm);
