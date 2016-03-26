@@ -1,13 +1,10 @@
 import React from 'react';
 import Form from 'components/Form';
 import { reduxForm } from 'redux-form';
-import { Input } from 'components';
+import { Input, ExternalLoginButton } from 'components';
 import { register } from 'redux/modules/account';
 import { clearAuthentication as clearExternalAuthentication } from 'redux/modules/externalLogin';
 import { Button, Col } from 'react-bootstrap';
-
-const bootstrapSocial = require('bootstrap-social');
-const fontAwesome = require('font-awesome/scss/font-awesome.scss');
 
 class RegisterForm extends Form {
   modifyValues(values) {
@@ -34,11 +31,10 @@ class RegisterForm extends Form {
           <div className="form-group">
             <Col md={2} />
             <Col md={10}>
-              <Button className={bootstrapSocial['btn-social'] + ' ' + bootstrapSocial['btn-' + externalAuthenticatedProvider.scheme.toLowerCase()]}>
-                <span className={fontAwesome.fa + ' ' + fontAwesome['fa-' + externalAuthenticatedProvider.scheme.toLowerCase()]}></span>
-                {' Registering with '}
-                {externalAuthenticatedProvider.displayName}
-              </Button>
+              <ExternalLoginButton
+                scheme={externalAuthenticatedProvider.scheme}
+                text={'Registering with ' + externalAuthenticatedProvider.displayName}
+                />
               {' '}
               <Button onClick={this.onRemoveExternalAuthClick(this.props.clearExternalAuthentication)}>
                 Cancel
