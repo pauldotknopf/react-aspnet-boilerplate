@@ -97,17 +97,3 @@ export function clearAuthentication() {
     type: EXTERNALAUTHENTICATE_CLEAR
   };
 }
-
-export function externalLogin(body) {
-  return {
-    types: [EXTERNALLOGIN_START, EXTERNALLOGIN_COMPLETE, EXTERNALLOGIN_ERROR],
-    promise: (client) => client.post('/api/account/externallogin', { data: body })
-  };
-}
-
-export function externalLoginRegister(body) {
-  return {
-    types: [EXTERNALLOGINREGISTER_START, EXTERNALLOGINREGISTER_COMPLETE, EXTERNALLOGINREGISTER_ERROR],
-    promise: (client) => client.post('/api/account/externalloginregister', { data: body })
-  };
-}

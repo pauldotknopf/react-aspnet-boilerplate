@@ -26,7 +26,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         externalLogins: {
           loading: false,
-          ...action.result
+          ...action.result.externalLogins
         }
       };
     case LOADEXTERNALLOGINS_ERROR:
@@ -34,7 +34,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         externalLogins: {
           loading: false,
-          ...action.result
+          ...action.result.externalLogins
         }
       };
     case EXTERNALLOGINS_DESTROY:

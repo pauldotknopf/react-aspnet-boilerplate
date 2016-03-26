@@ -10,6 +10,8 @@ using React.State;
 using React.State.Manage;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Security.Claims;
 
 namespace React.Controllers.Api
 {
@@ -63,28 +65,95 @@ namespace React.Controllers.Api
         [Route("externallogins")]
         public async Task<object> ExternalLogins()
         {
+            return new
+            {
+                success = true,
+                externalLogins = await GetExternalLoginsState()
+            };
+        }
+
+        [Route("addexternallogin")]
+        public async Task<object> AddExternalLogin()
+        {
+            var user = await GetCurrentUserAsync();
+            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
+            if (info == null)
+            {
+                return new
+                {
+                    success = false,
+                    error = "Enable to authenticate with service."
+                };
+            }
+            var result = await _userManager.AddLoginAsync(user, info);
+
+            if (result.Succeeded)
+            {
+                return new
+                {
+                    success = true,
+                    externalLogins = await GetExternalLoginsState()
+                };
+            }
+
+            return new
+            {
+                success = false,
+                error = result.Errors.Select(x => x.Description)
+            };
+        }
+
+        [Route("removeexternallogin")]
+        public async Task<object> RemoveExternalLogin([FromBody]RemoveExternalLoginModel model)
+        {
+            var user = await GetCurrentUserAsync();
+            var result = await _userManager.RemoveLoginAsync(user, model.LoginProvider, model.ProviderKey);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return new
+                {
+                    success = true,
+                    externalLogins = await GetExternalLoginsState()
+                };
+            }
+            return new
+            {
+                success = false,
+                error = result.Errors.Select(x => x.Description)
+            };
+        }
+
+        private async Task<ExternalLoginsState> GetExternalLoginsState()
+        {
             var user = await GetCurrentUserAsync();
             var userLogins = await _userManager.GetLoginsAsync(user);
-            foreach (var userLogin in userLogins)
+            foreach (var userLogin in userLogins.Where(userLogin => string.IsNullOrEmpty(userLogin.ProviderDisplayName)))
             {
-                if (string.IsNullOrEmpty(userLogin.ProviderDisplayName))
-                {
-                    userLogin.ProviderDisplayName =
+                userLogin.ProviderDisplayName =
                     _signInManager.GetExternalAuthenticationSchemes()
                         .SingleOrDefault(x => x.AuthenticationScheme.Equals(userLogin.LoginProvider))?
                         .DisplayName;
-                    if (string.IsNullOrEmpty(userLogin.ProviderDisplayName))
-                    {
-                        userLogin.ProviderDisplayName = userLogin.LoginProvider;
-                    }
+                if (string.IsNullOrEmpty(userLogin.ProviderDisplayName))
+                {
+                    userLogin.ProviderDisplayName = userLogin.LoginProvider;
                 }
             }
             var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
 
             return new ExternalLoginsState
             {
-                CurrentLogins = userLogins.Select(x => new ExternalLoginsState.ExternalLogin {ProviderKey = x.ProviderKey, LoginProvider = x.LoginProvider, LoginProviderDisplayName = x.ProviderDisplayName}).ToList(),
-                OtherLogins = otherLogins.Select(x => new ExternalLoginState.ExternalLoginProvider {DisplayName = x.DisplayName, Scheme = x.AuthenticationScheme}).ToList()
+                CurrentLogins = userLogins.Select(x => new ExternalLoginsState.ExternalLogin
+                {
+                    ProviderKey = x.ProviderKey,
+                    LoginProvider = x.LoginProvider,
+                    LoginProviderDisplayName = x.ProviderDisplayName
+                }).ToList(),
+                OtherLogins = otherLogins.Select(x => new ExternalLoginState.ExternalLoginProvider
+                {
+                    DisplayName = x.DisplayName,
+                    Scheme = x.AuthenticationScheme
+                }).ToList()
             };
         }
     }

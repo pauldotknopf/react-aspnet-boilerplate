@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadExternalLogins, destroyExternalLogins } from 'redux/modules/manage';
+import { authenticate } from 'redux/modules/externalLogin';
 import { Button } from 'react-bootstrap';
-import { ExternalLoginButton } from 'components';
+import { ExternalLoginButton, Spinner } from 'components';
 
 class Logins extends Component {
+  constructor(props) {
+    super(props);
+    this.addButtonClick = this.addButtonClick.bind(this);
+    this.removeButtonClick = this.removeButtonClick.bind(this);
+  }
   componentDidMount() {
     if (!this.props.externalLogins) {
       this.props.loadExternalLogins();
@@ -13,12 +19,23 @@ class Logins extends Component {
   componentWillUnmount() {
     this.props.destroyExternalLogins();
   }
+  addButtonClick(scheme) {
+    return (event) => {
+      event.preventDefault();
+      this.props.authenticate(scheme);
+    };
+  }
+  removeButtonClick() {
+    return (event) => {
+      event.preventDefault();
+    };
+  }
   render() {
     if (!this.props.externalLogins) {
-      return null;
+      return (<Spinner />);
     }
     if (this.props.externalLogins.loading) {
-      return null;
+      return (<Spinner />);
     }
     const {
       currentLogins,
@@ -36,7 +53,7 @@ class Logins extends Component {
                 (
                   <tr key={i}>
                     <td>
-                      <Button>
+                      <Button onClick={this.removeButtonClick(currentLogin.loginProvider)}>
                         Remove
                       </Button>
                       {' '}
@@ -56,17 +73,17 @@ class Logins extends Component {
             <h4>Add another service to log in.</h4>
             <table className="table">
               <tbody>
-              {otherLogins.map((otherLogins, i) =>
+              {otherLogins.map((otherLogin, i) =>
                 (
                   <tr key={i}>
                     <td>
-                      <Button>
+                      <Button onClick={this.addButtonClick(otherLogin.scheme)}>
                         Add
                       </Button>
                       {' '}
                       <ExternalLoginButton key={i}
-                        scheme={otherLogins.scheme}
-                        text={otherLogins.displayName} />
+                        scheme={otherLogin.scheme}
+                        text={otherLogin.displayName} />
                     </td>
                   </tr>
                 )
@@ -82,5 +99,5 @@ class Logins extends Component {
 
 export default connect(
 state => ({ externalLogins: state.manage.externalLogins }),
-{ loadExternalLogins, destroyExternalLogins }
+{ loadExternalLogins, destroyExternalLogins, authenticate }
 )(Logins);
