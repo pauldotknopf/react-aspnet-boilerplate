@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet5-React-afb513d0-df9f-4e22-90c0-a9573328282a",
   "version": "1.0.0-*",
   "compilationOptions": {
@@ -26,7 +26,9 @@
     "EntityFramework.Commands": "7.0.0-rc1-final",
     "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
     "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
-    "Microsoft.AspNet.Identity": "3.0.0-rc1-final"
+    "Microsoft.AspNet.Identity": "3.0.0-rc1-final",
+    "Microsoft.AspNet.Authentication.Google": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Authentication.Facebook": "1.0.0-rc1-final"
   },
 
   "commands": {

@@ -1,11 +1,9 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNet.Mvc;
-using System.Threading.Tasks;
-using React.Models.Api;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
 using React.Models;
 
-namespace React.Controllers
+namespace React.Controllers.Home
 {
     public class HomeController : BaseController
     {

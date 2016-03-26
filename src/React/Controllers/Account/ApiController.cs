@@ -1,27 +1,25 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Extensions.OptionsModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-using React.Models;
-using React.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
-using React.Controllers.Api.Models;
+using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
+using React.Controllers.Account.Models;
+using React.Models;
+using React.Services;
 
-namespace React.Controllers.Api
+namespace React.Controllers.Account
 {
     [Route("api/account")]
-    public class AccountController : BaseApiController
+    public class ApiController : BaseController
     {
         UserManager<ApplicationUser> _userManager;
         SignInManager<ApplicationUser> _signInManager;
         IEmailSender _emailSender;
 
-        public AccountController(UserManager<ApplicationUser> userManager,
+        public ApiController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
             :base(userManager, signInManager)
@@ -35,18 +33,49 @@ namespace React.Controllers.Api
         [HttpPost]
         public async Task<object> Register([FromBody]RegisterModel model)
         {
+            ExternalLoginInfo externalLoginInfo = null;
+            if (model.LinkExternalLogin)
+            {
+                externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
+                if (externalLoginInfo == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Unsuccessful login with service");
+                }
+                else
+                {
+                    var existingLogin = await _userManager.FindByLoginAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey);
+                    if (existingLogin != null)
+                    {
+                        ModelState.AddModelError(string.Empty, "An account is already associated with this login server.");
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                        "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+                    await _emailSender.SendEmailAsync(model.Email, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    // add the external login to the account
+                    if (externalLoginInfo != null)
+                    {
+                        var addLoginResult = await _userManager.AddLoginAsync(user, externalLoginInfo);
+                        if (!addLoginResult.Succeeded)
+                        {
+                            foreach (var error in addLoginResult.Errors)
+                            {
+                                // TODO: log
+                            }
+                        }
+                    }
+
+                    await _signInManager.SignInAsync(user, false);
                     return new
                     {
                         success = true,
@@ -72,7 +101,7 @@ namespace React.Controllers.Api
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
-                if(user == null)
+                if (user == null)
                 {
                     ModelState.AddModelError("UserName", "No user found with the given user name.");
                     return new
@@ -149,7 +178,7 @@ namespace React.Controllers.Api
                         success = true
                     };
                 }
-                
+
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",

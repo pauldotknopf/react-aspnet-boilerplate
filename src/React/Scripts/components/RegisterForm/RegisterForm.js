@@ -1,17 +1,47 @@
 import React from 'react';
 import Form from 'components/Form';
 import { reduxForm } from 'redux-form';
-import { Input } from 'components';
+import { Input, ExternalLoginButton } from 'components';
 import { register } from 'redux/modules/account';
+import { clearAuthentication as clearExternalAuthentication } from 'redux/modules/externalLogin';
+import { Button, Col } from 'react-bootstrap';
 
 class RegisterForm extends Form {
+  modifyValues(values) {
+    return {
+      ...values,
+      linkExternalLogin: this.props.externalLogin.externalAuthenticated
+    };
+  }
+  onRemoveExternalAuthClick(action) {
+    return (event) => {
+      event.preventDefault();
+      action();
+    };
+  }
   render() {
     const {
-      fields: { userName, email, password, passwordConfirm }
+      fields: { userName, email, password, passwordConfirm },
+      externalLogin: { externalAuthenticated, externalAuthenticatedProvider }
     } = this.props;
     return (
       <form onSubmit={this.handleApiSubmit(register)} className="form-horizontal">
         {this.renderGlobalErrorList()}
+        {externalAuthenticated &&
+          <div className="form-group">
+            <Col md={2} />
+            <Col md={10}>
+              <ExternalLoginButton
+                scheme={externalAuthenticatedProvider.scheme}
+                text={'Registering with ' + externalAuthenticatedProvider.displayName}
+                />
+              {' '}
+              <Button onClick={this.onRemoveExternalAuthClick(this.props.clearExternalAuthentication)}>
+                Cancel
+              </Button>
+            </Col>
+          </div>
+        }
         <Input field={userName} label="User name" />
         <Input field={email} label="Email" />
         <Input field={password} type="password" label="Password" />
@@ -30,8 +60,11 @@ RegisterForm = reduxForm({
   form: 'register',
   fields: ['userName', 'email', 'password', 'passwordConfirm']
 },
-(state) => state,
-{ }
+(state) => ({
+  externalLogin: state.externalLogin,
+  initialValues: { userName: (state.externalLogin.proposedUserName ? state.externalLogin.proposedUserName : ''), email: (state.externalLogin.proposedEmail ? state.externalLogin.proposedEmail : '') }
+}),
+{ clearExternalAuthentication }
 )(RegisterForm);
 
 export default RegisterForm;

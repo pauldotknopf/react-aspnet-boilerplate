@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace React.Controllers.Api.Models
+namespace React.Controllers.Account.Models
 {
     public class LoginModel
     {

@@ -15,6 +15,9 @@ class Manage extends Component {
             <IndexLinkContainer to="/manage/changepassword">
               <NavItem>Change password</NavItem>
             </IndexLinkContainer>
+            <IndexLinkContainer to="/manage/logins">
+              <NavItem>Manage logins</NavItem>
+            </IndexLinkContainer>
           </Nav>
         </Col>
         <Col xs={12} md={8}>
