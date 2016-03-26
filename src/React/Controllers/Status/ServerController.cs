@@ -1,13 +1,22 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
+using React.Models;
+using System.Threading.Tasks;
 
 namespace React.Controllers.Status
 {
-    public class StatusController : Controller
+    public class StatusController : BaseController
     {
-        [Route("status/status/{statusCode}")]
-        public IActionResult Status(int statusCode)
+        public StatusController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
+            :base(userManager, signInManager)
         {
-            return View($"js-/statuscode{statusCode}");
+        }
+
+        [Route("status/status/{statusCode}")]
+        public async Task<IActionResult> Status(int statusCode)
+        {
+            return View($"js-/statuscode{statusCode}", await BuildState());
         }
     }
 }
