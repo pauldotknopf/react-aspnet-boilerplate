@@ -58,10 +58,7 @@ namespace React.Controllers.Account
 
             if (userId == null || code == null)
             {
-                state.temp = new
-                {
-                    confirmEmailSuccess = false
-                };
+                ViewBag.confirmEmailSuccess = false;
                 return View("js-{auto}", state);
             }
 
@@ -69,19 +66,13 @@ namespace React.Controllers.Account
 
             if (user == null)
             {
-                state.temp = new
-                {
-                    confirmEmailSuccess = false
-                };
+                ViewBag.confirmEmailSuccess = false;
                 return View("js-{auto}", state);
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
 
-            state.temp = new
-            {
-                confirmEmailSuccess = result.Succeeded
-            };
+            ViewBag.confirmEmailSuccess = result.Succeeded;
 
             return View("js-{auto}", state);
         }

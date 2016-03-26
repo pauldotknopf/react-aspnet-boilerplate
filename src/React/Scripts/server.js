@@ -7,8 +7,9 @@ import createHistory from 'react-router/lib/createMemoryHistory';
 import RouterContext from 'react-router/lib/RouterContext';
 import configureStore from './redux/configureStore';
 import { Provider } from 'react-redux';
+import isEmpty from 'utils/isEmpty';
 
-export function RenderView(path, model) {
+export function RenderView(path, model, viewBag) {
   const history = createHistory(path);
   const store = configureStore(model, history);
   const result = {
@@ -33,6 +34,9 @@ export function RenderView(path, model) {
               <RouterContext {...renderProps} />
             </Provider>
           );
+        if (!isEmpty(viewBag)) {
+          store.dispatch({ type: '_HYDRATE_VIEWBAG', viewBag });
+        }
         result.html = ReactDOM.renderToString(<Html component={component} store={store} />);
       } else {
         result.status = 404;
@@ -44,4 +48,3 @@ export function RenderView(path, model) {
 export function RenderPartialView() {
   return 'TODO';
 }
-

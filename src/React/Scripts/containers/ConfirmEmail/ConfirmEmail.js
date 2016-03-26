@@ -30,6 +30,6 @@ class ConfirmEmail extends Component {
 }
 
 export default connect(
-(state) => ({ success: state.temp.confirmEmailSuccess }),
+(state) => ({ success: state.viewBag.confirmEmailSuccess }),
 { }
 )(ConfirmEmail);

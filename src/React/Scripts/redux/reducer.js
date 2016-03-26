@@ -4,11 +4,8 @@ import auth from './modules/auth';
 import account from './modules/account';
 import externalLogin from './modules/externalLogin';
 import manage from './modules/manage';
+import viewBag from './modules/viewBag';
 import { routerReducer } from 'react-router-redux';
-
-function tempReducer(state = {}) {
-  return state;
-}
 
 export default combineReducers({
   form: formReducer,
@@ -17,5 +14,5 @@ export default combineReducers({
   account,
   externalLogin,
   manage,
-  temp: tempReducer
+  viewBag
 });

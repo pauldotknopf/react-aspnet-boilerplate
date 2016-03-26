@@ -15,7 +15,5 @@ namespace React.State
 
         [JsonProperty("externalLogin")]
         public ExternalLoginState ExternalLogin { get; set; }
-
-        public object temp { get; set; }
     }
 }
