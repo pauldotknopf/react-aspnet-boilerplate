@@ -1,32 +1,25 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Extensions.OptionsModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-using React.Models;
-using React.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Security.Claims;
+using System.Security.Policy;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication.OAuth;
-using Microsoft.AspNet.Http.Authentication;
-using Microsoft.AspNet.Http.Features.Authentication;
-using React.Controllers.Api.Models;
+using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
+using React.Controllers.Account.Models;
+using React.Models;
+using React.Services;
 
-namespace React.Controllers.Api
+namespace React.Controllers.Account
 {
     [Route("api/account")]
-    public class AccountController : BaseApiController
+    public class ApiController : BaseController
     {
         UserManager<ApplicationUser> _userManager;
         SignInManager<ApplicationUser> _signInManager;
         IEmailSender _emailSender;
 
-        public AccountController(UserManager<ApplicationUser> userManager,
+        public ApiController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
             :base(userManager, signInManager)
@@ -62,7 +55,7 @@ namespace React.Controllers.Api
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                
+
                 if (result.Succeeded)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -81,7 +74,7 @@ namespace React.Controllers.Api
                             }
                         }
                     }
-                   
+
                     await _signInManager.SignInAsync(user, false);
                     return new
                     {
@@ -108,7 +101,7 @@ namespace React.Controllers.Api
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
-                if(user == null)
+                if (user == null)
                 {
                     ModelState.AddModelError("UserName", "No user found with the given user name.");
                     return new
@@ -185,7 +178,7 @@ namespace React.Controllers.Api
                         success = true
                     };
                 }
-                
+
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",

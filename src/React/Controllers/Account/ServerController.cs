@@ -1,28 +1,24 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
-using Newtonsoft.Json;
-using React.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Net;
-using System.Runtime.Remoting.Messaging;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Authentication.OAuth;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.OptionsModel;
+using Newtonsoft.Json;
+using React.Models;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace React.Controllers
+namespace React.Controllers.Account
 {
-    public class AccountController : BaseController
+    public class ServerController : BaseController
     {
         UserManager<ApplicationUser> _userManager;
         SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager,
+        public ServerController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
             : base(userManager,
                  signInManager)
@@ -161,7 +157,7 @@ namespace React.Controllers
                 var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
                 if (user != null)
                 {
-                    data.user = Models.Api.User.From(user);
+                    data.user = React.Models.Api.User.From(user);
 
                     var result =
                         await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);

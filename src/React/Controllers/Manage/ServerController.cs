@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using React.Models;
-using System.Threading.Tasks;
 
-namespace React.Controllers
+namespace React.Controllers.Manage
 {
     [Route("manage")]
-    public class ManageController : BaseController
+    public class ServerController : BaseController
     {
-        public ManageController(UserManager<ApplicationUser> userManager,
+        public ServerController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
             :base(userManager, 
                  signInManager)

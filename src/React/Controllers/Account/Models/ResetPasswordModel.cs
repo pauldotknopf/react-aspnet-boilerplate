@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace React.Controllers.Api.Models
+namespace React.Controllers.Account.Models
 {
     public class ResetPasswordModel
     {

@@ -1,28 +1,23 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
-using Microsoft.Data.Entity.Metadata.Internal;
-using React.Controllers.Api.Models;
+using Microsoft.AspNet.Mvc;
+using React.Controllers.Manage.Models;
 using React.Models;
-using React.Services;
 using React.State;
 using React.State.Manage;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Security.Claims;
 
-namespace React.Controllers.Api
+namespace React.Controllers.Manage
 {
     [Authorize]
     [Route("api/manage")]
-    public class ManageController : BaseApiController
+    public class ApiController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public ManageController(UserManager<ApplicationUser> userManager,
+        public ApiController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
             :base(userManager, signInManager)
         {
