@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadExternalLogins, destroyExternalLogins } from 'redux/modules/manage';
-import { authenticate } from 'redux/modules/externalLogin';
+import { loadExternalLogins, destroyExternalLogins, addExternalLogin, removeExternalLogin } from 'redux/modules/manage';
+import { authenticate as externalAuthenticate, clearAuthentication as clearExternalAuthentication } from 'redux/modules/externalLogin';
 import { Button } from 'react-bootstrap';
 import { ExternalLoginButton, Spinner } from 'components';
 
@@ -16,18 +16,31 @@ class Logins extends Component {
       this.props.loadExternalLogins();
     }
   }
+  componentWillReceiveProps() {
+  }
   componentWillUnmount() {
     this.props.destroyExternalLogins();
   }
   addButtonClick(scheme) {
     return (event) => {
       event.preventDefault();
-      this.props.authenticate(scheme);
+      this.props.externalAuthenticate(scheme, false /* don't auto sign-in */)
+        .then((result) => {
+          this.props.clearExternalAuthentication();
+          if (result.externalAuthenticated) {
+            // the user succesfully authenticated with the service.
+            // add the login to this account.
+            this.props.addExternalLogin();
+          }
+        }, () => {
+          this.props.clearExternalAuthentication();
+        });
     };
   }
-  removeButtonClick() {
+  removeButtonClick(scheme) {
     return (event) => {
       event.preventDefault();
+      this.props.removeExternalLogin(scheme);
     };
   }
   render() {
@@ -53,7 +66,7 @@ class Logins extends Component {
                 (
                   <tr key={i}>
                     <td>
-                      <Button onClick={this.removeButtonClick(currentLogin.loginProvider)}>
+                      <Button onClick={this.removeButtonClick(currentLogin)}>
                         Remove
                       </Button>
                       {' '}
@@ -99,5 +112,5 @@ class Logins extends Component {
 
 export default connect(
 state => ({ externalLogins: state.manage.externalLogins }),
-{ loadExternalLogins, destroyExternalLogins, authenticate }
+{ loadExternalLogins, destroyExternalLogins, externalAuthenticate, clearExternalAuthentication, addExternalLogin, removeExternalLogin }
 )(Logins);

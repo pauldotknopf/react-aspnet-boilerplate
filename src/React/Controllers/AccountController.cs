@@ -91,7 +91,7 @@ namespace React.Controllers
         }
 
         [Route("externallogincallback")]
-        public async Task<IActionResult> ExternalLoginCallback()
+        public async Task<IActionResult> ExternalLoginCallback(bool autoLogin = true)
         {
             var callbackTemplate = new Func<object, string>(x =>
             {
@@ -147,30 +147,6 @@ namespace React.Controllers
 
             data.externalAuthenticated = true;
 
-            // sign in the user with this external login provider if the user already has a login.
-            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-            if (user != null)
-            {
-                data.user = Models.Api.User.From(user);
-
-                var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-
-                if (result.Succeeded)
-                {
-                    data.signedIn = true;
-                    return Content(callbackTemplate(data), "text/html");
-                }
-
-                data.signInError = true;
-
-                if (result.RequiresTwoFactor)
-                    data.requiresTwoFactor = true;
-                if (result.IsLockedOut)
-                    data.lockedOut = true;
-                
-                return Content(callbackTemplate(data), "text/html");
-            }
-            
             var email = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Email);
             var userName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Name);
             if (!string.IsNullOrEmpty(userName))
@@ -179,13 +155,41 @@ namespace React.Controllers
             data.proposedEmail = email;
             data.proposedUserName = userName;
 
+            // sign in the user with this external login provider if the user already has a login.
+            if (autoLogin)
+            {
+                var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                if (user != null)
+                {
+                    data.user = Models.Api.User.From(user);
+
+                    var result =
+                        await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+
+                    if (result.Succeeded)
+                    {
+                        data.signedIn = true;
+                        return Content(callbackTemplate(data), "text/html");
+                    }
+
+                    data.signInError = true;
+
+                    if (result.RequiresTwoFactor)
+                        data.requiresTwoFactor = true;
+                    if (result.IsLockedOut)
+                        data.lockedOut = true;
+
+                    return Content(callbackTemplate(data), "text/html");
+                }
+            }
+
             return Content(callbackTemplate(data), "text/html");
         }
 
         [Route("externalloginredirect")]
-        public IActionResult ExternalLoginRedirect(string provider)
+        public IActionResult ExternalLoginRedirect(string provider, bool autoLogin = true)
         {
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, "/externallogincallback");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, "/externallogincallback?autoLogin=" + autoLogin);
             return new ChallengeResult(provider, properties);
         }
     }

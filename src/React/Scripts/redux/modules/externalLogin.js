@@ -85,12 +85,12 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export function authenticate(provider) {
+export function authenticate(provider, autoLogin = true) {
   return {
     types: [EXTERNALAUTHENTICATE_START, EXTERNALAUTHENTICATE_COMPLETE, EXTERNALAUTHENTICATE_ERROR],
     promise: () => new Promise((result, reject) => {
       const windowSize = popupWindowSize(provider);
-      promiseWindow.open('/externalloginredirect?provider=' + provider, { ...windowSize })
+      promiseWindow.open('/externalloginredirect?provider=' + provider + '&autoLogin=' + autoLogin, { ...windowSize })
         .then((windowResult) => {
           result(windowResult);
         }, () => {

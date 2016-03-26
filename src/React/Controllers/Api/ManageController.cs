@@ -76,7 +76,7 @@ namespace React.Controllers.Api
         public async Task<object> AddExternalLogin()
         {
             var user = await GetCurrentUserAsync();
-            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
+            var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 return new
