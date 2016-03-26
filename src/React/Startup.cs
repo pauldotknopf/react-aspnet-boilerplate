@@ -1,21 +1,14 @@
 ﻿using System;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNet.Mvc;
 using JavaScriptViewEngine;
 using React.Services;
 using JavaScriptViewEngine.Pool;
 using System.IO;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication.OAuth;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Extensions.WebEncoders;
-using React.Models;
 
 namespace React
 {
@@ -61,18 +54,6 @@ namespace React
                 };
                 options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
             });
-
-            // Add framework services.
-            services.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddSingleton<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,18 +71,6 @@ namespace React
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-
-                // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
-                try
-                {
-                    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                        .CreateScope())
-                    {
-                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
-                             .Database.Migrate();
-                    }
-                }
-                catch { }
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
@@ -109,33 +78,7 @@ namespace React
             app.UseStatusCodePagesWithReExecute("/Status/Status/{0}");
 
             app.UseStaticFiles();
-
-            app.UseIdentity();
-
-            var googleClientId = Configuration.Get<string>("Authentication:Google:ClientId");
-            var googleClientSecret = Configuration.Get<string>("Authentication:Google:ClientSecret");
-            if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
-            {
-                app.UseGoogleAuthentication(options =>
-                {
-                    options.ClientId = googleClientId;
-                    options.ClientSecret = googleClientSecret;
-                    options.Scope.Add("email");
-                    options.Scope.Add("profile");
-                });
-            }
-
-            var facebookAppId = Configuration["Authentication:Facebook:AppId"];
-            var facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            if (!string.IsNullOrEmpty(facebookAppId) && !string.IsNullOrEmpty(facebookAppSecret))
-            {
-                app.UseFacebookAuthentication(options =>
-                {
-                    options.AppId = facebookAppId;
-                    options.AppSecret = facebookAppSecret;
-                });
-            }
-
+            
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>
