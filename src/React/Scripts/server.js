@@ -35,6 +35,9 @@ export function RenderView(path, model, viewBag) {
             </Provider>
           );
         if (!isEmpty(viewBag)) {
+          // If the server provided anyhting in ASP.NET's ViewBag, hydrate it to the store/state.
+          // The contents can be accessed on the client via `state.viewBag`. It exist for the initial
+          // page load only, and will be cleared when navigating to another page on the client.
           store.dispatch({ type: '_HYDRATE_VIEWBAG', viewBag });
         }
         result.html = ReactDOM.renderToString(<Html component={component} store={store} />);

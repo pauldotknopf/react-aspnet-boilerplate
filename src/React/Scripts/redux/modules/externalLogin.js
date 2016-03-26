@@ -67,9 +67,10 @@ export default function reducer(state = initialState, action = {}) {
         proposedEmail: action.result.proposedEmail,
         proposedUserName: action.result.proposedUserName
       };
-    case EXTERNALAUTHENTICATE_CLEAR:
-    case LOGOFF_COMPLETE:
+    case EXTERNALAUTHENTICATE_CLEAR: // when some requests to clear any previously stored external authentications
+    case LOGOFF_COMPLETE: // when a user logs off
     case LOCATION_CHANGE: // when the user navigates to different pages, we want to clear the user's logged in provider.
+      // let's clear out the any previously stored external authentications that were done on the client.
       return {
         ...state,
         externalAuthenticated: false,
