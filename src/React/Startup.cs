@@ -136,6 +136,83 @@ namespace React
                 });
             }
 
+            // To authenticate with an instance of IdentityServer4, use the following client.
+            // ---------------------------------- 
+            // new Client
+            // {
+            //     ClientId = "client",
+            //     ClientSecrets = new List<Secret>
+            //     {
+            //         new Secret("secret".Sha256())
+            //     },
+
+            //     Flow = Flows.AuthorizationCode,
+
+            //     RedirectUris = new List<string> { "http://localhost:5000/signin-idsvr" },
+
+            //     AllowedScopes = new List<string>
+            //     {
+            //         StandardScopes.OpenId.Name,
+            //         StandardScopes.Profile.Name,
+            //         StandardScopes.Email.Name
+            //     }
+            // }
+            // ----------------------------------
+            // Make sure IdentityServer is listening locally on port 5001.
+            // Then, uncomment the following.
+            //app.UseOAuthAuthentication(options =>
+            //{
+            //    options.DisplayName = "Identity Server";
+            //    options.CallbackPath = new PathString("/signin-idsvr");
+            //    options.AuthenticationScheme = "idsvr";
+            //    options.ClientSecret = "secret";
+            //    options.ClientId = "client";
+            //    options.AuthorizationEndpoint = "http://localhost:5001/connect/authorize";
+            //    options.TokenEndpoint = "http://localhost:5001/connect/token";
+            //    options.UserInformationEndpoint = "http://localhost:5001/connect/userinfo";
+            //    options.Scope.Add("openid");
+            //    options.Scope.Add("profile");
+            //    options.Scope.Add("email");
+            //    options.Events = new OAuthEvents
+            //    {
+            //        OnCreatingTicket = async context =>
+            //        {
+            //            var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+            //            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+            //            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //            var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
+            //            response.EnsureSuccessStatusCode();
+
+            //            var user = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+            //            var id = user.Value<string>("sub");
+            //            if (!string.IsNullOrEmpty(id))
+            //            {
+            //                context.Identity.AddClaim(new Claim(
+            //                    ClaimTypes.NameIdentifier, id,
+            //                    ClaimValueTypes.String, context.Options.ClaimsIssuer));
+            //            }
+
+            //            var name = user.Value<string>("name");
+            //            if (!string.IsNullOrEmpty(name))
+            //            {
+            //                context.Identity.AddClaim(new Claim(
+            //                    ClaimTypes.Name, name,
+            //                    ClaimValueTypes.String, context.Options.ClaimsIssuer));
+            //            }
+
+            //            var email = user.Value<string>("email");
+            //            if (!string.IsNullOrEmpty(email))
+            //            {
+            //                context.Identity.AddClaim(new Claim(
+            //                    ClaimTypes.Email, email,
+            //                    ClaimValueTypes.String, context.Options.ClaimsIssuer));
+            //            }
+            //        }
+            //    };
+            //});
+
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>
