@@ -5,7 +5,6 @@ console.log('isProduction=' + isProduction);
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var named = require('vinyl-named');
 var extend = require('lodash').extend;
 var webpack = require('webpack');
 var webpackConfig = {
