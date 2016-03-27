@@ -4,9 +4,7 @@ namespace React.State
 {
     public class GlobalState
     {
-        public GlobalState()
-        {
-
-        }
+        [JsonProperty("people")]
+        public PeopleState People { get; set; }
     }
 }

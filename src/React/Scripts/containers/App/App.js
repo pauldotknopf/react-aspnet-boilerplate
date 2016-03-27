@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import config from '../../config';
 import { IndexLink } from 'react-router';
-import { IndexLinkContainer } from 'react-router-bootstrap';
+import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
@@ -32,6 +32,9 @@ class App extends Component {
               <IndexLinkContainer to="/">
                 <NavItem>Home</NavItem>
               </IndexLinkContainer>
+              <LinkContainer to="/people">
+                <NavItem>People</NavItem>
+              </LinkContainer>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
