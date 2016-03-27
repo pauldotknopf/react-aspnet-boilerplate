@@ -41,7 +41,7 @@ There isn't really a "New Project" template for this. For now, download this rep
 
 - [client.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/client.js) and [server.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/server.js) - The entry point for the client-side/server-side applications.
 - [Html.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/helpers/Html.js) and [App.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/containers/App/App.js) - These files essentially represent the "React" version of MVC Razor's "_Layout.cshtml".
-- [HomeController.cs](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Controllers/HomeController.cs) - The endpoints for a each full GET request.
+- [Controllers](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master/src/React/Controllers) - The endpoints for a each initial GET request, and each client-side network request.
 
 ## What is next?
 
