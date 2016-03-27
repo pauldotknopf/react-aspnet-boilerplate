@@ -31,6 +31,10 @@ To checkout this demo...
 > dnx web
 ```
 
+Some of the branches in this repo that are maintained:
+* [```master```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master) - This is the main branch. It has all the stuff required to get you started, including membership, external logins (OAuth) and account management.
+* [```empty-template```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/empty-template) - This branch for people that want an empty template with the absolute minimum recommend boilerplate for any ASP.NET React application.
+
 There isn't really a "New Project" template for this. For now, download this repository and use it as your starting point. Then change your .sln and project names as you like.
 
 ## The interesting parts
