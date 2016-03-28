@@ -23,7 +23,7 @@ export default function reducer(state = {}, action = {}) {
         error: 'An error occured loading people. This error is thrown randomly for demo purposes.'
       };
     default:
-      if(!state) return {}; // we want to always have at least an empty object
+      if (!state) return {}; // we want to always have at least an empty object
       return state;
   }
 }
