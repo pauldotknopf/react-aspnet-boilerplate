@@ -16,16 +16,28 @@ using Microsoft.AspNet.Authentication.OAuth;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Extensions.WebEncoders;
 using React.Models;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
+using IdentityModel;
+using IdentityServer4.Core.Configuration;
+using IdentityServer4.Core.Models;
+using IdentityServer4.Core.Resources;
+using IdentityServer4.Core.Services.InMemory;
+using Microsoft.AspNet.Identity;
+using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace React
 {
     public class Startup
     {
         IHostingEnvironment _env;
+        IApplicationEnvironment _appEnv;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)
         {
             _env = env;
+            _appEnv = appEnv;
 
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
@@ -49,7 +61,64 @@ namespace React
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            var cert = new X509Certificate2(Path.Combine(_appEnv.ApplicationBasePath, "idsrv3test.pfx"), "idsrv3test");
+
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.SigningCertificate = cert;
+                // important, tells IdentityServer to use authentication from ASP.NET Identity
+                options.AuthenticationOptions.PrimaryAuthenticationScheme = new IdentityOptions().Cookies.ApplicationCookie.AuthenticationScheme;
+            });
+            builder.AddInMemoryClients(new List<Client>
+            {
+                new Client
+                {
+                    ClientId = "client",
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    Flow = Flows.AuthorizationCode,
+
+                    RedirectUris = new List<string> { "http://localhost:5000/signin-idsvr" },
+
+                    AllowedScopes = new List<string>
+                    {
+                        StandardScopes.OpenId.Name,
+                        StandardScopes.Profile.Name,
+                        StandardScopes.Email.Name
+                    }
+                }
+            });
+            builder.AddInMemoryScopes(new List<Scope>
+            {
+                StandardScopes.OpenId,
+                StandardScopes.ProfileAlwaysInclude,
+                StandardScopes.EmailAlwaysInclude
+            });
+            builder.AddInMemoryUsers(new List<InMemoryUser>
+            {
+                new InMemoryUser{Subject = "0a7ee81f-289f-4fd4-be64-6f4f199329eb", Username = "alice", Password = "alice",
+                    Claims = new[]
+                    {
+                        new Claim(JwtClaimTypes.Name, "Alice Smith"),
+                        new Claim(JwtClaimTypes.GivenName, "Alice"),
+                        new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                        new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
+                        new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                        new Claim(JwtClaimTypes.Role, "Admin"),
+                        new Claim(JwtClaimTypes.Role, "Geek"),
+                        new Claim(JwtClaimTypes.WebSite, "http://alice.com")
+                    }
+                }
+            });
+
+            services.AddMvc()
+                 .AddRazorOptions(razor =>
+                 {
+                     razor.ViewLocationExpanders.Add(new UI.CustomViewLocationExpander());
+                 });
 
             services.AddJsEngine<ReactEnvironmentInitializer>();
             services.Configure<JsPoolOptions>(options =>
@@ -68,9 +137,10 @@ namespace React
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory>();
+services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
             services.AddSingleton<IEmailSender, EmailSender>();
         }
@@ -80,7 +150,7 @@ namespace React
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -107,10 +177,12 @@ namespace React
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
             app.UseStatusCodePagesWithReExecute("/Status/Status/{0}");
-
+            
             app.UseStaticFiles();
 
             app.UseIdentity();
+
+            app.UseIdentityServer();
 
             var googleClientId = Configuration.Get<string>("Authentication:Google:ClientId");
             var googleClientSecret = Configuration.Get<string>("Authentication:Google:ClientSecret");
@@ -222,7 +294,8 @@ namespace React
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.Use((context, next) => {
+            app.Use((context, next) =>
+            {
                 context.Response.StatusCode = 404;
                 return next();
             });
