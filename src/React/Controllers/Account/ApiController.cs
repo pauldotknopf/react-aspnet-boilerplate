@@ -18,15 +18,19 @@ namespace React.Controllers.Account
         UserManager<ApplicationUser> _userManager;
         SignInManager<ApplicationUser> _signInManager;
         IEmailSender _emailSender;
+        private readonly ISmsSender _smsSender;
 
         public ApiController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ISmsSender smsSender
+            )
             :base(userManager, signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _smsSender = smsSender;
         }
 
         [Route("register")]
@@ -122,8 +126,13 @@ namespace React.Controllers.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    // maybe later?
-                    throw new NotSupportedException();
+                    var userFactors = _userManager.GetValidTwoFactorProvidersAsync(user);
+                    return new
+                    {
+                        success = false,
+                        requiresTwoFactor = true,
+                        userFactors
+                    };
                 }
                 if (result.IsLockedOut)
                 {
@@ -134,15 +143,13 @@ namespace React.Controllers.Account
                         errors = GetModelState()
                     };
                 }
-                else
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return new
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return new
-                    {
-                        success = false,
-                        errors = GetModelState()
-                    };
-                }
+                    success = false,
+                    errors = GetModelState()
+                };
             }
 
             return new
@@ -231,6 +238,100 @@ namespace React.Controllers.Account
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
+
+            return new
+            {
+                success = false,
+                errors = GetModelState()
+            };
+        }
+
+        [Route("sendcode")]
+        [HttpPost]
+        public async Task<object> SendCode(SendCodeModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new
+                {
+                    success = false,
+                    errors = GetModelState()
+                };
+            }
+
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid user.");
+                return new
+                {
+                    success = false,
+                    errors = GetModelState()
+                };
+            }
+
+            var code = await _userManager.GenerateTwoFactorTokenAsync(user, model.Provider);
+            if (string.IsNullOrEmpty(code))
+            {
+                ModelState.AddModelError(string.Empty, "Unknown error.");
+                return new
+                {
+                    success = false,
+                    errors = GetModelState()
+                };
+            }
+
+            var message = "Your security code is: " + code;
+            if (model.Provider == "Email")
+            {
+                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
+            }
+            else if (model.Provider == "Phone")
+            {
+                await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
+            }
+
+            return new
+            {
+                success = true
+            };
+        }
+
+        [Route("verifycode")]
+        public async Task<object> VerifyCode(VerifyCodeModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new
+                {
+                    success = false,
+                    errors = GetModelState()
+                };
+            }
+
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid user.");
+                return new
+                {
+                    success = false,
+                    errors = GetModelState()
+                };
+            }
+
+            var result = await _signInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
+
+            if (result.Succeeded)
+            {
+                return new
+                {
+                    success = true,
+                    user = React.Models.Api.User.From(user)
+                };
+            }
+
+            ModelState.AddModelError(string.Empty, result.IsLockedOut ? "User account locked out." : "Invalid code.");
 
             return new
             {
