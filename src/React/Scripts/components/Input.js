@@ -7,7 +7,8 @@ class Input extends Component {
     field: PropTypes.object.isRequired,
     type: React.PropTypes.oneOf([
       'password',
-      'text'
+      'text',
+      'option'
     ]),
   };
   renderErrorList(errors) {
@@ -38,6 +39,23 @@ class Input extends Component {
       />
     );
   }
+  renderOption() {
+    const {
+      options
+    } = this.props;
+    return (
+      <select type={this.props.type}
+        className="form-control"
+        placeholder={this.props.label}
+        {...this.props.field}>
+        {options.map((option, i) =>
+          (
+            <option key={i} value={option.value}>{option.display}</option>
+          )
+        )}
+      </select>
+    );
+  }
   render() {
     let hasError = false;
     let errors;
@@ -56,11 +74,23 @@ class Input extends Component {
       'form-group': true,
       'has-error': hasError,
     });
+    let input;
+    switch (this.props.type) {
+      case 'password':
+      case 'text':
+        input = this.renderInput();
+        break;
+      case 'option':
+        input = this.renderOption();
+        break;
+      default:
+        throw new Error('unknown type');
+    }
     return (
       <div className={rowClass}>
         <label className="col-md-2 control-label">{this.props.label}</label>
         <div className="col-md-10">
-          {this.renderInput()}
+          {input}
           {this.renderErrorList(errors)}
         </div>
       </div>
