@@ -9,14 +9,6 @@ export const EXTERNALAUTHENTICATE_ERROR = 'react/externalLogin/EXTERNALAUTHENTIC
 export const EXTERNALAUTHENTICATE_CLEAR = 'react/externalLogin/EXTERNALAUTHENTICATE_CLEAR';
 export const EXTERNALAUTHENTICATE_REHYDATE = 'react/externalLogin/EXTERNALAUTHENTICATE_REHYDATE';
 
-export const EXTERNALLOGIN_START = 'react/externalLogin/EXTERNALLOGIN_START';
-export const EXTERNALLOGIN_COMPLETE = 'react/externalLogin/EXTERNALLOGIN_COMPLETE';
-export const EXTERNALLOGIN_ERROR = 'react/externalLogin/EXTERNALLOGIN_ERROR';
-
-export const EXTERNALLOGINREGISTER_START = 'react/externalLogin/EXTERNALLOGINREGISTER_START';
-export const EXTERNALLOGINREGISTER_COMPLETE = 'react/externalLogin/EXTERNALLOGINREGISTER_COMPLETE';
-export const EXTERNALLOGINREGISTER_ERROR = 'react/externalLogin/EXTERNALLOGINREGISTER_ERROR';
-
 function popupWindowSize(provider) {
   switch (provider.toLowerCase()) {
     case 'facebook':
@@ -45,6 +37,7 @@ const initialState = {
   requiresTwoFactor: false,
   lockedOut: false,
   signedIn: false,
+  signInError: false,
   proposedEmail: '',
   proposedUserName: ''
 };
@@ -64,6 +57,7 @@ export default function reducer(state = initialState, action = {}) {
         requiresTwoFactor: action.result.requiresTwoFactor,
         lockedOut: action.result.lockedOut,
         signedIn: action.result.signedIn,
+        signInError: action.result.signInError,
         proposedEmail: action.result.proposedEmail,
         proposedUserName: action.result.proposedUserName
       };
@@ -78,6 +72,7 @@ export default function reducer(state = initialState, action = {}) {
         requiresTwoFactor: false,
         lockedOut: false,
         signedIn: false,
+        signInError: false,
         proposedEmail: '',
         proposedUserName: ''
       };

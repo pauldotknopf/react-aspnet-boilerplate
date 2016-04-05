@@ -20,6 +20,13 @@ class Login extends Component {
     // if the user was externally authenticated, but wasn't registered,
     // redirect the user to the register.
     if (!this.props.externalLogin.externalAuthenticated && nextProps.externalLogin.externalAuthenticated) {
+      if (nextProps.externalLogin.signInError) {
+        // The user requires two-factor login or is locked out.
+        // This means the user is already registered, so no need
+        // to redirect to register page.
+        return;
+      }
+
       let registerUrl = '/register';
       if (this.props.location.query.returnUrl) {
         registerUrl += '?returnUrl=' + this.props.location.query.returnUrl;

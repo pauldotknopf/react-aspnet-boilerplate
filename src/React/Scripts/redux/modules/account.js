@@ -28,6 +28,8 @@ export const VERIFYCODE_ERROR = 'react/account/VERIFYCODE_ERROR';
 
 export const LOGINSTATE_RESET = 'react/account/LOGINSTATE_RESET';
 
+import { EXTERNALAUTHENTICATE_COMPLETE } from 'redux/modules/externalLogin';
+
 const initialState = {
   sentCode: false,
   sentCodeWithProvider: null,
@@ -51,6 +53,15 @@ export default function reducer(state = initialState, action = {}) {
         sentCode: action.result.success,
         sentCodeWithProvider: action.result.provider
       };
+    case EXTERNALAUTHENTICATE_COMPLETE:
+      if (action.result.requiresTwoFactor) {
+        return {
+          ...state,
+          userFactors: action.result.userFactors,
+          requiresTwoFactor: true
+        };
+      }
+      return state;
     default:
       return state;
   }

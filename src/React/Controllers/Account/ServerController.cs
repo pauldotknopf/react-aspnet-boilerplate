@@ -106,6 +106,7 @@ namespace React.Controllers.Account
             data.requiresTwoFactor = false;
             data.lockedOut = false;
             data.signedIn = false;
+            data.signInError = false;
             data.proposedEmail = "";
             data.proposedUserName = "";
 
@@ -162,7 +163,10 @@ namespace React.Controllers.Account
                     data.signInError = true;
 
                     if (result.RequiresTwoFactor)
+                    {
                         data.requiresTwoFactor = true;
+                        data.userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
+                    }
                     if (result.IsLockedOut)
                         data.lockedOut = true;
 
