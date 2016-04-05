@@ -45,13 +45,13 @@ namespace React.Controllers.Account
             return View("js-{auto}", await BuildState());
         }
 
-        [Route("resetpassword")]
+        [Route("resetpassword", Name="resetpassword")]
         public async Task<IActionResult> ResetPassword()
         {
             return View("js-{auto}", await BuildState());
         }
 
-        [Route("confirmemail")]
+        [Route("confirmemail", Name="confirmemail")]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
             var state = await BuildState();
