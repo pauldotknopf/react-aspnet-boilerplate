@@ -28,7 +28,7 @@ namespace React.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Could not initialize the React server-side environment.", ex);
+                _logger.LogError("Could not initialize the React server-side environment." + Environment.NewLine + ex.Message);
             }
         }
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { LoginForm, ExternalLogin } from 'components';
+import { LoginFlow, ExternalLogin } from 'components';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
@@ -42,7 +42,7 @@ class Login extends Component {
           <h2>Login</h2>
           <h4>Use a local account to log in.</h4>
           <hr />
-          <LoginForm />
+          <LoginFlow />
           <p>
             <Link to="/register">Register as a new user?</Link>
           </p>

@@ -1,4 +1,4 @@
-import { REGISTER_COMPLETE, LOGIN_COMPLETE, LOGOFF_COMPLETE } from './account';
+import { REGISTER_COMPLETE, LOGIN_COMPLETE, LOGOFF_COMPLETE, VERIFYCODE_COMPLETE } from './account';
 import { EXTERNALAUTHENTICATE_COMPLETE } from './externalLogin';
 
 const initialState = {
@@ -29,6 +29,15 @@ export default function reducer(state = initialState, action = {}) {
       };
     case EXTERNALAUTHENTICATE_COMPLETE:
       if (action.result.signedIn) {
+        return {
+          ...state,
+          user: action.result.user,
+          loggedIn: true
+        };
+      }
+      return state;
+    case VERIFYCODE_COMPLETE:
+      if (action.result.success) {
         return {
           ...state,
           user: action.result.user,

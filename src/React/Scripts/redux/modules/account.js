@@ -18,11 +18,42 @@ export const RESETPASSWORD_START = 'react/account/RESETPASSWORD_START';
 export const RESETPASSWORD_COMPLETE = 'react/account/RESETPASSWORD_COMPLETE';
 export const RESETPASSWORD_ERROR = 'react/account/RESETPASSWORD_ERROR';
 
+export const SENDCODE_START = 'react/account/SENDCODE_START';
+export const SENDCODE_COMPLETE = 'react/account/SENDCODE_COMPLETE';
+export const SENDCODE_ERROR = 'react/account/SENDCODE_ERROR';
+
+export const VERIFYCODE_START = 'react/account/VERIFYCODE_START';
+export const VERIFYCODE_COMPLETE = 'react/account/VERIFYCODE_COMPLETE';
+export const VERIFYCODE_ERROR = 'react/account/VERIFYCODE_ERROR';
+
+export const LOGINSTATE_RESET = 'react/account/LOGINSTATE_RESET';
+
 const initialState = {
+  sentCode: false,
+  sentCodeWithProvider: null,
+  userFactors: null,
+  requiresTwoFactor: false
 };
 
-export default function reducer(state = initialState) {
-  return state;
+export default function reducer(state = initialState, action = {}) {
+  switch (action.type) {
+    case LOGINSTATE_RESET:
+      return initialState;
+    case LOGIN_COMPLETE:
+      return {
+        ...state,
+        userFactors: action.result.userFactors,
+        requiresTwoFactor: action.result.requiresTwoFactor
+      };
+    case SENDCODE_COMPLETE:
+      return {
+        ...state,
+        sentCode: action.result.success,
+        sentCodeWithProvider: action.result.provider
+      };
+    default:
+      return state;
+  }
 }
 
 export function register(body) {
@@ -57,5 +88,25 @@ export function resetPassword(body) {
   return {
     types: [RESETPASSWORD_START, RESETPASSWORD_COMPLETE, RESETPASSWORD_ERROR],
     promise: (client) => client.post('/api/account/resetpassword', { data: body })
+  };
+}
+
+export function sendCode(body) {
+  return {
+    types: [SENDCODE_START, SENDCODE_COMPLETE, SENDCODE_ERROR],
+    promise: (client) => client.post('/api/account/sendcode', { data: body })
+  };
+}
+
+export function verifyCode(body) {
+  return {
+    types: [VERIFYCODE_START, VERIFYCODE_COMPLETE, VERIFYCODE_ERROR],
+    promise: (client) => client.post('/api/account/verifycode', { data: body })
+  };
+}
+
+export function resetLoginState() {
+  return {
+    type: LOGINSTATE_RESET
   };
 }

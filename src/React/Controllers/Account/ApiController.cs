@@ -126,7 +126,7 @@ namespace React.Controllers.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    var userFactors = _userManager.GetValidTwoFactorProvidersAsync(user);
+                    var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
                     return new
                     {
                         success = false,
@@ -248,7 +248,7 @@ namespace React.Controllers.Account
 
         [Route("sendcode")]
         [HttpPost]
-        public async Task<object> SendCode(SendCodeModel model)
+        public async Task<object> SendCode([FromBody]SendCodeModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -293,12 +293,13 @@ namespace React.Controllers.Account
 
             return new
             {
+                provider = model.Provider,
                 success = true
             };
         }
 
         [Route("verifycode")]
-        public async Task<object> VerifyCode(VerifyCodeModel model)
+        public async Task<object> VerifyCode([FromBody]VerifyCodeModel model)
         {
             if (!ModelState.IsValid)
             {
