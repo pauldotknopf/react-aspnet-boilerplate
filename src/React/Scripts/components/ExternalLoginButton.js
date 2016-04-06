@@ -10,6 +10,6 @@ export default (props) =>
       {...props}
       className={bootstrapSocial['btn-social'] + ' ' + bootstrapSocial['btn-' + props.scheme.toLowerCase()]}>
       <span className={fontAwesome.fa + ' ' + fontAwesome['fa-' + props.scheme.toLowerCase()]}></span>
-      {' ' + props.text}
+      {props.text}
     </Button>
   );

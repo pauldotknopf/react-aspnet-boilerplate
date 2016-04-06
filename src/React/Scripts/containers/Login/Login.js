@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { LoginFlow, ExternalLogin } from 'components';
+import { LoginFlow } from 'components';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
-import { Row, Col } from 'react-bootstrap';
 import { rehydrateLogin } from 'redux/modules/externalLogin';
 
 class Login extends Component {
@@ -44,24 +43,17 @@ class Login extends Component {
   }
   render() {
     return (
-      <Row>
-        <Col md={8}>
-          <h2>Login</h2>
-          <h4>Use a local account to log in.</h4>
-          <hr />
-          <LoginFlow />
-          <p>
-            <Link to="/register">Register as a new user?</Link>
-          </p>
-          <p>
-            <Link to="/forgotpassword">Forgot your password?</Link>
-          </p>
-        </Col>
-        <Col md={4}>
-          <h4>Use another service to log in.</h4>
-          <ExternalLogin leadingText="Login with" />
-        </Col>
-      </Row>
+      <div>
+        <h2>Login</h2>
+        <hr />
+        <LoginFlow />
+        <p>
+          <Link to="/register">Register as a new user?</Link>
+        </p>
+        <p>
+          <Link to="/forgotpassword">Forgot your password?</Link>
+        </p>
+      </div>
     );
   }
 }

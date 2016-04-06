@@ -22,11 +22,13 @@ class ExternalLogin extends Component {
       <p>
         {loginProviders.map((loginProvider, i) =>
           (
-            <ExternalLoginButton key={i}
-              block
-              onClick={this.loginClick(loginProvider.scheme)}
-              scheme={loginProvider.scheme}
-              text={this.props.leadingText + ' ' + loginProvider.displayName} />
+            <span key={i}>
+              <ExternalLoginButton
+                onClick={this.loginClick(loginProvider.scheme)}
+                scheme={loginProvider.scheme}
+                text={(this.props.leadingText ? (this.props.leadingText + ' ') : '') + loginProvider.displayName} />
+              {' '}
+            </span>
           )
         )}
       </p>

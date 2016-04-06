@@ -149,14 +149,13 @@ namespace React.Controllers.Account
                 var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
                 if (user != null)
                 {
-                    data.user = React.Models.Api.User.From(user);
-
                     var result =
                         await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
 
                     if (result.Succeeded)
                     {
                         data.signedIn = true;
+                        data.user = React.Models.Api.User.From(user);
                         return Content(callbackTemplate(data), "text/html");
                     }
 

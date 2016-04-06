@@ -28,7 +28,10 @@ SendCodeForm = reduxForm({
   form: 'sendCode',
   fields: ['provider']
 },
-(state) => ({ userFactors: state.account.userFactors }),
+(state) => ({
+  userFactors: state.account.userFactors,
+  initialValues: { provider: (state.account.userFactors.length > 0 ? state.account.userFactors[0] : '') }
+}),
 { }
 )(SendCodeForm);
 

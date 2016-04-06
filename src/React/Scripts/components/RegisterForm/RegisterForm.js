@@ -1,10 +1,10 @@
 import React from 'react';
 import Form from 'components/Form';
 import { reduxForm } from 'redux-form';
-import { Input, ExternalLoginButton } from 'components';
+import { Input, ExternalLoginButton, ExternalLogin } from 'components';
 import { register } from 'redux/modules/account';
 import { clearAuthentication as clearExternalAuthentication } from 'redux/modules/externalLogin';
-import { Button, Col } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 
 class RegisterForm extends Form {
   modifyValues(values) {
@@ -22,7 +22,7 @@ class RegisterForm extends Form {
   render() {
     const {
       fields: { userName, email, password, passwordConfirm },
-      externalLogin: { externalAuthenticated, externalAuthenticatedProvider }
+      externalLogin: { externalAuthenticated, externalAuthenticatedProvider, loginProviders }
     } = this.props;
     return (
       <form onSubmit={this.handleApiSubmit(register)} className="form-horizontal">
@@ -41,6 +41,15 @@ class RegisterForm extends Form {
               </Button>
             </Col>
           </div>
+        }
+        {(!externalAuthenticated && loginProviders.length > 0) &&
+          <Row>
+            <Col md={2} />
+            <Col md={10}>
+              <ExternalLogin />
+              <p>Or...</p>
+            </Col>
+          </Row>
         }
         <Input field={userName} label="User name" />
         <Input field={email} label="Email" />
