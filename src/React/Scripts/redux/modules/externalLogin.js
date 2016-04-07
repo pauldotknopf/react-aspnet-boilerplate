@@ -34,9 +34,6 @@ const initialState = {
   loginProviders: [], // it is up to the server to provide these values
   externalAuthenticated: false,
   externalAuthenticatedProvider: null,
-  requiresTwoFactor: false,
-  lockedOut: false,
-  signedIn: false,
   signInError: false,
   proposedEmail: '',
   proposedUserName: ''
@@ -62,9 +59,6 @@ export default function reducer(state = initialState, action = {}) {
           ...state,
           externalAuthenticated: false,
           externalAuthenticatedProvider: null,
-          requiresTwoFactor: false,
-          lockedOut: false,
-          signedIn: false,
           signInError: false,
           proposedEmail: '',
           proposedUserName: ''
@@ -74,9 +68,6 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         externalAuthenticated: action.result.externalAuthenticated,
         externalAuthenticatedProvider: action.result.loginProvider,
-        requiresTwoFactor: action.result.requiresTwoFactor,
-        lockedOut: action.result.lockedOut,
-        signedIn: action.result.signedIn,
         signInError: action.result.signInError,
         proposedEmail: action.result.proposedEmail,
         proposedUserName: action.result.proposedUserName
@@ -90,9 +81,6 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         externalAuthenticated: false,
         externalAuthenticatedProvider: null,
-        requiresTwoFactor: false,
-        lockedOut: false,
-        signedIn: false,
         signInError: false,
         proposedEmail: '',
         proposedUserName: ''
