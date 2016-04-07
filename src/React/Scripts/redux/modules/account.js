@@ -62,6 +62,11 @@ export default function reducer(state = initialState, action = {}) {
         };
       }
       return state;
+    case VERIFYCODE_COMPLETE:
+      if (action.result.success) {
+        return initialState; // we logged the user in, reset all the two-factor stuff
+      }
+      return state;
     default:
       return state;
   }

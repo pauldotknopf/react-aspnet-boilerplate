@@ -1,4 +1,4 @@
-export LoginFlow from './LoginFlow/LoginFlow';
+export LoginForm from './LoginForm/LoginForm';
 export RegisterForm from './RegisterForm/RegisterForm';
 export ForgotPasswordForm from './ForgotPasswordForm/ForgotPasswordForm';
 export ResetPasswordForm from './ResetPasswordForm/ResetPasswordForm';
@@ -8,6 +8,7 @@ export ExternalLogin from './ExternalLogin/ExternalLogin';
 export ExternalLoginButton from './ExternalLoginButton';
 export Spinner from './Spinner';
 export ErrorList from './ErrorList';
+export TwoFactor from './TwoFactor/TwoFactor';
 // There is a bug in babel. When exporting types that will be inherited,
 // you must import them directly from the component. You can't proxy
 // them like this index.js does.

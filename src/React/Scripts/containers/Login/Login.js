@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { LoginFlow } from 'components';
+import { LoginForm } from 'components';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
@@ -46,7 +46,7 @@ class Login extends Component {
       <div>
         <h2>Login</h2>
         <hr />
-        <LoginFlow />
+        <LoginForm />
         <p>
           <Link to="/register">Register as a new user?</Link>
         </p>

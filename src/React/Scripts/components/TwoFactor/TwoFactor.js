@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import LoginForm from './LoginForm';
 import SendCodeForm from './SendCodeForm';
 import VerifyCodeForm from './VerifyCodeForm';
 import { resetLoginState } from 'redux/modules/account';
 
-class LoginFlow extends Component {
+class TwoFactor extends Component {
   componentWillUnmount() {
     this.props.resetLoginState();
   }
@@ -25,7 +24,7 @@ class LoginFlow extends Component {
     }
     return (
       <div>
-        <LoginForm />
+        sdf
       </div>
     );
   }
@@ -34,4 +33,4 @@ class LoginFlow extends Component {
 export default connect(
   (state) => ({ account: state.account }),
   { resetLoginState }
-)(LoginFlow);
+)(TwoFactor);
