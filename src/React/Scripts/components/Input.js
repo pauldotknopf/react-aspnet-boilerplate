@@ -8,7 +8,8 @@ class Input extends Component {
     type: React.PropTypes.oneOf([
       'password',
       'text',
-      'option'
+      'option',
+      'checkbox'
     ]),
   };
   renderErrorList(errors) {
@@ -33,6 +34,7 @@ class Input extends Component {
   renderInput() {
     return (
       <input type={this.props.type}
+        id={this.props.field.name}
         className="form-control"
         placeholder={this.props.label}
         {...this.props.field}
@@ -45,6 +47,7 @@ class Input extends Component {
     } = this.props;
     return (
       <select type={this.props.type}
+        id={this.props.field.name}
         className="form-control"
         placeholder={this.props.label}
         {...this.props.field}>
@@ -54,6 +57,14 @@ class Input extends Component {
           )
         )}
       </select>
+    );
+  }
+  renderCheckBox() {
+    return (
+      <div className="checkbox">
+        <input id={this.props.field.name} type="checkbox" {...this.props.field} />
+        <label htmlFor={this.props.field.name}>{this.props.label}</label>
+      </div>
     );
   }
   render() {
@@ -83,13 +94,18 @@ class Input extends Component {
       case 'option':
         input = this.renderOption();
         break;
+      case 'checkbox':
+        input = this.renderCheckBox();
+        break;
       default:
         throw new Error('unknown type');
     }
     return (
       <div className={rowClass}>
-        <label className="col-md-2 control-label">{this.props.label}</label>
-        <div className="col-md-10">
+        {(this.props.type !== 'checkbox') &&
+          <label className="col-md-2 control-label" htmlFor={this.props.field.name}>{this.props.label}</label>
+        }
+        <div className={(this.props.type === 'checkbox' ? 'col-md-offset-2 ' : '') + 'col-md-10'}>
           {input}
           {this.renderErrorList(errors)}
         </div>
