@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Nav, NavItem } from 'react-bootstrap';
-import { IndexLinkContainer } from 'react-router-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class Manage extends Component {
   static propTypes = {
@@ -12,12 +12,15 @@ class Manage extends Component {
       <Row style={{ marginTop: 20 }}>
         <Col xs={12} md={4}>
           <Nav bsStyle="pills" stacked>
-            <IndexLinkContainer to="/manage/changepassword">
+            <LinkContainer to="/manage/security">
+              <NavItem>Security</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/manage/changepassword">
               <NavItem>Change password</NavItem>
-            </IndexLinkContainer>
-            <IndexLinkContainer to="/manage/logins">
+            </LinkContainer>
+            <LinkContainer to="/manage/logins">
               <NavItem>Manage logins</NavItem>
-            </IndexLinkContainer>
+            </LinkContainer>
           </Nav>
         </Col>
         <Col xs={12} md={8}>
