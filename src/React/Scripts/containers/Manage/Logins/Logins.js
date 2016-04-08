@@ -12,7 +12,7 @@ class Logins extends Component {
     this.removeButtonClick = this.removeButtonClick.bind(this);
   }
   componentDidMount() {
-    if (!this.props.externalLogins) {
+    if (!this.props.externalLogins.currentLogins) {
       this.props.loadExternalLogins();
     }
   }
@@ -48,6 +48,9 @@ class Logins extends Component {
       return (<Spinner />);
     }
     if (this.props.externalLogins.loading) {
+      return (<Spinner />);
+    }
+    if (!this.props.externalLogins.currentLogins) {
       return (<Spinner />);
     }
     const {
