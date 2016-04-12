@@ -2,9 +2,9 @@ import React from 'react';
 import Form from 'components/Form';
 import { reduxForm } from 'redux-form';
 import { Input } from 'components';
-import { changePassword } from 'redux/modules/manage';
+import { changeEmail } from 'redux/modules/manage';
 
-class ChangePasswordForm extends Form {
+class ChangeEmailForm extends Form {
   constructor(props) {
     super(props);
     this.success = this.success.bind(this);
@@ -15,7 +15,7 @@ class ChangePasswordForm extends Form {
   }
   render() {
     const {
-      fields: { oldPassword, newPassword, newPasswordConfirm }
+      fields: { currentPassword, email, emailConfirm }
     } = this.props;
     const {
       success
@@ -24,19 +24,19 @@ class ChangePasswordForm extends Form {
       <div>
         {success &&
           <p>
-          Your password has been changed.
+          An email has been sent to your email to confirm the change.
           </p>
         }
         {!success &&
-          <form onSubmit={this.handleApiSubmit(changePassword, this.success)}
+          <form onSubmit={this.handleApiSubmit(changeEmail, this.success)}
             className="form-horizontal">
             {this.renderGlobalErrorList()}
-            <Input field={oldPassword} type="password" label="Current password" />
-            <Input field={newPassword} type="password" label="New password" />
-            <Input field={newPasswordConfirm} type="password" label="Confirm new password" />
+            <Input field={currentPassword} type="password" label="Current password" />
+            <Input field={email} label="New email" />
+            <Input field={emailConfirm} label="Confirm new email" />
             <div className="form-group">
               <div className="col-md-offset-2 col-md-10">
-                <button type="submit" className="btn btn-default">Submit</button>
+                <button type="submit" className="btn btn-default">Change</button>
               </div>
             </div>
           </form>
@@ -46,12 +46,12 @@ class ChangePasswordForm extends Form {
   }
 }
 
-ChangePasswordForm = reduxForm({
-  form: 'changePassword',
-  fields: ['oldPassword', 'newPassword', 'newPasswordConfirm']
+ChangeEmailForm = reduxForm({
+  form: 'changeEmail',
+  fields: ['currentPassword', 'email', 'emailConfirm']
 },
 (state) => state,
 { }
-)(ChangePasswordForm);
+)(ChangeEmailForm);
 
-export default ChangePasswordForm;
+export default ChangeEmailForm;

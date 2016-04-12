@@ -13,3 +13,4 @@ export ManageIndex from './Manage/Index/Index';
 export ManageSecurity from './Manage/Security/Security';
 export ManageChangePassword from './Manage/ChangePassword/ChangePassword';
 export ManageLogins from './Manage/Logins/Logins';
+export ManageEmail from './Manage/Email/Email';

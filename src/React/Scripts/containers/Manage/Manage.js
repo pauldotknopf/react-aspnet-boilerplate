@@ -15,6 +15,9 @@ class Manage extends Component {
             <LinkContainer to="/manage/security">
               <NavItem>Security</NavItem>
             </LinkContainer>
+            <LinkContainer to="/manage/email">
+              <NavItem>Email</NavItem>
+            </LinkContainer>
             <LinkContainer to="/manage/changepassword">
               <NavItem>Change password</NavItem>
             </LinkContainer>

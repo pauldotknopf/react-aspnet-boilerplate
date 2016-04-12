@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using React.Controllers.Manage.Models;
 using React.Models;
+using React.Services;
 using React.State;
 using React.State.Manage;
 
@@ -17,13 +18,16 @@ namespace React.Controllers.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSender _emailSender;
 
         public ApiController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IEmailSender emailSender)
             : base(userManager, signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender;
         }
 
         [Route("security")]
@@ -35,7 +39,7 @@ namespace React.Controllers.Manage
             {
                 twoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user),
                 validTwoFactorProviders = await _userManager.GetValidTwoFactorProvidersAsync(user),
-                emailSet = await _userManager.IsEmailConfirmedAsync(user)
+                emailConfirmed = await _userManager.IsEmailConfirmedAsync(user)
             };
         }
 
@@ -58,6 +62,53 @@ namespace React.Controllers.Manage
             return new
             {
                 twoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user),
+                success = true
+            };
+        }
+
+        [Route("email")]
+        public async Task<object> Email()
+        {
+            var user = await GetCurrentUserAsync();
+
+            return new
+            {
+                email = await _userManager.GetEmailAsync(user),
+                emailConfirmed = await _userManager.IsEmailConfirmedAsync(user)
+            };
+        }
+
+        [Route("changeemail")]
+        public async Task<object> ChangeEmail([FromBody]ChangeEmailModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new
+                {
+                    success = false,
+                    errors = GetModelState()
+                };
+            }
+
+            var user = await GetCurrentUserAsync();
+
+            if (!await _userManager.CheckPasswordAsync(user, model.CurrentPassword))
+            {
+                ModelState.AddModelError("currentPassword", "Invalid password.");
+                return new
+                {
+                    success = false,
+                    errors = GetModelState()
+                };
+            }
+
+            // send an email to the user asking them to finish the change of email.
+            var code = await _userManager.GenerateChangeEmailTokenAsync(user, model.Email);
+            var callbackUrl = Url.RouteUrl("confirmemail", new { userId = user.Id, newEmail = model.Email, code = code }, protocol: HttpContext.Request.Scheme);
+            await _emailSender.SendEmailAsync(model.Email, "Confirm your email change", "Please confirm your new email by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+            
+            return new
+            {
                 success = true
             };
         }

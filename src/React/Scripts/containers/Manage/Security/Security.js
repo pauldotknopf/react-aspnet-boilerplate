@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadSecurity, destroySecurity, setTwoFactor } from 'redux/modules/manage';
 import { Spinner } from 'components';
-import classnames from 'classnames';
 import { Alert, Button } from 'react-bootstrap';
-
-console.log(typeof classnames);
 
 class Security extends Component {
   constructor(props) {

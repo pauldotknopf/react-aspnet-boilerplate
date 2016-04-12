@@ -52,13 +52,15 @@ namespace React.Controllers.Account
         }
 
         [Route("confirmemail", Name="confirmemail")]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        public async Task<IActionResult> ConfirmEmail(string userId, string code, string newEmail /*for email changed*/)
         {
+            ViewBag.change = !string.IsNullOrEmpty(newEmail);
+
             var state = await BuildState();
 
             if (userId == null || code == null)
             {
-                ViewBag.confirmEmailSuccess = false;
+                ViewBag.success = false;
                 return View("js-{auto}", state);
             }
 
@@ -66,17 +68,25 @@ namespace React.Controllers.Account
 
             if (user == null)
             {
-                ViewBag.confirmEmailSuccess = false;
+                ViewBag.success = false;
                 return View("js-{auto}", state);
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-
-            ViewBag.confirmEmailSuccess = result.Succeeded;
+            IdentityResult result;
+            if (!string.IsNullOrEmpty(newEmail))
+            {
+                result = await _userManager.ChangeEmailAsync(user, newEmail, code);
+            }
+            else
+            {
+                result = await _userManager.ConfirmEmailAsync(user, code);
+            }
+            
+            ViewBag.success = result.Succeeded;
 
             return View("js-{auto}", state);
         }
-
+        
         [Route("externallogincallback")]
         public async Task<IActionResult> ExternalLoginCallback(bool autoLogin = true)
         {
