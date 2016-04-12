@@ -26,6 +26,42 @@ namespace React.Controllers.Manage
             _signInManager = signInManager;
         }
 
+        [Route("security")]
+        public async Task<object> Security()
+        {
+            var user = await GetCurrentUserAsync();
+
+            return new
+            {
+                twoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user),
+                validTwoFactorProviders = await _userManager.GetValidTwoFactorProvidersAsync(user),
+                emailSet = await _userManager.IsEmailConfirmedAsync(user)
+            };
+        }
+
+        [Route("settwofactor")]
+        public async Task<object> SetTwoFactor([FromBody]SetTwoFactorModel model)
+        {
+            var user = await GetCurrentUserAsync();
+
+            if (await _userManager.GetTwoFactorEnabledAsync(user) == model.Enabled)
+            {
+                // already set
+                return new
+                {
+                    success = true
+                };
+            }
+            
+            await _userManager.SetTwoFactorEnabledAsync(user, model.Enabled);
+
+            return new
+            {
+                twoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user),
+                success = true
+            };
+        }
+
         [Route("changepassword")]
         public async Task<object> ChangePassword([FromBody]ChangePasswordModel model)
         {
