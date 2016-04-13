@@ -113,6 +113,22 @@ namespace React.Controllers.Manage
             };
         }
 
+        [Route("verifyemail")]
+        public async Task<object> VerifyEmail()
+        {
+            var user = await GetCurrentUserAsync();
+            
+            // send an email to the user asking them to finish the change of email.
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.RouteUrl("confirmemail", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+            await _emailSender.SendEmailAsync(user.Email, "Confirm your email change", "Please confirm your new email by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+
+            return new
+            {
+                success = true
+            };
+        }
+
         [Route("changepassword")]
         public async Task<object> ChangePassword([FromBody]ChangePasswordModel model)
         {
