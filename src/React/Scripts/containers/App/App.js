@@ -8,6 +8,8 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import { logoff } from '../../redux/modules/account';
+import { push } from 'react-router-redux';
+import TwoFactorModal from './Modals/TwoFactorModal';
 
 require('./App.scss');
 
@@ -15,6 +17,15 @@ class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired
   };
+  constructor(props) {
+    super(props);
+    this.logoffClick = this.logoffClick.bind(this);
+  }
+  logoffClick(event) {
+    event.preventDefault();
+    this.props.logoff();
+    this.props.pushState('/');
+  }
   renderLoggedInLinks(user) {
     return (
       <Nav navbar pullRight>
@@ -24,7 +35,7 @@ class App extends Component {
         <li>
           <button type="submit"
             className="btn btn-link navbar-btn navbar-link"
-            onClick={this.props.logoff}>
+            onClick={this.logoffClick}>
             Log off
           </button>
         </li>
@@ -87,6 +98,7 @@ class App extends Component {
             <p>&copy; 2016 - {config.app.title}</p>
           </footer>
         </div>
+        <TwoFactorModal />
       </div>
     );
   }
@@ -94,5 +106,5 @@ class App extends Component {
 
 export default connect(
 state => ({ user: state.auth.user }),
-{ logoff }
+{ logoff, pushState: push }
 )(App);

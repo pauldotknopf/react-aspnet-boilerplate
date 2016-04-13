@@ -17,8 +17,7 @@ namespace React.Services
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            // TODO: send email
-            _logger.LogInformation($"Send email: {email} : {subject} : {message}");
+            _logger.LogInformation($"Send email:\nemail:{email}\nsubject:{subject}\nmessage:{message}");
             return Task.FromResult(0);
         }
     }

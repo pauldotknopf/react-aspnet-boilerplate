@@ -20,6 +20,18 @@ namespace React.Controllers.Manage
             return View("js-{auto}", await BuildState());
         }
 
+        [Route("security")]
+        public async Task<IActionResult> Security()
+        {
+            return View("js-{auto}", await BuildState());
+        }
+
+        [Route("email")]
+        public async Task<IActionResult> Email()
+        {
+            return View("js-{auto}", await BuildState());
+        }
+
         [Route("changepassword")]
         public async Task<ActionResult> ChangePassword()
         {

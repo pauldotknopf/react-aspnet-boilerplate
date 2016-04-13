@@ -12,11 +12,7 @@ class Logins extends Component {
     this.removeButtonClick = this.removeButtonClick.bind(this);
   }
   componentDidMount() {
-    if (!this.props.externalLogins) {
-      this.props.loadExternalLogins();
-    }
-  }
-  componentWillReceiveProps() {
+    this.props.loadExternalLogins();
   }
   componentWillUnmount() {
     this.props.destroyExternalLogins();
@@ -44,10 +40,10 @@ class Logins extends Component {
     };
   }
   render() {
-    if (!this.props.externalLogins) {
+    if (this.props.externalLogins.loading) {
       return (<Spinner />);
     }
-    if (this.props.externalLogins.loading) {
+    if (!this.props.externalLogins.currentLogins) {
       return (<Spinner />);
     }
     const {

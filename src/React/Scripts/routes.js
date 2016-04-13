@@ -13,8 +13,10 @@ import {
   ConfirmEmail,
   Manage,
   ManageIndex,
+  ManageSecurity,
   ManageChangePassword,
-  ManageLogins
+  ManageLogins,
+  ManageEmail
 } from './containers';
 
 export default (store) => {
@@ -43,6 +45,8 @@ export default (store) => {
 
       <Route path="manage" component={Manage} onEnter={requireLogin}>
         <IndexRoute component={ManageIndex} />
+        <Route path="security" component={ManageSecurity} />
+        <Route path="email" component={ManageEmail} />
         <Route path="changepassword" component={ManageChangePassword} />
         <Route path="logins" component={ManageLogins} />
       </Route>

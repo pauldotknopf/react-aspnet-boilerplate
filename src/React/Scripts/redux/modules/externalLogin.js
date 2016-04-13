@@ -1,5 +1,5 @@
 import promiseWindow from 'promise-window';
-import { LOGOFF_COMPLETE } from 'redux/modules/account';
+import { LOGOFF_COMPLETE, LOGINSTATE_RESET } from 'redux/modules/account';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 export const EXTERNALAUTHENTICATE_START = 'react/externalLogin/EXTERNALAUTHENTICATE_START';
@@ -8,14 +8,6 @@ export const EXTERNALAUTHENTICATE_ERROR = 'react/externalLogin/EXTERNALAUTHENTIC
 
 export const EXTERNALAUTHENTICATE_CLEAR = 'react/externalLogin/EXTERNALAUTHENTICATE_CLEAR';
 export const EXTERNALAUTHENTICATE_REHYDATE = 'react/externalLogin/EXTERNALAUTHENTICATE_REHYDATE';
-
-export const EXTERNALLOGIN_START = 'react/externalLogin/EXTERNALLOGIN_START';
-export const EXTERNALLOGIN_COMPLETE = 'react/externalLogin/EXTERNALLOGIN_COMPLETE';
-export const EXTERNALLOGIN_ERROR = 'react/externalLogin/EXTERNALLOGIN_ERROR';
-
-export const EXTERNALLOGINREGISTER_START = 'react/externalLogin/EXTERNALLOGINREGISTER_START';
-export const EXTERNALLOGINREGISTER_COMPLETE = 'react/externalLogin/EXTERNALLOGINREGISTER_COMPLETE';
-export const EXTERNALLOGINREGISTER_ERROR = 'react/externalLogin/EXTERNALLOGINREGISTER_ERROR';
 
 function popupWindowSize(provider) {
   switch (provider.toLowerCase()) {
@@ -42,9 +34,7 @@ const initialState = {
   loginProviders: [], // it is up to the server to provide these values
   externalAuthenticated: false,
   externalAuthenticatedProvider: null,
-  requiresTwoFactor: false,
-  lockedOut: false,
-  signedIn: false,
+  signInError: false,
   proposedEmail: '',
   proposedUserName: ''
 };
@@ -57,27 +47,41 @@ export default function reducer(state = initialState, action = {}) {
         ...action.result
       };
     case EXTERNALAUTHENTICATE_COMPLETE:
+      if (action.result.signInError) {
+        // We have a valid account with this external login,
+        // but we couldn't login for some reason.
+        // We don't want to store this login though, because
+        // either a two-factor modal will popup will show,
+        // or lockout message will show to the user.
+        // Either way, there is no reason to store this external
+        // login. We can't register with it, or login with it.
+        return {
+          ...state,
+          externalAuthenticated: false,
+          externalAuthenticatedProvider: null,
+          signInError: false,
+          proposedEmail: '',
+          proposedUserName: ''
+        };
+      }
       return {
         ...state,
         externalAuthenticated: action.result.externalAuthenticated,
         externalAuthenticatedProvider: action.result.loginProvider,
-        requiresTwoFactor: action.result.requiresTwoFactor,
-        lockedOut: action.result.lockedOut,
-        signedIn: action.result.signedIn,
+        signInError: action.result.signInError,
         proposedEmail: action.result.proposedEmail,
         proposedUserName: action.result.proposedUserName
       };
     case EXTERNALAUTHENTICATE_CLEAR: // when some requests to clear any previously stored external authentications
     case LOGOFF_COMPLETE: // when a user logs off
     case LOCATION_CHANGE: // when the user navigates to different pages, we want to clear the user's logged in provider.
+    case LOGINSTATE_RESET:
       // let's clear out the any previously stored external authentications that were done on the client.
       return {
         ...state,
         externalAuthenticated: false,
         externalAuthenticatedProvider: null,
-        requiresTwoFactor: false,
-        lockedOut: false,
-        signedIn: false,
+        signInError: false,
         proposedEmail: '',
         proposedUserName: ''
       };
