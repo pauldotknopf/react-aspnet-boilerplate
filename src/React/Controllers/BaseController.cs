@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using System.Linq;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
 using React.Models;
 using React.Models.Api;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using React.State;
 
 namespace React.Controllers
@@ -50,7 +50,7 @@ namespace React.Controllers
             if (!User.Identity.IsAuthenticated)
                 return null;
 
-            var user = await _userManager.FindByIdAsync(HttpContext.User.GetUserId());
+            var user = await _userManager.GetUserAsync(HttpContext.User);
 
             if (user == null)
             {
@@ -79,7 +79,7 @@ namespace React.Controllers
             if (!char.IsUpper(s[0]))
                 return s;
 
-            string camelCase = char.ToLower(s[0], CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
+            string camelCase = char.ToLower(s[0]).ToString();
             if (s.Length > 1)
                 camelCase += s.Substring(1);
 

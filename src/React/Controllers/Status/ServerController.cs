@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
-using React.Models;
+﻿using React.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace React.Controllers.Status
 {

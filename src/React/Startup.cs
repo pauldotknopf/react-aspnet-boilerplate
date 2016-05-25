@@ -1,21 +1,19 @@
 ﻿using System;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNet.Mvc;
 using JavaScriptViewEngine;
-using React.Services;
-using JavaScriptViewEngine.Pool;
 using System.IO;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication.OAuth;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Extensions.WebEncoders;
+using JavaScriptViewEngine.Pool;
 using React.Models;
+using React.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace React
 {
@@ -29,6 +27,7 @@ namespace React
 
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
@@ -40,8 +39,6 @@ namespace React
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-
-            VroomJs.AssemblyLoader.EnsureLoaded();
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -51,8 +48,8 @@ namespace React
         {
             services.AddMvc();
 
-            services.AddJsEngine<ReactEnvironmentInitializer>();
-            services.Configure<JsPoolOptions>(options =>
+            services.AddJsEngine();
+            services.Configure<RenderPoolOptions>(options =>
             {
                 options.WatchPath = _env.WebRootPath;
                 options.WatchFiles = new List<string>
@@ -61,12 +58,24 @@ namespace React
                 };
                 options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
             });
+            services.Configure<NodeRenderEngineOptions>(options =>
+            {
+                options.ProjectDirectory = Path.Combine(_env.WebRootPath, "pack");
+                options.GetArea = (area) =>
+                {
+                    switch (area)
+                    {
+                        case "default":
+                            return "server.generated";
+                        default:
+                            return area;
+                    }
+                };
+            });
 
             // Add framework services.
-            services.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -84,56 +93,40 @@ namespace React
             
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-
-                // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
-                try
-                {
-                    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                        .CreateScope())
-                    {
-                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
-                             .Database.Migrate();
-                    }
-                }
-                catch { }
             }
-
-            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-
+            
             app.UseStatusCodePagesWithReExecute("/Status/Status/{0}");
 
             app.UseStaticFiles();
 
             app.UseIdentity();
 
-            var googleClientId = Configuration.Get<string>("Authentication:Google:ClientId");
-            var googleClientSecret = Configuration.Get<string>("Authentication:Google:ClientSecret");
+            var googleClientId = Configuration["Authentication:Google:ClientId"];
+            var googleClientSecret = Configuration["Authentication:Google:ClientSecret"];
             if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
             {
-                app.UseGoogleAuthentication(options =>
-                {
-                    options.ClientId = googleClientId;
-                    options.ClientSecret = googleClientSecret;
-                    options.Scope.Add("email");
-                    options.Scope.Add("profile");
-                });
+                var options = new GoogleOptions();
+                options.ClientId = googleClientId;
+                options.ClientSecret = googleClientSecret;
+                options.Scope.Add("email");
+                options.Scope.Add("profile");
             }
 
             var facebookAppId = Configuration["Authentication:Facebook:AppId"];
             var facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
             if (!string.IsNullOrEmpty(facebookAppId) && !string.IsNullOrEmpty(facebookAppSecret))
             {
-                app.UseFacebookAuthentication(options =>
+                app.UseFacebookAuthentication(new FacebookOptions
                 {
-                    options.AppId = facebookAppId;
-                    options.AppSecret = facebookAppSecret;
+                    AppId = facebookAppId,
+                    AppSecret = facebookAppSecret
                 });
             }
 
@@ -214,6 +207,7 @@ namespace React
             //    };
             //});
 
+
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>
@@ -228,8 +222,5 @@ namespace React
                 return next();
             });
         }
-
-        // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }

@@ -9,7 +9,7 @@ import configureStore from './redux/configureStore';
 import { Provider } from 'react-redux';
 import isEmpty from 'utils/isEmpty';
 
-export function RenderView(path, model, viewBag) {
+export function renderView(callback, path, model, viewBag) {
   const history = createHistory(path);
   const store = configureStore(model, history);
   const result = {
@@ -45,9 +45,9 @@ export function RenderView(path, model, viewBag) {
         result.status = 404;
       }
     });
-  return result;
+  callback(null, result);
 }
 
-export function RenderPartialView() {
-  return 'TODO';
+export function renderPartialView(callback) {
+  callback('TODO', null);
 }

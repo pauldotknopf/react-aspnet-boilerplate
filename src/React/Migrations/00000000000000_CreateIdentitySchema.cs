@@ -1,6 +1,6 @@
 using System;
-using Microsoft.Data.Entity.Metadata;
-using Microsoft.Data.Entity.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace React.Migrations
 {
