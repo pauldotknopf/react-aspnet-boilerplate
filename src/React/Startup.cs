@@ -1,14 +1,13 @@
 ﻿using System;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using JavaScriptViewEngine;
-using React.Services;
-using JavaScriptViewEngine.Pool;
 using System.IO;
 using System.Collections.Generic;
+using JavaScriptViewEngine.Pool;
 
 namespace React
 {
@@ -22,6 +21,7 @@ namespace React
 
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
@@ -33,8 +33,6 @@ namespace React
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-
-            VroomJs.AssemblyLoader.EnsureLoaded();
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -44,8 +42,8 @@ namespace React
         {
             services.AddMvc();
 
-            services.AddJsEngine<ReactEnvironmentInitializer>();
-            services.Configure<JsPoolOptions>(options =>
+            services.AddJsEngine();
+            services.Configure<RenderPoolOptions>(options =>
             {
                 options.WatchPath = _env.WebRootPath;
                 options.WatchFiles = new List<string>
@@ -53,6 +51,20 @@ namespace React
                      Path.Combine(_env.WebRootPath, "pack", "server.generated.js")
                 };
                 options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
+            });
+            services.Configure<NodeRenderEngineOptions>(options =>
+            {
+                options.ProjectDirectory = Path.Combine(_env.WebRootPath, "pack");
+                options.GetArea = (area) =>
+                {
+                    switch (area)
+                    {
+                        case "default":
+                            return "server.generated";
+                        default:
+                            return area;
+                    }
+                };
             });
         }
 
@@ -64,17 +76,15 @@ namespace React
             
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-
+            
             app.UseStatusCodePagesWithReExecute("/Status/Status/{0}");
 
             app.UseStaticFiles();
@@ -93,8 +103,5 @@ namespace React
                 return next();
             });
         }
-
-        // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }
