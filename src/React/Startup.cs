@@ -1,21 +1,13 @@
 ﻿using System;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNet.Mvc;
 using JavaScriptViewEngine;
-using React.Services;
-using JavaScriptViewEngine.Pool;
 using System.IO;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication.OAuth;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Extensions.WebEncoders;
-using React.Models;
+using JavaScriptViewEngine.Pool;
 
 namespace React
 {
@@ -29,6 +21,7 @@ namespace React
 
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
@@ -40,8 +33,6 @@ namespace React
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-
-            VroomJs.AssemblyLoader.EnsureLoaded();
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -51,8 +42,8 @@ namespace React
         {
             services.AddMvc();
 
-            services.AddJsEngine<ReactEnvironmentInitializer>();
-            services.Configure<JsPoolOptions>(options =>
+            services.AddJsEngine();
+            services.Configure<RenderPoolOptions>(options =>
             {
                 options.WatchPath = _env.WebRootPath;
                 options.WatchFiles = new List<string>
@@ -61,6 +52,7 @@ namespace React
                 };
                 options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
             });
+<<<<<<< HEAD
 
             // Add framework services.
             services.AddEntityFramework()
@@ -74,6 +66,22 @@ namespace React
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<ISmsSender, SmsSender>();
+=======
+            services.Configure<NodeRenderEngineOptions>(options =>
+            {
+                options.ProjectDirectory = Path.Combine(_env.WebRootPath, "pack");
+                options.GetArea = (area) =>
+                {
+                    switch (area)
+                    {
+                        case "default":
+                            return "server.generated";
+                        default:
+                            return area;
+                    }
+                };
+            });
+>>>>>>> empty-template
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,32 +92,19 @@ namespace React
             
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-
-                // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
-                try
-                {
-                    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                        .CreateScope())
-                    {
-                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
-                             .Database.Migrate();
-                    }
-                }
-                catch { }
             }
-
-            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-
+            
             app.UseStatusCodePagesWithReExecute("/Status/Status/{0}");
 
             app.UseStaticFiles();
+<<<<<<< HEAD
 
             app.UseIdentity();
 
@@ -214,6 +209,9 @@ namespace React
             //    };
             //});
 
+=======
+            
+>>>>>>> empty-template
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>
@@ -228,8 +226,5 @@ namespace React
                 return next();
             });
         }
-
-        // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }
