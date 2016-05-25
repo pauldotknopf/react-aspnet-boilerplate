@@ -8,6 +8,12 @@ using JavaScriptViewEngine;
 using System.IO;
 using System.Collections.Generic;
 using JavaScriptViewEngine.Pool;
+using React.Models;
+using React.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace React
 {
@@ -52,21 +58,6 @@ namespace React
                 };
                 options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
             });
-<<<<<<< HEAD
-
-            // Add framework services.
-            services.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddSingleton<IEmailSender, EmailSender>();
-            services.AddSingleton<ISmsSender, SmsSender>();
-=======
             services.Configure<NodeRenderEngineOptions>(options =>
             {
                 options.ProjectDirectory = Path.Combine(_env.WebRootPath, "pack");
@@ -81,7 +72,17 @@ namespace React
                     }
                 };
             });
->>>>>>> empty-template
+
+            // Add framework services.
+            services.AddDbContext<ApplicationDbContext>(options =>
+                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<ISmsSender, SmsSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,31 +105,28 @@ namespace React
             app.UseStatusCodePagesWithReExecute("/Status/Status/{0}");
 
             app.UseStaticFiles();
-<<<<<<< HEAD
 
             app.UseIdentity();
 
-            var googleClientId = Configuration.Get<string>("Authentication:Google:ClientId");
-            var googleClientSecret = Configuration.Get<string>("Authentication:Google:ClientSecret");
+            var googleClientId = Configuration["Authentication:Google:ClientId"];
+            var googleClientSecret = Configuration["Authentication:Google:ClientSecret"];
             if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
             {
-                app.UseGoogleAuthentication(options =>
-                {
-                    options.ClientId = googleClientId;
-                    options.ClientSecret = googleClientSecret;
-                    options.Scope.Add("email");
-                    options.Scope.Add("profile");
-                });
+                var options = new GoogleOptions();
+                options.ClientId = googleClientId;
+                options.ClientSecret = googleClientSecret;
+                options.Scope.Add("email");
+                options.Scope.Add("profile");
             }
 
             var facebookAppId = Configuration["Authentication:Facebook:AppId"];
             var facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
             if (!string.IsNullOrEmpty(facebookAppId) && !string.IsNullOrEmpty(facebookAppSecret))
             {
-                app.UseFacebookAuthentication(options =>
+                app.UseFacebookAuthentication(new FacebookOptions
                 {
-                    options.AppId = facebookAppId;
-                    options.AppSecret = facebookAppSecret;
+                    AppId = facebookAppId,
+                    AppSecret = facebookAppSecret
                 });
             }
 
@@ -209,9 +207,7 @@ namespace React
             //    };
             //});
 
-=======
-            
->>>>>>> empty-template
+
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>

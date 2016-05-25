@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using React.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Linq;
 
 namespace React.Controllers.Account
 {
@@ -145,8 +144,8 @@ namespace React.Controllers.Account
 
             data.externalAuthenticated = true;
 
-            var email = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Email);
-            var userName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Name);
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var userName = info.Principal.FindFirstValue(ClaimTypes.Name);
             if (!string.IsNullOrEmpty(userName))
                 userName = userName.Replace(" ", "_");
 
