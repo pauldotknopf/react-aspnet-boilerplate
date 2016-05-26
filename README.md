@@ -7,16 +7,12 @@ A starting point for building universal/isomorphic React applications with ASP.N
 
 ## Goals
 
-1. Minimize .NET's usage - It's only usage should be for building REST endpoints (WebApi) and providing the initial state (pure POCO). No razor syntax *anywhere*.
-2. Isomorphic/universal rendering.
-3. Client and server should render using the same source files (javascript).
-4. Out-of-the-box login/register/manage functionality.
+1. **Minimize .NET's usage** - It's only usage should be for building REST endpoints (WebApi) and providing the initial state (pure POCO). No razor syntax *anywhere*.
+2. **Isomorphic/universal rendering**
+3. **Client and server should render using the same source files (javascript)**
+4. **Out-of-the-box login/register/manage functionality** - Use the branch ```empty-template``` if you wish to have a vanilla React application.
 
 This approach is great for front-end developers because it gives them complete control to build their app as they like. No .NET crutches (bundling/razor). No opinions. No gotchas. Just another typical React client-side application, but with the initial state provided by ASP.NET for each URL.
-
-## In a nut shell
-
-![Nutshell](/resources/nutshell.gif)
 
 ## Getting started
 
@@ -26,9 +22,10 @@ To checkout this demo...
 > cd src/React
 > npm install
 > gulp
-> dnu restore
-> dnx ef database update
-> dnx web
+> dotnet restore
+/* the following line is only for the master branch, which has a database backend (user management) */
+> dotnet ef database update
+> dotnet run
 ```
 
 Some of the branches in this repo that are maintained:
@@ -46,7 +43,5 @@ There isn't really a "New Project" template for this. For now, download this rep
 ## What is next?
 
 I will be adding features to this project as time goes on to help me get started with new React projects in .NET. So, expect some more things. I am also open to contributions or recommendations.
-
-I intend to have this project be a clone of ASP.NET's default template (Visual Studio's "New > Project" template) with authentication (including OAuth providers) and account management.
 
 I took a lot of things from [react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example), but not everything. As time goes on, expect to see more of the same patterns/technologies/techniques copied over.
