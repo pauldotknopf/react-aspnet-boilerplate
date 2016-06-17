@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace React.Controllers.Manage.Models
