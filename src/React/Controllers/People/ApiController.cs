@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using React.Models;
