@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using React.State;
+using Microsoft.AspNetCore.Mvc;
+using ReactBoilerplate.State;
 
-namespace React.Controllers
+namespace ReactBoilerplate.Controllers
 {
     public class BaseController : Controller
     {

@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
-using React.Models;
+using ReactBoilerplate.Models;
 
-namespace React.Controllers.People
+namespace ReactBoilerplate.Controllers.People
 {
     [Route("api/people")]
     public class ApiController : BaseController

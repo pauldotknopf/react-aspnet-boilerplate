@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using React.Models;
-using React.State;
+using ReactBoilerplate.Models;
+using ReactBoilerplate.State;
 
-namespace React.Controllers.People
+namespace ReactBoilerplate.Controllers.People
 {
     public class ServerController : BaseController
     {

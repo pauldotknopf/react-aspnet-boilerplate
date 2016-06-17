@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-namespace React.Controllers.Status
+namespace ReactBoilerplate.Controllers.Status
 {
     public class StatusController : BaseController
     {

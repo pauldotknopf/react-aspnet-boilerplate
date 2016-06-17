@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace React.Controllers.Home
+namespace ReactBoilerplate.Controllers.Home
 {
     public class HomeController : BaseController
     {

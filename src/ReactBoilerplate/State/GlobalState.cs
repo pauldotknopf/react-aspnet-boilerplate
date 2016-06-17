@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace React.State
+namespace ReactBoilerplate.State
 {
     public class GlobalState
     {

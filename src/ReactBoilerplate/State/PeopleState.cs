@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
-using React.Models;
 using Newtonsoft.Json;
+using ReactBoilerplate.Models;
 
-namespace React.State
+namespace ReactBoilerplate.State
 {
     public class PeopleState
     {
