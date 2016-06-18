@@ -1,0 +1,62 @@
+{
+  "name": "generator-react-aspnet-boilerplate",
+  "version": "1.0.2",
+  "description": "A boiler plate for getting started with ASP.NET projects using react/redux/universal-rendering",
+  "homepage": "https://github.com/pauldotknopf/react-aspnet-boilerplate",
+  "author": {
+    "name": "Paul Knopf",
+    "email": "pauldotknopf@gmail.com",
+    "url": "https://github.com/pauldotknopf/generator-react-aspnet-boilerplate"
+  },
+  "files": [
+    "generators",
+    "src"
+  ],
+  "main": "generators\\index.js",
+  "keywords": [
+    "react",
+    "aspnet",
+    ".net",
+    "redux",
+    "isomorphic",
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "^1.0.0",
+    "glob": "^7.0.4",
+    "globby": "^5.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "yeoman-generator": "^0.22.0",
+    "yosay": "^1.0.2"
+  },
+  "devDependencies": {
+    "nodegit": "^0.13.2",
+    "rimraf": "^2.5.2",
+    "yeoman-test": "^1.0.0",
+    "yeoman-assert": "^2.0.0",
+    "eslint": "^2.1.0",
+    "eslint-config-xo-space": "^0.10.0",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^2.0.0",
+    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-line-ending-corrector": "^1.0.1",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-mocha": "^2.0.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-nsp": "^2.1.0",
+    "gulp-coveralls": "^0.1.0"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "mocha": true
+    }
+  },
+  "repository": "https://github.com/pauldotknopf/generator-react-aspnet-boilerplate.git",
+  "scripts": {
+    "prepublish": "gulp prepublish",
+    "test": "gulp"
+  },
+  "license": "MIT"
+}
