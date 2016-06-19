@@ -19,6 +19,13 @@ Then generate your new project:
 yo react-aspnet-boilerplate
 ```
 
+By default, the template is based off of the [```master```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master) branch, which includes authentication and account management. You can also use the [```empty-template```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/empty-template) branch if you like.
+
+```bash
+yo react-aspnet-boilerplate:master
+yo react-aspnet-boilerplate:empty-template
+```
+
 ## Getting To Know Yeoman
 
  * Yeoman has a heart of gold.
