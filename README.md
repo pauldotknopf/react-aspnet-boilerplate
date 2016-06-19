@@ -1,4 +1,4 @@
-# generator-react-aspnet-boilerplate [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# generator-react-aspnet-boilerplate [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > A boiler plate for getting started with ASP.NET projects using react/redux/universal-rendering
 
 ## Installation
