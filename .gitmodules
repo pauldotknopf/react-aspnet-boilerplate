@@ -1,0 +1,6 @@
+[submodule "react-aspnet-boilerplate-master"]
+	path = react-aspnet-boilerplate-master
+	url = https://github.com/pauldotknopf/react-aspnet-boilerplate.git
+[submodule "react-aspnet-boilerplate-empty-template"]
+	path = react-aspnet-boilerplate-empty-template
+	url = https://github.com/pauldotknopf/react-aspnet-boilerplate.git
