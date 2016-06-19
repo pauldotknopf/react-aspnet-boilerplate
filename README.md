@@ -23,10 +23,16 @@ npm install -g yo
 npm install -g generator-react-aspnet-boilerplate
 ```
 
-You can also generate a clean template (no authentication/account management) with another generator.
+Then generate your new project:
+
+```
+yo react-aspnet-boilerplate
+```
+
+You can also generate a clean template (no authentication/account management) with another generator:
 
 ```bash
-npm install -g generator-react-aspnet-boilerplate:empty-template
+yo react-aspnet-boilerplate:empty-template
 ```
 
 Some of the branches in this repo that are maintained:
