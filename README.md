@@ -16,23 +16,22 @@ This approach is great for front-end developers because it gives them complete c
 
 ## Getting started
 
-To checkout this demo...
+The best way to get started with this project is to use the Yeoman generator.
 
+```bash
+npm install -g yo
+npm install -g generator-react-aspnet-boilerplate
 ```
-> cd src/React
-> npm install
-> gulp
-> dotnet restore
-/* the following line is only for the master branch, which has a database backend (user management) */
-> dotnet ef database update
-> dotnet run
+
+You can also generate a clean template (no authentication/account management) with another generator.
+
+```bash
+npm install -g generator-react-aspnet-boilerplate:empty-template
 ```
 
 Some of the branches in this repo that are maintained:
-* [```master```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master) - This is the main branch. It has all the stuff required to get you started, including membership, external logins (OAuth) and account management.
+* [```master```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master) - This is the main branch. It has all the stuff required to get you started, including membership, external logins (OAuth) and account management. This is the default branch used with the Yeoman generator.
 * [```empty-template```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/empty-template) - This branch for people that want an empty template with the absolute minimum recommend boilerplate for any ASP.NET React application.
-
-There isn't really a "New Project" template for this. For now, download this repository and use it as your starting point. Then change your .sln and project names as you like.
 
 ## The interesting parts
 
