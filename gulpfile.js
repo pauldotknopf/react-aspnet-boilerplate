@@ -8,8 +8,6 @@ var istanbul = require('gulp-istanbul');
 var nsp = require('gulp-nsp');
 var plumber = require('gulp-plumber');
 var coveralls = require('gulp-coveralls');
-var git = require('nodegit');
-var rimraf = require('rimraf');
 
 gulp.task('static', function () {
   return gulp.src('**/*.js')
@@ -58,34 +56,6 @@ gulp.task('coveralls', ['test'], function () {
 
   return gulp.src(path.join(__dirname, 'coverage/lcov.info'))
     .pipe(coveralls());
-});
-
-gulp.task('update-templates', ['update-template-master', 'update-template-empty']);
-
-gulp.task('update-template-master', function(cb) {
-  rimraf('generators/master/templates', function() {
-    var cloneOptions = new git.CloneOptions();
-    cloneOptions.checkoutBranch = 'master';
-    git.Clone('https://github.com/pauldotknopf/react-aspnet-boilerplate.git', 'generators/master/templates', cloneOptions)
-      .then(function() {
-        rimraf('generators/master/templates/.git', function() {
-          cb();
-        });
-      });
-  });
-});
-
-gulp.task('update-template-empty', function(cb) {
-  rimraf('generators/empty-template/templates', function() {
-    var cloneOptions = new git.CloneOptions();
-    cloneOptions.checkoutBranch = 'empty-template';
-    git.Clone('https://github.com/pauldotknopf/react-aspnet-boilerplate.git', 'generators/empty-template/templates', cloneOptions)
-      .then(function() {
-        rimraf('generators/empty-template/templates/.git', function() {
-          cb();
-        });
-      });
-  });
 });
 
 gulp.task('prepublish', ['nsp']);
