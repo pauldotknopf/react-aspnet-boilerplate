@@ -55,9 +55,9 @@ Some of the branches in this repo that are maintained:
 
 ## The interesting parts
 
-- [client.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/client.js) and [server.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/server.js) - The entry point for the client-side/server-side applications.
-- [Html.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/helpers/Html.js) and [App.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/containers/App/App.js) - These files essentially represent the "React" version of MVC Razor's "_Layout.cshtml".
-- [Controllers](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master/src/React/Controllers) - The endpoints for a each initial GET request, and each client-side network request.
+- [client.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/ReactBoilerplate/Scripts/client.js) and [server.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/ReactBoilerplate/Scripts/server.js) - The entry point for the client-side/server-side applications.
+- [Html.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/ReactBoilerplate/Scripts/helpers/Html.js) and [App.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/ReactBoilerplate/Scripts/containers/App/App.js) - These files essentially represent the "React" version of MVC Razor's "_Layout.cshtml".
+- [Controllers](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master/src/ReactBoilerplate/Controllers) - The endpoints for a each initial GET request, and each client-side network request.
 
 ## What is next?
 
