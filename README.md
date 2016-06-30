@@ -35,6 +35,20 @@ You can also generate a clean template (no authentication/account management) wi
 yo react-aspnet-boilerplate:empty-template
 ```
 
+After you have your new project generated, let's run that app!
+
+```bash
+cd src/ReactBoilerplate
+npm install
+gulp
+dotnet restore
+# The following line is only for the 'master' branch, which has a database backend (user management).
+# It is needed needed when using 'empty-template'.
+dotnet ef database update
+dotnet run
+```
+
+
 Some of the branches in this repo that are maintained:
 * [```master```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master) - This is the main branch. It has all the stuff required to get you started, including membership, external logins (OAuth) and account management. This is the default branch used with the Yeoman generator.
 * [```empty-template```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/empty-template) - This branch for people that want an empty template with the absolute minimum recommend boilerplate for any ASP.NET React application.
