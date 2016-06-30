@@ -1,6 +1,6 @@
-[submodule "generators\\master\\templates"]
-	path = generators\\master\\templates
+[submodule "generators/master/templates"]
+	path = generators/master/templates
 	url = https://github.com/pauldotknopf/react-aspnet-boilerplate.git
-[submodule "generators\\empty-template\\templates"]
-	path = generators\\empty-template\\templates
+[submodule "generators/empty-template/templates"]
+	path = generators/empty-template/templates
 	url = https://github.com/pauldotknopf/react-aspnet-boilerplate.git
