@@ -61,20 +61,20 @@ class Logins extends Component {
             <table className="table">
               <tbody>
               {currentLogins.map((currentLogin, i) =>
-                (
-                  <tr key={i}>
-                    <td>
-                      <Button onClick={this.removeButtonClick(currentLogin)}>
-                        Remove
-                      </Button>
-                      {' '}
-                      <ExternalLoginButton key={i}
-                        scheme={currentLogin.loginProvider}
-                        text={currentLogin.loginProviderDisplayName} />
-                    </td>
-                  </tr>
-                )
-              )}
+              (
+                <tr key={i}>
+                  <td>
+                    <Button onClick={this.removeButtonClick(currentLogin)}>
+                      Remove
+                    </Button>
+                    {' '}
+                    <ExternalLoginButton
+                      key={i}
+                      scheme={currentLogin.loginProvider}
+                      text={currentLogin.loginProviderDisplayName} />
+                  </td>
+                </tr>
+              ))}
               </tbody>
             </table>
           </div>
@@ -85,20 +85,20 @@ class Logins extends Component {
             <table className="table">
               <tbody>
               {otherLogins.map((otherLogin, i) =>
-                (
-                  <tr key={i}>
-                    <td>
-                      <Button onClick={this.addButtonClick(otherLogin.scheme)}>
-                        Add
-                      </Button>
-                      {' '}
-                      <ExternalLoginButton key={i}
-                        scheme={otherLogin.scheme}
-                        text={otherLogin.displayName} />
-                    </td>
-                  </tr>
-                )
-              )}
+              (
+                <tr key={i}>
+                  <td>
+                    <Button onClick={this.addButtonClick(otherLogin.scheme)}>
+                      Add
+                    </Button>
+                    {' '}
+                    <ExternalLoginButton
+                      key={i}
+                      scheme={otherLogin.scheme}
+                      text={otherLogin.displayName} />
+                  </td>
+                </tr>
+              ))}
               </tbody>
             </table>
           </div>

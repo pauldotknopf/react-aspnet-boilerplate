@@ -36,7 +36,8 @@ class Security extends Component {
         <Alert bsStyle={twoFactorEnabled ? 'success' : 'danger'}>
           Two-factor authentication is <strong>{twoFactorEnabled ? 'enabled' : 'disabled'}</strong>.
           <br />
-          <Button onClick={this.toggleTwoFactorClick}
+          <Button
+            onClick={this.toggleTwoFactorClick}
             disabled={settingTwoFactor}>
             {twoFactorEnabled ? 'Disable' : 'Enable'}
           </Button>

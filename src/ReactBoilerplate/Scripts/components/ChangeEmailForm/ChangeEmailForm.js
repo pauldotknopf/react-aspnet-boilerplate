@@ -28,7 +28,8 @@ class ChangeEmailForm extends Form {
           </p>
         }
         {!success &&
-          <form onSubmit={this.handleApiSubmit(changeEmail, this.success)}
+          <form
+            onSubmit={this.handleApiSubmit(changeEmail, this.success)}
             className="form-horizontal">
             {this.renderGlobalErrorList()}
             <Input field={currentPassword} type="password" label="Current password" />

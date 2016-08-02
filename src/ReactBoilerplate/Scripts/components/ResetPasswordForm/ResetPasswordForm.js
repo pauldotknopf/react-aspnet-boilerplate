@@ -31,11 +31,12 @@ class ResetPasswordForm extends Form {
       <div>
         {success &&
           <p>
-          Your password has been reset. <Link to="/login">Please Click here to log in</Link>.
+            Your password has been reset. <Link to="/login">Please Click here to log in</Link>.
           </p>
         }
         {!success &&
-          <form onSubmit={this.handleApiSubmit(resetPassword, this.success)}
+          <form
+            onSubmit={this.handleApiSubmit(resetPassword, this.success)}
             className="form-horizontal">
             {this.renderGlobalErrorList()}
             <Input field={email} label="Email" />

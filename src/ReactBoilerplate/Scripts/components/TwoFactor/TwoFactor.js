@@ -22,7 +22,7 @@ class TwoFactor extends Component {
         <SendCodeForm userFactors={userFactors} />
       );
     }
-    return (<div></div>);
+    return (<div />);
   }
 }
 
