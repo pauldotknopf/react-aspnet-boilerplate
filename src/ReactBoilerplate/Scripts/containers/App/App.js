@@ -33,7 +33,8 @@ class App extends Component {
           <NavItem>Hello {user.userName}!</NavItem>
         </LinkContainer>
         <li>
-          <button type="submit"
+          <button
+            type="submit"
             className="btn btn-link navbar-btn navbar-link"
             onClick={this.logoffClick}>
             Log off

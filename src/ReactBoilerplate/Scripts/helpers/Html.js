@@ -15,7 +15,7 @@ export default class Html extends Component {
     const head = Helmet.rewind();
 
     return (
-      <html lang="en-us">
+      <html lang="en-US">
         <head>
           {head.base.toComponent()}
           {head.title.toComponent()}
@@ -35,10 +35,7 @@ export default class Html extends Component {
         <body>
           <div id="content" dangerouslySetInnerHTML={{ __html: content }} />
           <script
-            dangerouslySetInnerHTML =
-            {
-              { __html: `window.__data=${serialize(store.getState())};` }
-            }
+            dangerouslySetInnerHTML={{ __html: `window.__data=${serialize(store.getState())};` }}
             charSet="UTF-8"
           />
           <script src="/pack/client.generated.js" charSet="UTF-8" />

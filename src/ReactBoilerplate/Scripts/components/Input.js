@@ -19,21 +19,22 @@ class Input extends Component {
     return (
       <div>
         {errors.map((err, i) =>
-          (
-            <p className="help-block"
-              key={i}>
-              <Glyphicon glyph="exclamation-sign" />
-              {' '}
-              {err}
-            </p>
-          )
-        )}
+        (
+          <p
+            className="help-block"
+            key={i}>
+            <Glyphicon glyph="exclamation-sign" />
+            {' '}
+            {err}
+          </p>
+        ))}
       </div>
     );
   }
   renderInput() {
     return (
-      <input type={this.props.type}
+      <input
+        type={this.props.type}
         id={this.props.field.name}
         className="form-control"
         placeholder={this.props.label}
@@ -46,16 +47,16 @@ class Input extends Component {
       options
     } = this.props;
     return (
-      <select type={this.props.type}
+      <select
+        type={this.props.type}
         id={this.props.field.name}
         className="form-control"
         placeholder={this.props.label}
         {...this.props.field}>
         {options.map((option, i) =>
-          (
-            <option key={i} value={option.value}>{option.display}</option>
-          )
-        )}
+        (
+          <option key={i} value={option.value}>{option.display}</option>
+        ))}
       </select>
     );
   }

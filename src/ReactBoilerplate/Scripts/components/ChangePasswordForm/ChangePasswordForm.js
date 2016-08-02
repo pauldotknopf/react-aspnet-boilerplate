@@ -28,7 +28,8 @@ class ChangePasswordForm extends Form {
           </p>
         }
         {!success &&
-          <form onSubmit={this.handleApiSubmit(changePassword, this.success)}
+          <form
+            onSubmit={this.handleApiSubmit(changePassword, this.success)}
             className="form-horizontal">
             {this.renderGlobalErrorList()}
             <Input field={oldPassword} type="password" label="Current password" />

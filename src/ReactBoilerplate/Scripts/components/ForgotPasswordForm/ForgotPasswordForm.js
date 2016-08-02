@@ -28,7 +28,8 @@ class ForgotPasswordForm extends Form {
           </p>
         }
         {!success &&
-          <form onSubmit={this.handleApiSubmit(forgotPassword, this.success)}
+          <form
+            onSubmit={this.handleApiSubmit(forgotPassword, this.success)}
             className="form-horizontal">
             {this.renderGlobalErrorList()}
             <Input field={email} label="Email" />

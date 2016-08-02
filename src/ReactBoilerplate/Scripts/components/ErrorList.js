@@ -12,14 +12,13 @@ class ErrorList extends Component {
       return (
         <div className="alert alert-danger">
           {errors.map((err, i) =>
-            (
-              <p key={i}>
-                <Glyphicon glyph="exclamation-sign" />
-                {' '}
-                {err}
-              </p>
-            )
-          )}
+          (
+            <p key={i}>
+              <Glyphicon glyph="exclamation-sign" />
+              {' '}
+              {err}
+            </p>
+          ))}
         </div>
       );
     }
