@@ -20,7 +20,10 @@
     "max-len": 0,
     "no-underscore-dangle": [2, {"allow": ["__data"]}],
     "global-require": 0,
-    "no-restricted-syntax": 0
+    "no-restricted-syntax": 0,
+    "linebreak-style": 0,
+    "react/jsx-filename-extension": 0,
+    "import/imports-first": 0
   },
   "settings": {
     "import/parser": "babel-eslint",
