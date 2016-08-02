@@ -8,15 +8,15 @@ import {
 } from './containers';
 
 export default () =>
-  (
-    <Route path="/" component={App}>
-      { /* Home (main) route */ }
-      <IndexRoute component={Home} />
+(
+  <Route path="/" component={App}>
+    {/* Home (main) route */}
+    <IndexRoute component={Home} />
 
-      { /* Routes */ }
-      <Route path="/people" component={People} />
+    {/* Routes */}
+    <Route path="/people" component={People} />
 
-      { /* Catch all route */ }
-      <Route path="*" component={NotFound} status={404} />
-    </Route>
-  );
+    {/* Catch all route */}
+    <Route path="*" component={NotFound} status={404} />
+  </Route>
+);

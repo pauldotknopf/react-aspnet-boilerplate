@@ -29,11 +29,11 @@ export function renderView(callback, path, model, viewBag) {
         const isNotFound = renderProps.routes.filter((route) => route.status === 404).length > 0;
         result.status = isNotFound ? 404 : 200;
         const component =
-          (
-            <Provider store={store}>
-              <RouterContext {...renderProps} />
-            </Provider>
-          );
+        (
+          <Provider store={store}>
+            <RouterContext {...renderProps} />
+          </Provider>
+        );
         if (!isEmpty(viewBag)) {
           // If the server provided anyhting in ASP.NET's ViewBag, hydrate it to the store/state.
           // The contents can be accessed on the client via `state.viewBag`. It exist for the initial
