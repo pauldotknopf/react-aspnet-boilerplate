@@ -21,8 +21,7 @@ class App extends Component {
     super(props);
     this.logoffClick = this.logoffClick.bind(this);
   }
-  logoffClick(event) {
-    event.preventDefault();
+  logoffClick() {
     this.props.logoff();
     this.props.pushState('/');
   }
@@ -32,14 +31,9 @@ class App extends Component {
         <LinkContainer to="/manage">
           <NavItem>Hello {user.userName}!</NavItem>
         </LinkContainer>
-        <li>
-          <button
-            type="submit"
-            className="btn btn-link navbar-btn navbar-link"
-            onClick={this.logoffClick}>
-            Log off
-          </button>
-        </li>
+        <NavItem onSelect={this.logoffClick}>
+          Log off
+        </NavItem>
       </Nav>
     );
   }

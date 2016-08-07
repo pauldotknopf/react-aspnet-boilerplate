@@ -12,6 +12,28 @@ class Input extends Component {
       'checkbox'
     ]),
   };
+  buildFieldProps() {
+    const {
+      defaultChecked,
+      defaultValue,
+      name,
+      onBlur,
+      onChange,
+      onDragStart,
+      onDrop,
+      onFocus
+    } = this.props.field;
+    return {
+      defaultChecked,
+      defaultValue,
+      name,
+      onBlur,
+      onChange,
+      onDragStart,
+      onDrop,
+      onFocus
+    };
+  }
   renderErrorList(errors) {
     if (!errors) {
       return null;
@@ -38,7 +60,7 @@ class Input extends Component {
         id={this.props.field.name}
         className="form-control"
         placeholder={this.props.label}
-        {...this.props.field}
+        {...this.buildFieldProps()}
       />
     );
   }
@@ -52,7 +74,7 @@ class Input extends Component {
         id={this.props.field.name}
         className="form-control"
         placeholder={this.props.label}
-        {...this.props.field}>
+        {...this.buildFieldProps()}>
         {options.map((option, i) =>
         (
           <option key={i} value={option.value}>{option.display}</option>
@@ -63,7 +85,7 @@ class Input extends Component {
   renderCheckBox() {
     return (
       <div className="checkbox">
-        <input id={this.props.field.name} type="checkbox" {...this.props.field} />
+        <input id={this.props.field.name} type="checkbox" {...this.buildFieldProps()} />
         <label htmlFor={this.props.field.name}>{this.props.label}</label>
       </div>
     );
