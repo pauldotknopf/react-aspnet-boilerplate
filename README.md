@@ -43,7 +43,7 @@ npm install
 gulp
 dotnet restore
 # The following line is only for the 'master' branch, which has a database backend (user management).
-# It is needed needed when using 'empty-template'.
+# It is not needed when using 'empty-template'.
 dotnet ef database update
 dotnet run
 ```
