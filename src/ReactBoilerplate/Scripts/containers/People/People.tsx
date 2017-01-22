@@ -1,30 +1,38 @@
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import * as React from 'react';
+var Helmet = require('react-helmet');
 import { connect } from 'react-redux';
 import { Button, Alert } from 'react-bootstrap';
-import { loadPeople } from 'redux/modules/people';
+import { loadPeople, IPerson, IPeopleState } from '../../redux/modules/people';
 
-class People extends Component {
+interface IPeopleProps {
+  people : IPeopleState,
+  loadPeople : () => Array<IPerson>
+}
+
+class People extends React.Component<IPeopleProps, any> {
   constructor(props) {
     super(props);
     this.loadButtonClick = this.loadButtonClick.bind(this);
   }
-  componentDidMount() {
+
+  public componentDidMount() {
     if (!this.props.people.people) {
       this.props.loadPeople();
     }
   }
-  loadButtonClick(event) {
+
+  private loadButtonClick(event) {
     event.preventDefault();
     this.props.loadPeople();
   }
-  render() {
+
+  public render() {
     const {
       people,
       loading,
       error
     } = this.props.people;
-    let peopleComponent;
+    let peopleComponent : Array<JSX.Element>;
     if (people) {
       if (people.length > 0) {
         peopleComponent = people.map((person, i) =>
@@ -58,7 +66,4 @@ class People extends Component {
   }
 }
 
-export default connect(
-(state) => ({ people: state.people }),
-{ loadPeople }
-)(People);
+export default connect((state) => ({ people: state.people }), { loadPeople })(People);

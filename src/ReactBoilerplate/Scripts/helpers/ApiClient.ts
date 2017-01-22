@@ -1,11 +1,13 @@
-import superagent from 'superagent';
+import * as superagent from 'superagent';
+
+declare var __SERVER__ : any;
 
 const methods = ['get', 'post', 'put', 'patch', 'del'];
 
 class _ApiClient {
-  constructor(req) {
+  constructor(req?) {
     methods.forEach((method) => {
-      this[method] = (path, { params, data } = {}) => new Promise((resolve, reject) => {
+      this[method] = (path, { params = null, data = null } = {}) => new Promise((resolve, reject) => {
         const request = superagent[method](path);
 
         if (params) {
@@ -20,7 +22,7 @@ class _ApiClient {
           request.send(data);
         }
 
-        request.end((err, { body } = {}) => (err ? reject(body || err) : resolve(body)));
+        request.end((err, { body = null } = {}) => (err ? reject(body || err) : resolve(body)));
       });
     });
   }

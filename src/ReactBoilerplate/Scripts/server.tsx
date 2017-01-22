@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom/server';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom/server';
 import Html from './helpers/Html';
 import { match } from 'react-router';
 import getRoutes from './routes';
@@ -7,11 +7,11 @@ import createHistory from 'react-router/lib/createMemoryHistory';
 import RouterContext from 'react-router/lib/RouterContext';
 import configureStore from './redux/configureStore';
 import { Provider } from 'react-redux';
-import isEmpty from 'utils/isEmpty';
+import isEmpty from './utils/isEmpty';
 
 export function renderView(callback, path, model, viewBag) {
   const history = createHistory(path);
-  const store = configureStore(model, history);
+  const store = configureStore(model, history, null);
   const result = {
     html: null,
     status: 404,
@@ -26,8 +26,8 @@ export function renderView(callback, path, model, viewBag) {
         result.status = 500;
       } else if (renderProps) {
         // if this is the NotFoundRoute, then return a 404
-        const isNotFound = renderProps.routes.filter((route) => route.status === 404).length > 0;
-        result.status = isNotFound ? 404 : 200;
+        // const isNotFound = renderProps.routes.filter((route) => route.status === 404).length > 0;
+        result.status = 200; //isNotFound ? 404 : 200;
         const component =
         (
           <Provider store={store}>

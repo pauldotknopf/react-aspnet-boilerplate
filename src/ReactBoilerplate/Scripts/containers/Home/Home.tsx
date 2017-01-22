@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
+import * as React from 'react';
+var Helmet = require('react-helmet');
 import { connect } from 'react-redux';
 import { Carousel, CarouselItem } from 'react-bootstrap';
 
-class Home extends Component {
-  render() {
+class Home extends React.Component<any, any> {
+  public render() {
     return (
       <div>
         <Helmet title="Home" />

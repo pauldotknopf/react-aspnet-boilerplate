@@ -1,8 +1,25 @@
+import * as Redux from 'redux';
+
 export const LOADPEOPLE_START = 'react/people/LOADPEOPLE_START';
 export const LOADPEOPLE_COMPLETE = 'react/people/LOADPEOPLE_COMPLETE';
 export const LOADPEOPLE_ERROR = 'react/people/LOADPEOPLE_ERROR';
 
-export default function reducer(state = {}, action = {}) {
+interface IPeopleAction extends Redux.Action {
+  result? : Array<IPerson>
+}
+
+export interface IPerson {
+  name : string,
+  bio : string
+}
+
+export interface IPeopleState {
+  people? : Array<IPerson>,
+  loading? : boolean,
+  error? : any
+}
+
+export default function reducer(state = {}, action : IPeopleAction = {type: null}) : IPeopleState {
   switch (action.type) {
     case LOADPEOPLE_START:
       return {

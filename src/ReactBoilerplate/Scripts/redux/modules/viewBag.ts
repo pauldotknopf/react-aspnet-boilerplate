@@ -1,6 +1,11 @@
+import * as Redux from 'redux';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-export default function reducer(state = { $internal: false }, action = {}) {
+interface IViewBagAction extends Redux.Action {
+  viewBag? : any
+}
+
+export default function reducer(state = { $internal: false }, action : IViewBagAction = {type: null}) {
   switch (action.type) {
     case '_HYDRATE_VIEWBAG':
       // This initial data is provided by the server.

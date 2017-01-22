@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 import getRoutes from './routes';
 import { Provider } from 'react-redux';
@@ -8,7 +8,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import ApiClient from './helpers/ApiClient';
 
 const client = new ApiClient();
-const store = configureStore(window.__data, browserHistory, client);
+const store = configureStore(window['__data'], browserHistory, client);
 const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render(

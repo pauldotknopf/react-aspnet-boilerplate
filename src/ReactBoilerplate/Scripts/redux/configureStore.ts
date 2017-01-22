@@ -6,8 +6,8 @@ import createMiddleware from './middleware/clientMiddleware';
 
 let devTools = f => f;
 if (typeof window === 'object'
-  && typeof window.devToolsExtension !== 'undefined') {
-  devTools = window.devToolsExtension();
+  && typeof window['devToolsExtension'] !== 'undefined') {
+  devTools = window['devToolsExtension']();
 }
 
 export default function configureStore(initialState, history, client) {

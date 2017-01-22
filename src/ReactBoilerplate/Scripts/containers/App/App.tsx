@@ -1,20 +1,19 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
-import Helmet from 'react-helmet';
+var Helmet = require('react-helmet');
 import config from '../../config';
 import { IndexLink } from 'react-router';
 import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
+import {Navbar, Nav, NavItem} from 'react-bootstrap';
 
 require('./App.scss');
 
-class App extends Component {
-  static propTypes = {
-    children: PropTypes.object.isRequired
+class App extends React.Component<any, any> {
+  public static propTypes = {
+    children: React.PropTypes.object.isRequired
   };
-  render() {
+
+  public render() : JSX.Element {
     return (
       <div>
         <Helmet {...config.app.head} />
@@ -50,7 +49,4 @@ class App extends Component {
   }
 }
 
-export default connect(
-state => state,
-{ }
-)(App);
+export default connect(state => state, {})(App);
