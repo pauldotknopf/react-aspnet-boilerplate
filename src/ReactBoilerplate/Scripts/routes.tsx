@@ -1,4 +1,5 @@
-import React from 'react';
+import { Store } from 'redux';
+import * as React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import {
   App,
@@ -7,7 +8,7 @@ import {
   People
 } from './containers';
 
-export default () =>
+export default (store? : Store<any>) =>
 (
   <Route path="/" component={App}>
     {/* Home (main) route */}
@@ -17,6 +18,6 @@ export default () =>
     <Route path="/people" component={People} />
 
     {/* Catch all route */}
-    <Route path="*" component={NotFound} status={404} />
+    <Route path="*" component={NotFound} /*status={404}*/ />
   </Route>
 );

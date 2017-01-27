@@ -1,15 +1,21 @@
-import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom/server';
-import Helmet from 'react-helmet';
+import * as React from 'react';
+import * as Redux from 'redux';
+import * as ReactDOM from 'react-dom/server';
+var Helmet = require('react-helmet');
 import serialize from 'serialize-javascript';
 
-export default class Html extends Component {
-  static propTypes = {
-    component: PropTypes.node,
-    store: PropTypes.object
+interface IHTMLProps {
+  component : React.ReactElement<any>,
+  store : Redux.Store<any>
+}
+
+export default class Html extends React.Component<IHTMLProps, any> {
+  public static propTypes = {
+    component: React.PropTypes.node,
+    store: React.PropTypes.object
   };
 
-  render() {
+  public render() {
     const { component, store } = this.props;
     const content = component ? ReactDOM.renderToString(component) : '';
     const head = Helmet.rewind();

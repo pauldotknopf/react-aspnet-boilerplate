@@ -9,7 +9,7 @@ module.exports = {
   server: {
     entry: {
       server: [
-         path.resolve(__dirname, '..', '..', 'Scripts', 'server.js')
+        path.resolve(__dirname, '..', '..', 'Scripts', 'server.tsx')
       ]
     },
     resolve: {
@@ -17,6 +17,7 @@ module.exports = {
         'Scripts',
         'node_modules'
       ],
+      extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
       alias: {
         'superagent': path.resolve(__dirname, '..', 'utils', 'superagent-server.js'),
         'promise-window': path.resolve(__dirname, '..', 'utils', 'promise-window-server.js')
@@ -24,7 +25,7 @@ module.exports = {
     },
     module: {
       loaders: [
-        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint'] },
+        { test: /\.(tsx|ts)?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'awesome-typescript-loader'] },
         { test: /\.css$/, loader: 'css/locals?module' },
         { test: /\.scss$/, loader: 'css/locals?module!sass' },
         { test: /\.(woff2?|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' },
@@ -48,18 +49,19 @@ module.exports = {
     entry: {
       client: [
         'bootstrap-loader',
-        path.resolve(__dirname, '..', '..', 'Scripts', 'client.js')
+        path.resolve(__dirname, '..', '..', 'Scripts', 'client.tsx')
       ]
     },
     resolve: {
       modulesDirectories: [
         'Scripts',
         'node_modules'
-      ]
+      ],
+      extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
     },
     module: {
       loaders: [
-        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint'] },
+        { test: /\.(tsx|ts)?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'awesome-typescript-loader'] },
         { test: /\.css$/, loader: extractCSS.extract('style', 'css?modules') },
         { test: /\.scss$/, loader: extractCSS.extract('style', 'css?modules!sass') },
         { test: /\.(woff2?|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' },
