@@ -24,8 +24,10 @@ namespace ReactBoilerplate
             _env = env;
 
             // Set up configuration sources.
-            var builder = JsonConfigurationExtensions.AddJsonFile(JsonConfigurationExtensions.AddJsonFile(FileConfigurationExtensions.SetBasePath(new ConfigurationBuilder(), env.ContentRootPath), "appsettings.json"), $"appsettings.{env.EnvironmentName}.json", optional: true);
-
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
@@ -71,6 +73,8 @@ namespace ReactBoilerplate
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            // services.AddDbContext<ApplicationDbContext>(options =>
+            //     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
