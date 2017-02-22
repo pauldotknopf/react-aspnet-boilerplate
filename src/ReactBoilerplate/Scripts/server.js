@@ -40,7 +40,7 @@ export function renderView(callback, path, model, viewBag) {
           // page load only, and will be cleared when navigating to another page on the client.
           store.dispatch({ type: '_HYDRATE_VIEWBAG', viewBag });
         }
-        result.html = ReactDOM.renderToString(<Html component={component} store={store} />);
+        result.html = ReactDOM.renderToStaticMarkup(<Html component={component} store={store} />);
       } else {
         result.status = 404;
       }
