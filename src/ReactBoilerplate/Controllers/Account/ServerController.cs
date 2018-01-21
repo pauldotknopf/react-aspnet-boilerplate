@@ -127,8 +127,8 @@ namespace ReactBoilerplate.Controllers.Account
             if (string.IsNullOrEmpty(info.ProviderDisplayName))
             {
                 info.ProviderDisplayName =
-                    _signInManager.GetExternalAuthenticationSchemes()
-                        .SingleOrDefault(x => x.AuthenticationScheme.Equals(info.LoginProvider))?
+                    (await _signInManager.GetExternalAuthenticationSchemesAsync())
+                        .SingleOrDefault(x => x.Name.Equals(info.LoginProvider))?
                         .DisplayName;
                 if (string.IsNullOrEmpty(info.ProviderDisplayName))
                 {
