@@ -32,12 +32,14 @@ namespace ReactBoilerplate.Controllers
             }
 
             state.ExternalLogin.LoginProviders
-                .AddRange(_signInManager.GetExternalAuthenticationSchemes()
-                .Select(x => new ExternalLoginState.ExternalLoginProvider
-                {
-                    Scheme = x.AuthenticationScheme,
-                    DisplayName = x.DisplayName
-                }));
+                .AddRange(
+                  (await _signInManager.GetExternalAuthenticationSchemesAsync())
+                  .Select(x => new ExternalLoginState.ExternalLoginProvider
+                  {
+                      Scheme = x.Name,
+                      DisplayName = x.DisplayName
+                  })
+                );
 
             return state;
         }
