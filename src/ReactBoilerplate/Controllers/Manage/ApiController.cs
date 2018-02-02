@@ -232,16 +232,15 @@ namespace ReactBoilerplate.Controllers.Manage
             foreach (var userLogin in userLogins.Where(userLogin => string.IsNullOrEmpty(userLogin.ProviderDisplayName)))
             {
                 userLogin.ProviderDisplayName =
-                    (await _signInManager.GetExternalAuthenticationSchemesAsync())
-                        .SingleOrDefault(x => x.Name.Equals(userLogin.LoginProvider))?
+                    _signInManager.GetExternalAuthenticationSchemes()
+                        .SingleOrDefault(x => x.AuthenticationScheme.Equals(userLogin.LoginProvider))?
                         .DisplayName;
                 if (string.IsNullOrEmpty(userLogin.ProviderDisplayName))
                 {
                     userLogin.ProviderDisplayName = userLogin.LoginProvider;
                 }
             }
-            var otherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
-              .Where(auth => userLogins.All(ul => auth.Name != ul.LoginProvider)).ToList();
+            var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
 
             return new ExternalLoginsState
             {
@@ -254,7 +253,7 @@ namespace ReactBoilerplate.Controllers.Manage
                 OtherLogins = otherLogins.Select(x => new ExternalLoginState.ExternalLoginProvider
                 {
                     DisplayName = x.DisplayName,
-                    Scheme = x.Name
+                    Scheme = x.AuthenticationScheme
                 }).ToList()
             };
         }

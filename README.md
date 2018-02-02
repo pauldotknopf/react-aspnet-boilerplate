@@ -16,15 +16,6 @@ This approach is great for front-end developers because it gives them complete c
 
 ## Getting started
 
-### Note: Windows
-Requires python due to usage of node-gyp to compile sass libs.
-Elevated command prompt: 
-```bash
-npm install --global --production windows-build-tools
-```
-That should be done before proceeding with loading Visual Studio, if you want to use VStudio to automatically install dependencies. 
-
-### Yeoman
 The best way to get started with this project is to use the Yeoman generator.
 
 ```bash
