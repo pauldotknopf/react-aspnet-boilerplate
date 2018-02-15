@@ -1,0 +1,44 @@
+{
+  "extends": "eslint-config-airbnb",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "react/prefer-stateless-function": 0,
+    "react/prop-types": 0,
+    "react/jsx-closing-bracket-location": 0,
+    "no-console": 0,
+    "prefer-template": 0,
+    "max-len": 0,
+    "no-underscore-dangle": [2, {"allow": ["__data"]}],
+    "global-require": 0,
+    "no-restricted-syntax": 0,
+    "linebreak-style": 0,
+    "react/jsx-filename-extension": 0,
+    "import/imports-first": 0,
+    "no-class-assign": 0
+  },
+  "settings": {
+    "import/parser": "babel-eslint",
+    "import/resolver": { 
+      "node": {
+        "moduleDirectory": ["node_modules", "Scripts"]
+      }
+    },
+    "no-underscore-dangle": {
+      "allow": ["__data"]
+    }
+  },
+  "globals": {
+    "__CLIENT__": true,
+    "__SERVER__": true
+  }
+}

@@ -16,29 +16,48 @@ This approach is great for front-end developers because it gives them complete c
 
 ## Getting started
 
-To checkout this demo...
+The best way to get started with this project is to use the Yeoman generator.
+
+```bash
+npm install -g yo
+npm install -g generator-react-aspnet-boilerplate
+```
+
+Then generate your new project:
 
 ```
-> cd src/React
-> npm install
-> gulp
-> dotnet restore
-/* the following line is only for the master branch, which has a database backend (user management) */
-> dotnet ef database update
-> dotnet run
+yo react-aspnet-boilerplate
 ```
+
+You can also generate a clean template (no authentication/account management) with another generator:
+
+```bash
+yo react-aspnet-boilerplate:empty-template
+```
+
+After you have your new project generated, let's run that app!
+
+```bash
+cd src/ReactBoilerplate
+npm install
+gulp
+dotnet restore
+# The following line is only for the 'master' branch, which has a database backend (user management).
+# It is not needed when using 'empty-template'.
+dotnet ef database update
+dotnet run
+```
+
 
 Some of the branches in this repo that are maintained:
-* [```master```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master) - This is the main branch. It has all the stuff required to get you started, including membership, external logins (OAuth) and account management.
+* [```master```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master) - This is the main branch. It has all the stuff required to get you started, including membership, external logins (OAuth) and account management. This is the default branch used with the Yeoman generator.
 * [```empty-template```](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/empty-template) - This branch for people that want an empty template with the absolute minimum recommend boilerplate for any ASP.NET React application.
-
-There isn't really a "New Project" template for this. For now, download this repository and use it as your starting point. Then change your .sln and project names as you like.
 
 ## The interesting parts
 
-- [client.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/client.js) and [server.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/server.js) - The entry point for the client-side/server-side applications.
-- [Html.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/helpers/Html.js) and [App.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/React/Scripts/containers/App/App.js) - These files essentially represent the "React" version of MVC Razor's "_Layout.cshtml".
-- [Controllers](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master/src/React/Controllers) - The endpoints for a each initial GET request, and each client-side network request.
+- [client.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/ReactBoilerplate/Scripts/client.js) and [server.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/ReactBoilerplate/Scripts/server.js) - The entry point for the client-side/server-side applications.
+- [Html.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/ReactBoilerplate/Scripts/helpers/Html.js) and [App.js](https://github.com/pauldotknopf/react-dot-net/blob/master/src/ReactBoilerplate/Scripts/containers/App/App.js) - These files essentially represent the "React" version of MVC Razor's "_Layout.cshtml".
+- [Controllers](https://github.com/pauldotknopf/react-aspnet-boilerplate/tree/master/src/ReactBoilerplate/Controllers) - The endpoints for a each initial GET request, and each client-side network request.
 
 ## What is next?
 

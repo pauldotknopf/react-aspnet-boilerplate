@@ -137,7 +137,7 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings 
+# TODO: Comment the next line if you want to checkin your web deploy settings
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
@@ -234,6 +234,6 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-src/React/bower_components/
-src/React/wwwroot/
-src/React/React.sublime-workspace
+src/ReactBoilerplate/bower_components/
+src/ReactBoilerplate/wwwroot/
+src/ReactBoilerplate/React.sublime-workspace
