@@ -42,8 +42,9 @@ cd src/ReactBoilerplate
 npm install
 gulp
 dotnet restore
-# The following line is only for the 'master' branch, which has a database backend (user management).
-# It is not needed when using 'empty-template'.
+# The following two lines are only for the 'master' branch, which has a database backend (user management).
+# They are not needed when using 'empty-template'.
+dotnet ef migrations add initial
 dotnet ef database update
 dotnet run
 ```
