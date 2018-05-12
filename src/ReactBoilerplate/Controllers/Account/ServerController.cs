@@ -124,11 +124,12 @@ namespace ReactBoilerplate.Controllers.Account
                 // unable to authenticate with an external login
                 return Content(callbackTemplate(data), "text/html");
 
+            var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
             if (string.IsNullOrEmpty(info.ProviderDisplayName))
             {
                 info.ProviderDisplayName =
-                    _signInManager.GetExternalAuthenticationSchemes()
-                        .SingleOrDefault(x => x.AuthenticationScheme.Equals(info.LoginProvider))?
+                    schemes
+                        .SingleOrDefault(x => x.Name.Equals(info.LoginProvider))?
                         .DisplayName;
                 if (string.IsNullOrEmpty(info.ProviderDisplayName))
                 {

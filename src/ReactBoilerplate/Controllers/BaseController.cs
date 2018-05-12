@@ -31,11 +31,12 @@ namespace ReactBoilerplate.Controllers
                 state.Auth.LoggedIn = true;
             }
 
+            var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
             state.ExternalLogin.LoginProviders
-                .AddRange(_signInManager.GetExternalAuthenticationSchemes()
+                .AddRange(schemes
                 .Select(x => new ExternalLoginState.ExternalLoginProvider
                 {
-                    Scheme = x.AuthenticationScheme,
+                    Scheme = x.Name,
                     DisplayName = x.DisplayName
                 }));
 

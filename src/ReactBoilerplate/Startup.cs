@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using JavaScriptViewEngine;
-using JavaScriptViewEngine.Pool;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,61 +22,33 @@ namespace ReactBoilerplate
     public class Startup
     {
         IHostingEnvironment _env;
+        IConfiguration _configuration;
+        ILoggerFactory _loggerFactory;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            _configuration = configuration;
             _env = env;
-
-            // Set up configuration sources.
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-
-            EnvironmentVariablesExtensions.AddEnvironmentVariables(builder);
-            Configuration = builder.Build();
         }
-
-        public IConfigurationRoot Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddJsEngine(builder =>
+            {
+                builder.UseSingletonEngineFactory();
+                builder.UseNodeRenderEngine(nodeOptions =>
+                {
+                    nodeOptions.ProjectDirectory = Path.Combine(_env.WebRootPath, "pack");
+                    nodeOptions.GetModuleName = (path, model, bag, values, area, type) => "server.generated";
+                    nodeOptions.NodeInstanceOutputLogger = _loggerFactory.CreateLogger("NodeRenderEngine");
+                });
+            });
             services.AddMvc();
-
-            services.AddJsEngine();
-            services.Configure<RenderPoolOptions>(options =>
-            {
-                options.WatchPath = _env.WebRootPath;
-                options.WatchFiles = new List<string>
-                {
-                     Path.Combine(_env.WebRootPath, "pack", "server.generated.js")
-                };
-                options.WatchDebounceTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
-            });
-            services.Configure<NodeRenderEngineOptions>(options =>
-            {
-                options.ProjectDirectory = Path.Combine(_env.WebRootPath, "pack");
-                options.GetArea = (area) =>
-                {
-                    switch (area)
-                    {
-                        case "default":
-                            return "server.generated";
-                        default:
-                            return area;
-                    }
-                };
-            });
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             // services.AddDbContext<ApplicationDbContext>(options =>
             //     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -82,13 +58,41 @@ namespace ReactBoilerplate
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<ISmsSender, SmsSender>();
+      
+            var authBuilder = services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o => o.LoginPath = new PathString("/login"));
+
+            var facebookAppId = _configuration["Authentication:Facebook:AppId"];
+            var facebookAppSecret = _configuration["Authentication:Facebook:AppSecret"];
+            if (!string.IsNullOrEmpty(facebookAppId) && !string.IsNullOrEmpty(facebookAppSecret))
+            {
+                authBuilder.AddFacebook(o =>
+                {
+                    o.AppId = facebookAppId;
+                    o.AppSecret = facebookAppSecret;
+                });
+            }
+
+            var googleClientId = _configuration["Authentication:Google:ClientId"];
+            var googleClientSecret = _configuration["Authentication:Google:ClientSecret"];
+            if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
+            {
+                authBuilder.AddGoogle(o =>
+                {
+                    o.ClientId = googleClientId;
+                    o.ClientSecret = googleClientSecret;
+                    o.Scope.Add("email");
+                    o.Scope.Add("profile");
+                });
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddConsole(_configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            _loggerFactory = loggerFactory;
             
             if (env.IsDevelopment())
             {
@@ -100,118 +104,19 @@ namespace ReactBoilerplate
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseAuthentication();
             
             app.UseStatusCodePagesWithReExecute("/Status/Status/{0}");
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
-
-            var googleClientId = Configuration["Authentication:Google:ClientId"];
-            var googleClientSecret = Configuration["Authentication:Google:ClientSecret"];
-            if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
-            {
-                var options = new GoogleOptions();
-                options.ClientId = googleClientId;
-                options.ClientSecret = googleClientSecret;
-                options.Scope.Add("email");
-                options.Scope.Add("profile");
-            }
-
-            var facebookAppId = Configuration["Authentication:Facebook:AppId"];
-            var facebookAppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            if (!string.IsNullOrEmpty(facebookAppId) && !string.IsNullOrEmpty(facebookAppSecret))
-            {
-                app.UseFacebookAuthentication(new FacebookOptions
-                {
-                    AppId = facebookAppId,
-                    AppSecret = facebookAppSecret
-                });
-            }
-
-            // To authenticate with an instance of IdentityServer4, use the following client.
-            // ---------------------------------- 
-            // new Client
-            // {
-            //     ClientId = "client",
-            //     ClientSecrets = new List<Secret>
-            //     {
-            //         new Secret("secret".Sha256())
-            //     },
-
-            //     Flow = Flows.AuthorizationCode,
-
-            //     RedirectUris = new List<string> { "http://localhost:5000/signin-idsvr" },
-
-            //     AllowedScopes = new List<string>
-            //     {
-            //         StandardScopes.OpenId.Name,
-            //         StandardScopes.Profile.Name,
-            //         StandardScopes.Email.Name
-            //     }
-            // }
-            // ----------------------------------
-            // Make sure IdentityServer is listening locally on port 5001.
-            // Then, uncomment the following.
-            //app.UseOAuthAuthentication(options =>
-            //{
-            //    options.DisplayName = "Identity Server";
-            //    options.CallbackPath = new PathString("/signin-idsvr");
-            //    options.AuthenticationScheme = "idsvr";
-            //    options.ClientSecret = "secret";
-            //    options.ClientId = "client";
-            //    options.AuthorizationEndpoint = "http://localhost:5001/connect/authorize";
-            //    options.TokenEndpoint = "http://localhost:5001/connect/token";
-            //    options.UserInformationEndpoint = "http://localhost:5001/connect/userinfo";
-            //    options.Scope.Add("openid");
-            //    options.Scope.Add("profile");
-            //    options.Scope.Add("email");
-            //    options.Events = new OAuthEvents
-            //    {
-            //        OnCreatingTicket = async context =>
-            //        {
-            //            var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
-            //            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
-            //            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //            var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
-            //            response.EnsureSuccessStatusCode();
-
-            //            var user = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            //            var id = user.Value<string>("sub");
-            //            if (!string.IsNullOrEmpty(id))
-            //            {
-            //                context.Identity.AddClaim(new Claim(
-            //                    ClaimTypes.NameIdentifier, id,
-            //                    ClaimValueTypes.String, context.Options.ClaimsIssuer));
-            //            }
-
-            //            var name = user.Value<string>("name");
-            //            if (!string.IsNullOrEmpty(name))
-            //            {
-            //                context.Identity.AddClaim(new Claim(
-            //                    ClaimTypes.Name, name,
-            //                    ClaimValueTypes.String, context.Options.ClaimsIssuer));
-            //            }
-
-            //            var email = user.Value<string>("email");
-            //            if (!string.IsNullOrEmpty(email))
-            //            {
-            //                context.Identity.AddClaim(new Claim(
-            //                    ClaimTypes.Email, email,
-            //                    ClaimValueTypes.String, context.Options.ClaimsIssuer));
-            //            }
-            //        }
-            //    };
-            //});
-
-
             app.UseJsEngine(); // gives a js engine to each request, required when using the JsViewEngine
 
             app.UseMvc(routes =>
             {
-                MapRouteRouteBuilderExtensions.MapRoute(routes, name: "default",
+                routes.MapRoute(
+                    name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
