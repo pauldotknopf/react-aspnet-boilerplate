@@ -1,34 +1,79 @@
-var fs = require('fs');
-var babelrc = JSON.parse(fs.readFileSync('./.babelrc'));
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var extractCSS = new ExtractTextPlugin('styles.css');
-var webpack = require('webpack');
-var path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
   server: {
+    mode: 'development',
     entry: {
       server: [
-         path.resolve(__dirname, '..', '..', 'Scripts', 'server.js')
+        path.resolve(__dirname, '..', '..', 'Scripts', 'server.js')
       ]
     },
     resolve: {
-      modulesDirectories: [
+      modules: [
         'Scripts',
         'node_modules'
       ],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
-        'superagent': path.resolve(__dirname, '..', 'utils', 'superagent-server.js'),
+        superagent: path.resolve(__dirname, '..', 'utils', 'superagent-server.js'),
         'promise-window': path.resolve(__dirname, '..', 'utils', 'promise-window-server.js')
       }
     },
     module: {
-      loaders: [
-        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint'] },
-        { test: /\.css$/, loader: 'css/locals?module' },
-        { test: /\.scss$/, loader: 'css/locals?module!sass' },
-        { test: /\.(woff2?|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' },
-        { test: /\.(jpeg|jpeg|gif|png|tiff)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' }
+      rules: [
+        {
+          enforce: 'pre',
+          test: /\.(t|j)sx?$/,
+          exclude: /node_modules/,
+          loader: 'eslint-loader'
+        },
+        {
+          test: /\.(t|j)sx?$/,
+          exclude: /node_modules/,
+          loader: 'awesome-typescript-loader'
+        },
+        {
+          enforce: 'pre',
+          test: /\.js$/,
+          loader: 'source-map-loader'
+        },
+        {
+          test: /\.css$/,
+          loader: 'css-loader/locals',
+          options: {
+            modules: true,
+            camelCase: 'dashes'
+          }
+        },
+        {
+          test: /\.scss$/,
+          use: [
+            {
+              loader: 'css-loader/locals',
+              options: {
+                modules: true,
+                camelCase: 'dashes'
+              }
+            },
+            {
+              loader: 'sass-loader'
+            }
+          ]
+        },
+        {
+          test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)(\?.*)?$/,
+          loader: 'url-loader',
+          options: {
+            limit: 10240
+          }
+        },
+        {
+          test: /\.(eot|ttf|wav|mp3)(\?.*)?$/,
+          loader: 'file-loader'
+        }
       ]
     },
     output: {
@@ -41,29 +86,96 @@ module.exports = {
       new webpack.DefinePlugin({
         __CLIENT__: false,
         __SERVER__: true
+      }),
+      new StyleLintPlugin({
+        configFile: '.stylelintrc',
+        failOnError: false,
+        quiet: false,
+        syntax: 'scss'
       })
-    ],
+    ]
   },
   client: {
+    mode: 'development',
     entry: {
       client: [
-        'bootstrap-loader',
+        'babel-polyfill',
+        'react-hot-loader/patch',
+        'webpack-hot-middleware/client',
         path.resolve(__dirname, '..', '..', 'Scripts', 'client.js')
       ]
     },
     resolve: {
-      modulesDirectories: [
+      modules: [
         'Scripts',
         'node_modules'
-      ]
+      ],
+      extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     module: {
-      loaders: [
-        { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelrc), 'eslint'] },
-        { test: /\.css$/, loader: extractCSS.extract('style', 'css?modules') },
-        { test: /\.scss$/, loader: extractCSS.extract('style', 'css?modules!sass') },
-        { test: /\.(woff2?|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' },
-        { test: /\.(jpeg|jpeg|gif|png|tiff)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file' }
+      rules: [
+        {
+          enforce: 'pre',
+          test: /\.(t|j)sx?$/,
+          exclude: /node_modules/,
+          loader: 'eslint-loader'
+        },
+        {
+          test: /\.(t|j)sx?$/,
+          exclude: /node_modules/,
+          loader: 'awesome-typescript-loader'
+        },
+        {
+          enforce: 'pre',
+          test: /\.js$/,
+          loader: 'source-map-loader'
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: 'style-loader'
+            },
+            {
+              loader: 'typings-for-css-modules-loader',
+              options: {
+                modules: true,
+                namedExport: true,
+                camelCase: 'dashes'
+              }
+            }
+          ]
+        },
+        {
+          test: /\.scss$/,
+          use: [
+            {
+              loader: 'style-loader'
+            },
+            {
+              loader: 'typings-for-css-modules-loader',
+              options: {
+                modules: true,
+                namedExport: true,
+                camelCase: 'dashes'
+              }
+            },
+            {
+              loader: 'sass-loader'
+            }
+          ]
+        },
+        {
+          test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)(\?.*)?$/,
+          loader: 'url-loader',
+          options: {
+            limit: 10240
+          }
+        },
+        {
+          test: /\.(eot|ttf|wav|mp3)(\?.*)?$/,
+          loader: 'file-loader'
+        }
       ]
     },
     output: {
@@ -72,12 +184,15 @@ module.exports = {
       path: path.resolve(__dirname, '..', '..', 'wwwroot', 'pack'),
       publicPath: '/pack/'
     },
+    optimization: {
+      noEmitOnErrors: true
+    },
     plugins: [
-      extractCSS,
       new webpack.DefinePlugin({
         __CLIENT__: true,
         __SERVER__: false
-      })
+      }),
+      new webpack.HotModuleReplacementPlugin()
     ],
     devtool: 'source-map'
   }

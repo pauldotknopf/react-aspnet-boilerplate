@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndexRoute, Route } from 'react-router';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import {
   App,
   Home,
@@ -20,39 +20,46 @@ import {
 } from './containers';
 
 export default (store) => {
-  const requireLogin = (nextState, replace, cb) => {
+  const isLoggedIn = () => {
     const { auth: { user } } = store.getState();
-    if (!user) {
-      // oops, not logged in, so can't be here!
-      replace('/login?returnUrl=' +
-        encodeURIComponent(nextState.location.pathname + nextState.location.search));
-    }
-    cb();
+    return !!user;
   };
+
   return (
-    <Route path="/" component={App}>
+    <Switch>
       { /* Home (main) route */ }
-      <IndexRoute component={Home} />
+      <Route exact path="/" component={Home} />
 
       { /* Routes */ }
-      <Route path="about" component={About} />
-      <Route path="contact" component={Contact} />
-      <Route path="register" components={Register} />
-      <Route path="login" components={Login} />
-      <Route path="forgotpassword" components={ForgotPassword} />
-      <Route path="resetpassword" components={ResetPassword} />
-      <Route path="confirmemail" components={ConfirmEmail} />
+      <Route exact path="/about" component={About} />
+      <Route exact path="/contact" component={Contact} />
+      <Route exact path="/register" component={Register} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/forgotpassword" component={ForgotPassword} />
+      <Route exact path="/resetpassword" component={ResetPassword} />
+      <Route exact path="/confirmemail" component={ConfirmEmail} />
 
-      <Route path="manage" component={Manage} onEnter={requireLogin}>
-        <IndexRoute component={ManageIndex} />
-        <Route path="security" component={ManageSecurity} />
-        <Route path="email" component={ManageEmail} />
-        <Route path="changepassword" component={ManageChangePassword} />
-        <Route path="logins" component={ManageLogins} />
-      </Route>
+      <Route
+        path="/manage"
+        render={() => (
+          !isLoggedIn() ? (
+            <Redirect to="/login" />
+          ) : (
+            <Manage>
+              <Switch>
+                <Route exact path="/manage" component={ManageIndex} />
+                <Route exact path="/manage/security" component={ManageSecurity} />
+                <Route exact path="/manage/email" component={ManageEmail} />
+                <Route exact path="/manage/changepassword" component={ManageChangePassword} />
+                <Route exact path="/manage/logins" component={ManageLogins} />
+              </Switch>
+            </Manage>
+          )
+        )}
+      />
 
       { /* Catch all route */ }
-      <Route path="*" component={NotFound} status={404} />
-    </Route>
+      <Route component={NotFound} status={404} />
+    </Switch>
   );
 };

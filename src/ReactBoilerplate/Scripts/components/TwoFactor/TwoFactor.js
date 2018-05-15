@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { resetLoginState } from 'redux/modules/account';
 import SendCodeForm from './SendCodeForm';
 import VerifyCodeForm from './VerifyCodeForm';
-import { resetLoginState } from 'redux/modules/account';
 
 class TwoFactor extends Component {
   componentWillUnmount() {

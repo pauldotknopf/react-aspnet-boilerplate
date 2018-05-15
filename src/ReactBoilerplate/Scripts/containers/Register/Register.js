@@ -22,6 +22,6 @@ class Register extends Component {
 }
 
 export default connect(
-state => ({ user: state.auth.user, externalLogin: state.externalLogin }),
-{ pushState: push }
+  (state) => ({ user: state.auth.user, externalLogin: state.externalLogin }),
+  { pushState: push }
 )(Register);

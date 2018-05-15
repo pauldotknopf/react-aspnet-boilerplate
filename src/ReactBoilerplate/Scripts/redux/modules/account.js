@@ -1,3 +1,5 @@
+import { EXTERNALAUTHENTICATE_COMPLETE } from 'redux/modules/externalLogin';
+
 export const REGISTER_START = 'react/account/REGISTER_START';
 export const REGISTER_COMPLETE = 'react/account/REGISTER_COMPLETE';
 export const REGISTER_ERROR = 'react/account/REGISTER_ERROR';
@@ -27,8 +29,6 @@ export const VERIFYCODE_COMPLETE = 'react/account/VERIFYCODE_COMPLETE';
 export const VERIFYCODE_ERROR = 'react/account/VERIFYCODE_ERROR';
 
 export const LOGINSTATE_RESET = 'react/account/LOGINSTATE_RESET';
-
-import { EXTERNALAUTHENTICATE_COMPLETE } from 'redux/modules/externalLogin';
 
 const initialState = {
   sentCode: false,

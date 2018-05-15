@@ -63,7 +63,7 @@ class Home extends Component {
             />
             <div className="carousel-caption">
               <p>
-                Learn how Microsoft's Azure cloud platform allows you to build,
+                Learn how Microsoft&#39;s Azure cloud platform allows you to build,
                 deploy, and scale web apps.
                 <a className="btn btn-default btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
                   Learn More

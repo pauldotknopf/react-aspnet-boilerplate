@@ -35,12 +35,11 @@ class LoginForm extends Form {
   }
 }
 
-LoginForm = reduxForm({
-  form: 'login',
-  fields: ['userName', 'password', 'rememberMe']
-},
-(state) => ({ loginProviders: state.externalLogin.loginProviders }),
-{ }
+export default reduxForm(
+  {
+    form: 'login',
+    fields: ['userName', 'password', 'rememberMe']
+  },
+  (state) => ({ loginProviders: state.externalLogin.loginProviders }),
+  { }
 )(LoginForm);
-
-export default LoginForm;

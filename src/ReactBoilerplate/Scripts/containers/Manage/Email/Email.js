@@ -43,7 +43,7 @@ class Email extends Component {
         <h2>Email</h2>
         <div className="form-horizontal">
           <div className="form-group">
-            <label className="col-md-2 control-label" htmlFor="currentEmail">Current email</label>
+            <span className="col-md-2 control-label">Current email</span>
             <div className="col-md-10">
               <p id="currentEmail" className="form-control-static">{email}</p>
             </div>

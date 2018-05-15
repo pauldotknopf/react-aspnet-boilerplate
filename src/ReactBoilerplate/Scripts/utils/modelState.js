@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import omit from 'lodash/omit';
+import mapValues from 'lodash/mapValues';
 
 /* eslint "import/prefer-default-export": 0 */
 /* eslint "no-prototype-builtins": 0 */
@@ -10,12 +11,13 @@ export function modelStateErrorToFormFields(modelState) {
   if (!modelState) {
     return null;
   }
-  let updatedModelState = _.omit(modelState, '_global');
-  updatedModelState = _.mapValues(updatedModelState, (value) =>
-    ({
-      errors: value
-    })
-  );
+  let updatedModelState = omit(modelState, '_global');
+  updatedModelState = mapValues(updatedModelState, (value) =>
+    (
+      {
+        errors: value
+      }
+    ));
   if (modelState.hasOwnProperty('_global') && modelState._global.length !== 0) {
     updatedModelState._error = {
       errors: modelState._global

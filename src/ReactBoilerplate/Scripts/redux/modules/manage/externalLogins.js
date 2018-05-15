@@ -12,7 +12,7 @@ export const REMOVEEXTERNALLOGIN_ERROR = 'react/manage/REMOVEEXTERNALLOGIN_ERROR
 
 export const EXTERNALLOGINS_DESTROY = 'react/manage/EXTERNALLOGINS_DESTROY';
 
-export default function (state = {}, action = {}) {
+export default function reducer(state = {}, action = {}) {
   switch (action.type) {
     case LOADEXTERNALLOGINS_START:
       return {

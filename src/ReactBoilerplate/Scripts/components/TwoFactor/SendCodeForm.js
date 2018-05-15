@@ -24,15 +24,14 @@ class SendCodeForm extends Form {
   }
 }
 
-SendCodeForm = reduxForm({
-  form: 'sendCode',
-  fields: ['provider']
-},
-(state) => ({
-  userFactors: state.account.userFactors,
-  initialValues: { provider: (state.account.userFactors.length > 0 ? state.account.userFactors[0] : '') }
-}),
-{ }
+export default reduxForm(
+  {
+    form: 'sendCode',
+    fields: ['provider']
+  },
+  (state) => ({
+    userFactors: state.account.userFactors,
+    initialValues: { provider: (state.account.userFactors.length > 0 ? state.account.userFactors[0] : '') }
+  }),
+  { }
 )(SendCodeForm);
-
-export default SendCodeForm;

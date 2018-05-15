@@ -99,7 +99,7 @@ export function authenticate(provider, autoLogin = true) {
         .then((windowResult) => {
           result(windowResult);
         }, () => {
-          reject({});
+          reject(new Error());
         });
     })
   };

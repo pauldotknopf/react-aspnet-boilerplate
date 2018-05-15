@@ -1,50 +1,58 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import Html from './helpers/Html';
-import { match } from 'react-router';
-import getRoutes from './routes';
-import createHistory from 'react-router/lib/createMemoryHistory';
-import RouterContext from 'react-router/lib/RouterContext';
-import configureStore from './redux/configureStore';
+import createHistory from 'history/createMemoryHistory';
 import { Provider } from 'react-redux';
+import { StaticRouter } from 'react-router-dom';
 import isEmpty from 'utils/isEmpty';
+import configureStore from './redux/configureStore';
+import Html from './helpers/Html';
+import { App } from './containers';
+import getRoutes from './routes';
 
 export function renderView(callback, path, model, viewBag) {
-  const history = createHistory(path);
+  const history = createHistory({ initialEntries: [path] });
   const store = configureStore(model, history);
   const result = {
     html: null,
-    status: 404,
+    status: 200,
     redirect: null
   };
-  match(
-    { history, routes: getRoutes(store), location: path },
-    (error, redirectLocation, renderProps) => {
-      if (redirectLocation) {
-        result.redirect = redirectLocation.pathname + redirectLocation.search;
-      } else if (error) {
-        result.status = 500;
-      } else if (renderProps) {
-        // if this is the NotFoundRoute, then return a 404
-        const isNotFound = renderProps.routes.filter((route) => route.status === 404).length > 0;
-        result.status = isNotFound ? 404 : 200;
-        const component =
-        (
-          <Provider store={store}>
-            <RouterContext {...renderProps} />
-          </Provider>
-        );
-        if (!isEmpty(viewBag)) {
-          // If the server provided anyhting in ASP.NET's ViewBag, hydrate it to the store/state.
-          // The contents can be accessed on the client via `state.viewBag`. It exist for the initial
-          // page load only, and will be cleared when navigating to another page on the client.
-          store.dispatch({ type: '_HYDRATE_VIEWBAG', viewBag });
-        }
-        result.html = ReactDOM.renderToString(<Html component={component} store={store} />);
-      } else {
-        result.status = 404;
-      }
-    });
+
+  // If the server provided anything in ASP.NET's ViewBag, hydrate it to the store/state.
+  // The contents can be accessed on the client via `state.viewBag`. It exists for the initial
+  // page load only, and will be cleared when navigating to another page on the client.
+  if (!isEmpty(viewBag)) {
+    store.dispatch({ type: '_HYDRATE_VIEWBAG', viewBag });
+  }
+
+  // Context object contains the results of the render
+  const context = {};
+
+  // Router and application component
+  const component =
+  (
+    <Provider store={store}>
+      <StaticRouter location={path} context={context}>
+        <App>
+          {getRoutes(store)}
+        </App>
+      </StaticRouter>
+    </Provider>
+  );
+
+  // Perform the render
+  const html = ReactDOM.renderToString(<Html component={component} store={store} />);
+
+  // context.url will contain the URL to redirect to if a <Redirect> was used, and may contain a status code
+  if (context.url) {
+    result.redirect = context.url;
+  } else {
+    result.html = html;
+    if (context.status) {
+      result.status = context.status;
+    }
+  }
+
   callback(null, result);
 }
 

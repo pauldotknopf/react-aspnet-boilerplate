@@ -16,6 +16,6 @@ class ResetPassword extends Component {
 }
 
 export default connect(
-state => ({ user: state.auth.user }),
-{ }
+  (state) => ({ user: state.auth.user }),
+  { }
 )(ResetPassword);

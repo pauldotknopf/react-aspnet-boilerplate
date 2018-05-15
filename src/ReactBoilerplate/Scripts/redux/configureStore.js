@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import reducer from './reducer';
 import { routerMiddleware } from 'react-router-redux';
+import reducer from './reducer';
 import createMiddleware from './middleware/clientMiddleware';
 
-let devTools = f => f;
+let devTools = (f) => f;
 if (typeof window === 'object'
   && typeof window.devToolsExtension !== 'undefined') {
   devTools = window.devToolsExtension();

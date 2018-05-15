@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { LoginForm } from 'components';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { rehydrateLogin } from 'redux/modules/externalLogin';
 
 class Login extends Component {
   componentWillReceiveProps(nextProps) {
     // if the user logged in, redirect the user.
     if (!this.props.user && nextProps.user) {
-      if (this.props.location.query.returnUrl) {
+      if (this.props.location.query && this.props.location.query.returnUrl) {
         this.props.pushState(this.props.location.query.returnUrl);
       } else {
         this.props.pushState('/');
@@ -38,7 +38,6 @@ class Login extends Component {
       // So, every the `pushState` call clears out `externalLogin`, we will
       // need to put it back in
       this.props.rehydrateLogin(nextProps.externalLogin);
-      return;
     }
   }
   render() {
@@ -59,6 +58,6 @@ class Login extends Component {
 }
 
 export default connect(
-state => ({ user: state.auth.user, externalLogin: state.externalLogin }),
-{ pushState: push, rehydrateLogin }
+  (state) => ({ user: state.auth.user, externalLogin: state.externalLogin }),
+  { pushState: push, rehydrateLogin }
 )(Login);

@@ -1,27 +1,33 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom/server';
 import Helmet from 'react-helmet';
 import serialize from 'serialize-javascript';
 
 export default class Html extends Component {
   static propTypes = {
-    component: PropTypes.node,
-    store: PropTypes.object
+    component: PropTypes.node.isRequired,
+    store: PropTypes.shape({
+      getState: PropTypes.func
+    }).isRequired
   };
 
   render() {
+    /* eslint-disable react/no-danger */
     const { component, store } = this.props;
     const content = component ? ReactDOM.renderToString(component) : '';
-    const head = Helmet.rewind();
+    const helmet = Helmet.renderStatic();
+    const htmlAttrs = helmet.htmlAttributes.toComponent();
+    const bodyAttrs = helmet.bodyAttributes.toComponent();
 
     return (
       <html lang="en-US">
-        <head>
-          {head.base.toComponent()}
-          {head.title.toComponent()}
-          {head.meta.toComponent()}
-          {head.link.toComponent()}
-          {head.script.toComponent()}
+        <head {...htmlAttrs}>
+          {helmet.base.toComponent()}
+          {helmet.title.toComponent()}
+          {helmet.meta.toComponent()}
+          {helmet.link.toComponent()}
+          {helmet.script.toComponent()}
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link
@@ -32,7 +38,7 @@ export default class Html extends Component {
             charSet="UTF-8"
           />
         </head>
-        <body>
+        <body {...bodyAttrs}>
           <div id="content" dangerouslySetInnerHTML={{ __html: content }} />
           <script
             dangerouslySetInnerHTML={{ __html: `window.__data=${serialize(store.getState())};` }}
@@ -43,4 +49,5 @@ export default class Html extends Component {
       </html>
     );
   }
+  /* eslint-enable react/no-danger */
 }

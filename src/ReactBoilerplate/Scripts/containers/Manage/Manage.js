@@ -4,9 +4,6 @@ import { Row, Col, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 class Manage extends Component {
-  static propTypes = {
-    children: PropTypes.object.isRequired
-  };
   render() {
     return (
       <Row style={{ marginTop: 20 }}>
@@ -35,6 +32,6 @@ class Manage extends Component {
 }
 
 export default connect(
-state => ({ user: state.auth.user }),
-{ }
+  (state) => ({ user: state.auth.user }),
+  { }
 )(Manage);

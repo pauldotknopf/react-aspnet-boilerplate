@@ -45,12 +45,11 @@ class ForgotPasswordForm extends Form {
   }
 }
 
-ForgotPasswordForm = reduxForm({
-  form: 'forgotPassword',
-  fields: ['email']
-},
-(state) => state,
-{ }
+export default reduxForm(
+  {
+    form: 'forgotPassword',
+    fields: ['email']
+  },
+  (state) => state,
+  { }
 )(ForgotPasswordForm);
-
-export default ForgotPasswordForm;

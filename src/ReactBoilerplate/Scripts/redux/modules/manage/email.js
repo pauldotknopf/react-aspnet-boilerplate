@@ -12,11 +12,7 @@ export const VERIFYEMAIL_ERROR = 'react/manage/VERIFYEMAIL_ERROR';
 
 export const EMAIL_DESTROY = 'react/manage/EMAIL_DESTROY';
 
-const initialState = {
-
-};
-
-export default function (state = initialState, action = {}) {
+export default function reducer(state = {}, action = {}) {
   switch (action.type) {
     case LOADEMAIL_COMPLETE:
       return {
@@ -24,7 +20,7 @@ export default function (state = initialState, action = {}) {
         ...action.result
       };
     case EMAIL_DESTROY:
-      return initialState;
+      return {};
     default:
       return state;
   }

@@ -20,22 +20,23 @@ class ExternalLogin extends Component {
     } = this.props;
     return (
       <p>
-        {loginProviders.map((loginProvider, i) =>
-        (
-          <span key={i}>
-            <ExternalLoginButton
-              onClick={this.loginClick(loginProvider.scheme)}
-              scheme={loginProvider.scheme}
-              text={(this.props.leadingText ? (this.props.leadingText + ' ') : '') + loginProvider.displayName} />
-            {' '}
-          </span>
-        ))}
+        {loginProviders.map((loginProvider) =>
+          (
+            <span key={loginProvider}>
+              <ExternalLoginButton
+                onClick={this.loginClick(loginProvider.scheme)}
+                scheme={loginProvider.scheme}
+                text={(this.props.leadingText ? (this.props.leadingText + ' ') : '') + loginProvider.displayName} />
+              {' '}
+            </span>
+          ))
+        }
       </p>
     );
   }
 }
 
 export default connect(
-(state) => ({ loginProviders: state.externalLogin.loginProviders, location: state.routing.locationBeforeTransitions }),
-{ authenticate }
+  (state) => ({ loginProviders: state.externalLogin.loginProviders, location: state.routing.locationBeforeTransitions }),
+  { authenticate }
 )(ExternalLogin);

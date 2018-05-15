@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 class ConfirmEmail extends Component {
   render() {
@@ -43,6 +43,6 @@ class ConfirmEmail extends Component {
 }
 
 export default connect(
-(state) => ({ success: state.viewBag.success, change: state.viewBag.change }),
-{ }
+  (state) => ({ success: state.viewBag.success, change: state.viewBag.change }),
+  { }
 )(ConfirmEmail);

@@ -1,5 +1,5 @@
-// Speed up calls to hasOwnProperty
-const hasOwnProperty = Object.prototype.hasOwnProperty;
+// eslint-disable-next-line Speed up calls to hasOwnProperty
+const { hasOwnProperty } = Object.prototype;
 
 export default function isEmpty(obj) {
   // null and undefined are "empty"

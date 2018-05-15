@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { modelStateErrorToFormFields } from '../utils/modelState';
-import { ErrorList } from 'components';
+import ErrorList from './ErrorList';
 
 class Form extends Component {
+  // eslint-disable-next-line class-methods-use-this
   modifyValues(values) {
     return values;
   }
@@ -14,27 +15,27 @@ class Form extends Component {
       new Promise((resolve, reject) => {
         dispatch(action(this.modifyValues(values)))
           .then(
-          (result) => {
-            if (result.success) {
-              resolve();
-              if (success) {
-                success(result);
+            (result) => {
+              if (result.success) {
+                resolve();
+                if (success) {
+                  success(result);
+                }
+              } else {
+                reject(modelStateErrorToFormFields(result.errors));
+                if (error) {
+                  error(result);
+                }
               }
-            } else {
+            },
+            (result) => {
               reject(modelStateErrorToFormFields(result.errors));
               if (error) {
                 error(result);
               }
             }
-          },
-          (result) => {
-            reject(modelStateErrorToFormFields(result.errors));
-            if (error) {
-              error(result);
-            }
-          });
-      })
-    );
+          );
+      }));
   }
   renderGlobalErrorList() {
     const {

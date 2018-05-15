@@ -3,7 +3,7 @@ import Form from 'components/Form';
 import { reduxForm } from 'redux-form';
 import { Input } from 'components';
 import { resetPassword } from 'redux/modules/account';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 class ResetPasswordForm extends Form {
   constructor(props) {
@@ -54,22 +54,22 @@ class ResetPasswordForm extends Form {
   }
 }
 
-ResetPasswordForm = reduxForm({
-  form: 'resetPassword',
-  fields: ['email', 'password', 'passwordConfirm']
-},
-(state) => {
-  let code = null;
-  if (state.routing.locationBeforeTransitions) {
-    if (state.routing.locationBeforeTransitions.query) {
-      code = state.routing.locationBeforeTransitions.query.code;
+export default reduxForm(
+  {
+    form: 'resetPassword',
+    fields: ['email', 'password', 'passwordConfirm']
+  },
+  (state) => {
+    let code = null;
+    if (state.routing.locationBeforeTransitions) {
+      if (state.routing.locationBeforeTransitions.query) {
+        // eslint-disable-next-line prefer-destructuring
+        code = state.routing.locationBeforeTransitions.query.code;
+      }
     }
-  }
-  return {
-    code
-  };
-},
-{ }
+    return {
+      code
+    };
+  },
+  { }
 )(ResetPasswordForm);
-
-export default ResetPasswordForm;

@@ -8,11 +8,7 @@ export const SETTWOFACTOR_ERROR = 'react/manage/SETTWOFACTOR_ERROR';
 
 export const SECURITY_DESTROY = 'react/manage/SECURITY_DESTROY';
 
-const initialState = {
-
-};
-
-export default function (state = initialState, action = {}) {
+export default function reducer(state = {}, action = {}) {
   switch (action.type) {
     case LOADSECURITY_COMPLETE:
       return {
@@ -36,7 +32,7 @@ export default function (state = initialState, action = {}) {
         settingTwoFactor: false
       };
     case SECURITY_DESTROY:
-      return initialState;
+      return {};
     default:
       return state;
   }

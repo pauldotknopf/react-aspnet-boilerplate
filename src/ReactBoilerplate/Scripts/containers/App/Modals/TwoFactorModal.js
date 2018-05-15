@@ -33,6 +33,6 @@ class TwoFactorModal extends Component {
 }
 
 export default connect(
-state => ({ account: state.account }),
-{ resetLoginState }
+  (state) => ({ account: state.account }),
+  { resetLoginState }
 )(TwoFactorModal);

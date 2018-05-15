@@ -1,22 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import config from '../../config';
-import { IndexLink } from 'react-router';
-import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
+import { Switch, Route, NavLink } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
+import { push } from 'react-router-redux';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
+import config from '../../config';
 import { logoff } from '../../redux/modules/account';
-import { push } from 'react-router-redux';
 import TwoFactorModal from './Modals/TwoFactorModal';
 
 require('./App.scss');
 
 class App extends Component {
-  static propTypes = {
-    children: PropTypes.object.isRequired
-  };
   constructor(props) {
     super(props);
     this.logoffClick = this.logoffClick.bind(this);
@@ -37,6 +34,7 @@ class App extends Component {
       </Nav>
     );
   }
+  // eslint-disable-next-line class-methods-use-this
   renderAnonymousLinks() {
     return (
       <Nav navbar pullRight>
@@ -65,17 +63,17 @@ class App extends Component {
         <Navbar inverse fixedTop>
           <Navbar.Header>
             <Navbar.Brand>
-              <IndexLink to="/">
+              <NavLink exact to="/">
                 {config.app.title}
-              </IndexLink>
+              </NavLink>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav navbar>
-              <IndexLinkContainer to="/">
+              <LinkContainer exact to="/">
                 <NavItem>Home</NavItem>
-              </IndexLinkContainer>
+              </LinkContainer>
               <LinkContainer to="/about">
                 <NavItem>About</NavItem>
               </LinkContainer>
@@ -90,7 +88,7 @@ class App extends Component {
           {this.props.children}
           <hr />
           <footer>
-            <p>&copy; 2016 - {config.app.title}</p>
+            <p>&copy; 2018 - {config.app.title}</p>
           </footer>
         </div>
         <TwoFactorModal />
@@ -100,6 +98,6 @@ class App extends Component {
 }
 
 export default connect(
-state => ({ user: state.auth.user }),
-{ logoff, pushState: push }
+  (state) => ({ user: state.auth.user, routing: state.routing }),
+  { logoff, pushState: push }
 )(App);

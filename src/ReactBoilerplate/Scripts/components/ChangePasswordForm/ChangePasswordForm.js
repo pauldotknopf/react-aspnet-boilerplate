@@ -47,12 +47,11 @@ class ChangePasswordForm extends Form {
   }
 }
 
-ChangePasswordForm = reduxForm({
-  form: 'changePassword',
-  fields: ['oldPassword', 'newPassword', 'newPasswordConfirm']
-},
-(state) => state,
-{ }
+export default reduxForm(
+  {
+    form: 'changePassword',
+    fields: ['oldPassword', 'newPassword', 'newPasswordConfirm']
+  },
+  (state) => state,
+  { }
 )(ChangePasswordForm);
-
-export default ChangePasswordForm;

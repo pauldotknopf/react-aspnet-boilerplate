@@ -13,6 +13,8 @@ class RegisterForm extends Form {
       linkExternalLogin: this.props.externalLogin.externalAuthenticated
     };
   }
+
+  // eslint-disable-next-line class-methods-use-this
   onRemoveExternalAuthClick(action) {
     return (event) => {
       event.preventDefault();
@@ -21,8 +23,17 @@ class RegisterForm extends Form {
   }
   render() {
     const {
-      fields: { userName, email, password, passwordConfirm },
-      externalLogin: { externalAuthenticated, externalAuthenticatedProvider, loginProviders }
+      fields: {
+        userName,
+        email,
+        password,
+        passwordConfirm
+      },
+      externalLogin: {
+        externalAuthenticated,
+        externalAuthenticatedProvider,
+        loginProviders
+      }
     } = this.props;
     return (
       <form onSubmit={this.handleApiSubmit(register)} className="form-horizontal">
@@ -34,7 +45,7 @@ class RegisterForm extends Form {
               <ExternalLoginButton
                 scheme={externalAuthenticatedProvider.scheme}
                 text={'Registering with ' + externalAuthenticatedProvider.displayName}
-                />
+              />
               {' '}
               <Button onClick={this.onRemoveExternalAuthClick(this.props.clearExternalAuthentication)}>
                 Cancel
@@ -65,15 +76,14 @@ class RegisterForm extends Form {
   }
 }
 
-RegisterForm = reduxForm({
-  form: 'register',
-  fields: ['userName', 'email', 'password', 'passwordConfirm']
-},
-(state) => ({
-  externalLogin: state.externalLogin,
-  initialValues: { userName: (state.externalLogin.proposedUserName ? state.externalLogin.proposedUserName : ''), email: (state.externalLogin.proposedEmail ? state.externalLogin.proposedEmail : '') }
-}),
-{ clearExternalAuthentication }
+export default reduxForm(
+  {
+    form: 'register',
+    fields: ['userName', 'email', 'password', 'passwordConfirm']
+  },
+  (state) => ({
+    externalLogin: state.externalLogin,
+    initialValues: { userName: (state.externalLogin.proposedUserName ? state.externalLogin.proposedUserName : ''), email: (state.externalLogin.proposedEmail ? state.externalLogin.proposedEmail : '') }
+  }),
+  { clearExternalAuthentication }
 )(RegisterForm);
-
-export default RegisterForm;

@@ -31,18 +31,19 @@ class VerifyCodeForm extends Form {
   }
 }
 
-VerifyCodeForm = reduxForm({
-  form: 'verifyCode',
-  fields: ['code', 'rememberMe', 'rememberBrowser']
-},
-(state) => ({
-  sentCodeWithProvider: state.account.sentCodeWithProvider,
-  initialValues: {
-    rememberMe: true,
-    rememberBrowser: true
-  }
-}),
-{ }
+export default reduxForm(
+  {
+    form: 'verifyCode',
+    fields: ['code', 'rememberMe', 'rememberBrowser']
+  },
+  (state) => (
+    {
+      sentCodeWithProvider: state.account.sentCodeWithProvider,
+      initialValues: {
+        rememberMe: true,
+        rememberBrowser: true
+      }
+    }
+  ),
+  { }
 )(VerifyCodeForm);
-
-export default VerifyCodeForm;

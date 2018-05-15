@@ -1,17 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import classNames from 'classnames';
 import { Glyphicon } from 'react-bootstrap';
 
 class Input extends Component {
-  static propTypes = {
-    field: PropTypes.object.isRequired,
-    type: React.PropTypes.oneOf([
-      'password',
-      'text',
-      'option',
-      'checkbox'
-    ]),
-  };
+  // static propTypes = {
+  //   // eslint-disable-next-line react/forbid-prop-types
+  //   field: PropTypes.object.isRequired,
+  //   type: React.PropTypes.oneOf([
+  //     'password',
+  //     'text',
+  //     'option',
+  //     'checkbox'
+  //   ]),
+  // };
   buildFieldProps() {
     const {
       defaultChecked,
@@ -34,22 +35,25 @@ class Input extends Component {
       onFocus
     };
   }
+
+  // eslint-disable-next-line class-methods-use-this
   renderErrorList(errors) {
     if (!errors) {
       return null;
     }
     return (
       <div>
-        {errors.map((err, i) =>
-        (
-          <p
-            className="help-block"
-            key={i}>
-            <Glyphicon glyph="exclamation-sign" />
-            {' '}
-            {err}
-          </p>
-        ))}
+        {errors.map((err) =>
+          (
+            <p
+              className="help-block"
+              key={err}>
+              <Glyphicon glyph="exclamation-sign" />
+              {' '}
+              {err}
+            </p>
+          ))
+        }
       </div>
     );
   }
@@ -75,18 +79,21 @@ class Input extends Component {
         className="form-control"
         placeholder={this.props.label}
         {...this.buildFieldProps()}>
-        {options.map((option, i) =>
-        (
-          <option key={i} value={option.value}>{option.display}</option>
-        ))}
+        {options.map((option) =>
+          (
+            <option key={option.value} value={option.value}>{option.display}</option>
+          ))
+        }
       </select>
     );
   }
   renderCheckBox() {
     return (
       <div className="checkbox">
-        <input id={this.props.field.name} type="checkbox" {...this.buildFieldProps()} />
-        <label htmlFor={this.props.field.name}>{this.props.label}</label>
+        <label htmlFor={this.props.field.name}>
+          <input id={this.props.field.name} type="checkbox" {...this.buildFieldProps()} />
+          {this.props.label}
+        </label>
       </div>
     );
   }
@@ -95,7 +102,7 @@ class Input extends Component {
     let errors;
     if (this.props.field.touched && this.props.field.invalid) {
       hasError = true;
-      errors = this.props.field.error.errors;
+      errors = this.props.field.error.errors; // eslint-disable-line prefer-destructuring
       if (!Array.isArray(errors)) {
         console.error('The errors object does not seem to be an array of errors.'); // eslint-disable-line max-len
         errors = null;
@@ -125,7 +132,7 @@ class Input extends Component {
     }
     return (
       <div className={rowClass}>
-        {(this.props.type !== 'checkbox') &&
+        {(this.props.type !== 'checkbox') && // eslint-disable-next-line jsx-a11y/label-has-for
           <label className="col-md-2 control-label" htmlFor={this.props.field.name}>{this.props.label}</label>
         }
         <div className={(this.props.type === 'checkbox' ? 'col-md-offset-2 ' : '') + 'col-md-10'}>

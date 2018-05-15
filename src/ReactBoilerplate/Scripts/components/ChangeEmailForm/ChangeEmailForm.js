@@ -47,12 +47,11 @@ class ChangeEmailForm extends Form {
   }
 }
 
-ChangeEmailForm = reduxForm({
-  form: 'changeEmail',
-  fields: ['currentPassword', 'email', 'emailConfirm']
-},
-(state) => state,
-{ }
+export default reduxForm(
+  {
+    form: 'changeEmail',
+    fields: ['currentPassword', 'email', 'emailConfirm']
+  },
+  (state) => state,
+  { }
 )(ChangeEmailForm);
-
-export default ChangeEmailForm;
