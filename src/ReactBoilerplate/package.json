@@ -2,6 +2,8 @@
   "name": "ASP.NET",
   "version": "0.0.0",
   "devDependencies": {
+    "@types/react": "^16.3.14",
+    "@types/webpack-env": "^1.13.6",
     "awesome-typescript-loader": "^5.0.0",
     "browser-sync": "^2.24.4",
     "css-loader": "^0.28.11",

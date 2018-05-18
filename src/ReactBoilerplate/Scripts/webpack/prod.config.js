@@ -10,7 +10,7 @@ module.exports = {
     mode: 'production',
     entry: {
       server: [
-        path.resolve(__dirname, '..', '..', 'Scripts', 'server.js')
+        path.resolve(__dirname, '..', '..', 'Scripts', 'server.tsx')
       ]
     },
     resolve: {
@@ -20,8 +20,8 @@ module.exports = {
       ],
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
-        superagent: path.resolve(__dirname, '..', 'utils', 'superagent-server.js'),
-        'promise-window': path.resolve(__dirname, '..', 'utils', 'promise-window-server.js')
+        superagent: path.resolve(__dirname, '..', 'utils', 'superagent-server.ts'),
+        'promise-window': path.resolve(__dirname, '..', 'utils', 'promise-window-server.ts')
       }
     },
     module: {
@@ -101,7 +101,7 @@ module.exports = {
     entry: {
       client: [
         'babel-polyfill',
-        path.resolve(__dirname, '..', '..', 'Scripts', 'client.js')
+        path.resolve(__dirname, '..', '..', 'Scripts', 'client.tsx')
       ]
     },
     resolve: {
