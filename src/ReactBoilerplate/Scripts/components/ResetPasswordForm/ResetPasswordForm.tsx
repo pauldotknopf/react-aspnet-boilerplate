@@ -7,12 +7,12 @@ import { resetPassword } from '../../redux/modules/account';
 import { RootState } from '../../redux/reducer';
 
 class ResetPasswordForm extends Form<{ code?: string | null; }, { success: boolean }> {
-  public constructor(props) {
+  public constructor(props: any) {
     super(props);
     this.success = this.success.bind(this);
     this.state = { success: false };
   }
-  protected modifyValues(values) {
+  protected modifyValues(values: any) {
     return {
       ...values,
       code: this.props.code
@@ -63,9 +63,9 @@ export default reduxForm(
   (state: RootState) => {
     let code = null;
     if (state.routing.location) {
-      if (state.routing.location.query) {
+      if ((state.routing.location as any).query) {
         // eslint-disable-next-line prefer-destructuring
-        code = state.routing.location.query.code;
+        code = (state.routing.location as any).query.code;
       }
     }
     return {

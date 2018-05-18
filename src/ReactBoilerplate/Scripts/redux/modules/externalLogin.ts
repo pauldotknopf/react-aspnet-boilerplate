@@ -11,7 +11,7 @@ export enum ActionTypeKeys {
   EXTERNALAUTHENTICATE_REHYDATE = 'react/externalLogin/EXTERNALAUTHENTICATE_REHYDATE'
 }
 
-function popupWindowSize(provider) {
+function popupWindowSize(provider: string) {
   switch (provider.toLowerCase()) {
     case 'facebook':
       return { width: 580, height: 400 };
@@ -106,13 +106,13 @@ export function reducer(state: State = initialState, action: any = {}): State {
   }
 }
 
-export function authenticate(provider, autoLogin = true) {
+export function authenticate(provider: string, autoLogin = true) {
   return {
     types: [ActionTypeKeys.EXTERNALAUTHENTICATE_START, ActionTypeKeys.EXTERNALAUTHENTICATE_COMPLETE, ActionTypeKeys.EXTERNALAUTHENTICATE_ERROR],
     promise: () => new Promise((result, reject) => {
       const windowSize = popupWindowSize(provider);
       promiseWindow.open('/externalloginredirect?provider=' + provider + '&autoLogin=' + autoLogin, { ...windowSize })
-        .then((windowResult) => {
+        .then((windowResult: any) => {
           result(windowResult);
         }, () => {
           reject(new Error());
@@ -121,7 +121,7 @@ export function authenticate(provider, autoLogin = true) {
   };
 }
 
-export function rehydrateLogin(login) {
+export function rehydrateLogin(login: any) {
   return {
     type: ActionTypeKeys.EXTERNALAUTHENTICATE_REHYDATE,
     result: login

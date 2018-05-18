@@ -13,7 +13,7 @@ export interface RegisterFormProps {
 }
 
 class RegisterForm extends Form<RegisterFormProps> {
-  protected modifyValues(values) {
+  protected modifyValues(values: any) {
     return {
       ...values,
       linkExternalLogin: this.props.externalLogin.externalAuthenticated
@@ -21,8 +21,8 @@ class RegisterForm extends Form<RegisterFormProps> {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public onRemoveExternalAuthClick(action) {
-    return (event) => {
+  public onRemoveExternalAuthClick(action: () => any) {
+    return (event: any) => {
       event.preventDefault();
       action();
     };

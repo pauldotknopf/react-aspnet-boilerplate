@@ -10,7 +10,7 @@ export interface VeriyCodeFormProps {
 }
 
 class VerifyCodeForm extends Form<VeriyCodeFormProps> {
-  public modifyValues(values) {
+  public modifyValues(values: any) {
     return {
       ...values,
       provider: this.props.sentCodeWithProvider

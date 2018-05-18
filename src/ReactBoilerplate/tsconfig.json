@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    // Soon: "noImplicitAny": true,      // all typed
+    "noImplicitAny": true,      // all typed
     "noUnusedLocals": true,     // disallow unused variables
     "sourceMap": true,          // allow sourcemap support
     "strictNullChecks": true,   // enable strict null checks as a best practice

@@ -1,3 +1,5 @@
+import ApiClient from '../../../helpers/ApiClient';
+
 export enum ActionTypeKeys {
   LOADSECURITY_START = 'react/manage/LOADSECURITY_START',
   LOADSECURITY_COMPLETE = 'react/manage/LOADSECURITY_COMPLETE',
@@ -50,14 +52,14 @@ export function reducer(state = {}, action: any = {}) {
 export function loadSecurity() {
   return {
     types: [ActionTypeKeys.LOADSECURITY_START, ActionTypeKeys.LOADSECURITY_COMPLETE, ActionTypeKeys.LOADSECURITY_ERROR],
-    promise: (client) => client.post('/api/manage/security')
+    promise: (client: ApiClient) => client.post('/api/manage/security')
   };
 }
 
-export function setTwoFactor(enabled) {
+export function setTwoFactor(enabled: boolean) {
   return {
     types: [ActionTypeKeys.SETTWOFACTOR_START, ActionTypeKeys.SETTWOFACTOR_COMPLETE, ActionTypeKeys.SETTWOFACTOR_ERROR],
-    promise: (client) => client.post('/api/manage/settwofactor', { data: { enabled } })
+    promise: (client: ApiClient) => client.post('/api/manage/settwofactor', { data: { enabled } })
   };
 }
 

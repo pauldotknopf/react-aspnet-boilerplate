@@ -13,11 +13,11 @@ export interface LoginsProps {
   clearExternalAuthentication: () => any;
   addExternalLogin: () => any;
   externalAuthenticate: (scheme: string, autoSignIn: boolean) => any;
-  removeExternalLogin: (scheme: string) => any;
+  removeExternalLogin: (scheme: any) => any;
 }
 
 class Logins extends React.Component<LoginsProps> {
-  public constructor(props) {
+  public constructor(props: LoginsProps) {
     super(props);
     this.addButtonClick = this.addButtonClick.bind(this);
     this.removeButtonClick = this.removeButtonClick.bind(this);
@@ -28,11 +28,11 @@ class Logins extends React.Component<LoginsProps> {
   public componentWillUnmount() {
     this.props.destroyExternalLogins();
   }
-  public addButtonClick(scheme) {
-    return (event) => {
+  public addButtonClick(scheme: string) {
+    return (event: any) => {
       event.preventDefault();
       this.props.externalAuthenticate(scheme, false /* don't auto sign-in */)
-        .then((result) => {
+        .then((result: { externalAuthenticated: boolean }) => {
           this.props.clearExternalAuthentication();
           if (result.externalAuthenticated) {
             // the user succesfully authenticated with the service.
@@ -44,8 +44,8 @@ class Logins extends React.Component<LoginsProps> {
         });
     };
   }
-  public removeButtonClick(scheme) {
-    return (event) => {
+  public removeButtonClick(scheme: any) {
+    return (event: any) => {
       event.preventDefault();
       this.props.removeExternalLogin(scheme);
     };

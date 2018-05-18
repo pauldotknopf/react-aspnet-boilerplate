@@ -6,7 +6,7 @@ import { changePassword } from '../../redux/modules/manage/changePassword';
 import { RootState } from '../../redux/reducer';
 
 class ChangePasswordForm extends Form<{}, { success: boolean }> {
-  public constructor(props) {
+  public constructor(props: any) {
     super(props);
     this.success = this.success.bind(this);
     this.state = { success: false };

@@ -7,12 +7,12 @@ import mapValues from 'lodash/mapValues';
 
 // this method will map model state returned from an API, into an object
 // this is valid for passing to redux-forms for validation.
-export function modelStateErrorToFormFields(modelState) {
+export function modelStateErrorToFormFields(modelState: any) {
   if (!modelState) {
     return null;
   }
   let updatedModelState = omit(modelState, '_global');
-  updatedModelState = mapValues(updatedModelState, (value) =>
+  updatedModelState = mapValues(updatedModelState, (value: any) =>
     (
       {
         errors: value

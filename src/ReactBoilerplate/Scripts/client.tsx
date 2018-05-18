@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
+import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter } from 'react-router-redux';
 import { AppContainer } from 'react-hot-loader';
 import configureStore from './redux/configureStore';

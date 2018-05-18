@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import { Glyphicon } from 'react-bootstrap';
 
 export interface Field {
@@ -57,7 +57,7 @@ class Input extends React.Component<InputProps> {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private renderErrorList(errors) {
+  private renderErrorList(errors?: string[] | null) {
     if (!errors) {
       return null;
     }
@@ -126,7 +126,7 @@ class Input extends React.Component<InputProps> {
         console.error('The errors object does not seem to be an array of errors.'); // eslint-disable-line max-len
         errors = null;
       }
-      if (errors.length === 0) {
+      if (!errors || errors.length === 0) {
         console.error('The errors array is empty. If it is empty, no array should be provided, the field is valid.'); // eslint-disable-line max-len
       }
     }

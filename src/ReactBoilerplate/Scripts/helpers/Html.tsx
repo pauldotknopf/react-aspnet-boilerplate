@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Store } from 'redux';
 import * as ReactDOM from 'react-dom/server';
 import Helmet from 'react-helmet';
-import serialize from 'serialize-javascript';
+import * as serialize from 'serialize-javascript';
 
 interface HtmlProps {
   component: React.ReactElement<any>;

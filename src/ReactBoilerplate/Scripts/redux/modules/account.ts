@@ -1,4 +1,5 @@
 import { ActionTypeKeys as ExternalLoginActionTypeKeys } from './externalLogin';
+import ApiClient from '../../helpers/ApiClient';
 
 export enum ActionTypeKeys {
   REGISTER_START = 'react/account/REGISTER_START',
@@ -87,52 +88,52 @@ export function reducer(state: State = initialState, action: any = {}): State {
   }
 }
 
-export function register(body) {
+export function register(body: any) {
   return {
     types: [ActionTypeKeys.REGISTER_START, ActionTypeKeys.REGISTER_COMPLETE, ActionTypeKeys.REGISTER_ERROR],
-    promise: (client) => client.post('/api/account/register', { data: body })
+    promise: (client: ApiClient) => client.post('/api/account/register', { data: body })
   };
 }
 
-export function login(body) {
+export function login(body: any) {
   return {
     types: [ActionTypeKeys.LOGIN_START, ActionTypeKeys.LOGIN_COMPLETE, ActionTypeKeys.LOGIN_ERROR],
-    promise: (client) => client.post('/api/account/login', { data: body })
+    promise: (client: ApiClient) => client.post('/api/account/login', { data: body })
   };
 }
 
 export function logoff() {
   return {
     types: [ActionTypeKeys.LOGOFF_START, ActionTypeKeys.LOGOFF_COMPLETE, ActionTypeKeys.LOGOFF_ERROR],
-    promise: (client) => client.post('/api/account/logoff')
+    promise: (client: ApiClient) => client.post('/api/account/logoff')
   };
 }
 
-export function forgotPassword(body) {
+export function forgotPassword(body: any) {
   return {
     types: [ActionTypeKeys.FORGOTPASSWORD_START, ActionTypeKeys.FORGOTPASSWORD_COMPLETE, ActionTypeKeys.FORGOTPASSWORD_ERROR],
-    promise: (client) => client.post('/api/account/forgotpassword', { data: body })
+    promise: (client: ApiClient) => client.post('/api/account/forgotpassword', { data: body })
   };
 }
 
-export function resetPassword(body) {
+export function resetPassword(body: any) {
   return {
     types: [ActionTypeKeys.RESETPASSWORD_START, ActionTypeKeys.RESETPASSWORD_COMPLETE, ActionTypeKeys.RESETPASSWORD_ERROR],
-    promise: (client) => client.post('/api/account/resetpassword', { data: body })
+    promise: (client: ApiClient) => client.post('/api/account/resetpassword', { data: body })
   };
 }
 
-export function sendCode(body) {
+export function sendCode(body: any) {
   return {
     types: [ActionTypeKeys.SENDCODE_START, ActionTypeKeys.SENDCODE_COMPLETE, ActionTypeKeys.SENDCODE_ERROR],
-    promise: (client) => client.post('/api/account/sendcode', { data: body })
+    promise: (client: ApiClient) => client.post('/api/account/sendcode', { data: body })
   };
 }
 
-export function verifyCode(body) {
+export function verifyCode(body: any) {
   return {
     types: [ActionTypeKeys.VERIFYCODE_START, ActionTypeKeys.VERIFYCODE_COMPLETE, ActionTypeKeys.VERIFYCODE_ERROR],
-    promise: (client) => client.post('/api/account/verifycode', { data: body })
+    promise: (client: ApiClient) => client.post('/api/account/verifycode', { data: body })
   };
 }
 

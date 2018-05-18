@@ -1,7 +1,7 @@
 // eslint-disable-next-line Speed up calls to hasOwnProperty
 const { hasOwnProperty } = Object.prototype;
 
-export default function isEmpty(obj) {
+export default function isEmpty(obj: any) {
   // null and undefined are "empty"
   if (obj === null) return true;
   // Assume if it has a length property with a non-zero value

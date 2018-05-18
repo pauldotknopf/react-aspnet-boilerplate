@@ -6,7 +6,7 @@ import { forgotPassword } from '../../redux/modules/account';
 import { RootState } from '../../redux/reducer';
 
 class ForgotPasswordForm extends Form<{}, { success: boolean }> {
-  public constructor(props) {
+  public constructor(props: any) {
     super(props);
     this.success = this.success.bind(this);
     this.state = { success: false };

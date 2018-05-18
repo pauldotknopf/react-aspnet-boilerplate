@@ -11,12 +11,12 @@ export interface ExternalLoginProps {
 }
 
 class ExternalLogin extends React.Component<ExternalLoginProps> {
-  public constructor(props) {
+  public constructor(props: ExternalLoginProps) {
     super(props);
     this.loginClick = this.loginClick.bind(this);
   }
-  public loginClick(scheme) {
-    return (event) => {
+  public loginClick(scheme: string) {
+    return (event: any) => {
       event.preventDefault();
       this.props.authenticate(scheme);
     };

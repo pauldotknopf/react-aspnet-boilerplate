@@ -6,7 +6,7 @@ import { Input } from '../../components';
 import { changeEmail } from '../../redux/modules/manage/email';
 
 class ChangeEmailForm extends Form<{}, { success: boolean }> {
-  public constructor(props) {
+  public constructor(props: any) {
     super(props);
     this.success = this.success.bind(this);
     this.state = { success: false };

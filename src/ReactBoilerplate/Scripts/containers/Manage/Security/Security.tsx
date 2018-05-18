@@ -13,7 +13,7 @@ export interface SecurityProps {
 }
 
 class Security extends React.Component<SecurityProps> {
-  public constructor(props) {
+  public constructor(props: SecurityProps) {
     super(props);
     this.toggleTwoFactorClick = this.toggleTwoFactorClick.bind(this);
   }
@@ -23,7 +23,7 @@ class Security extends React.Component<SecurityProps> {
   public componentWillUnmount() {
     this.props.destroySecurity();
   }
-  public toggleTwoFactorClick(event) {
+  public toggleTwoFactorClick(event: any) {
     event.preventDefault();
     const {
       twoFactorEnabled

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Store } from 'redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import {
   Home,
@@ -18,7 +19,7 @@ import {
   ManageEmail
 } from './containers';
 
-export default (store) => {
+export default (store: Store<any>) => {
   const isLoggedIn = () => {
     const { auth: { user } } = store.getState();
     return !!user;

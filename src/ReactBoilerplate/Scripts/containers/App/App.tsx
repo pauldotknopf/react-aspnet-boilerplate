@@ -4,9 +4,9 @@ import Helmet from 'react-helmet';
 import { NavLink } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { push } from 'react-router-redux';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
+import * as Navbar from 'react-bootstrap/lib/Navbar';
+import * as Nav from 'react-bootstrap/lib/Nav';
+import * as NavItem from 'react-bootstrap/lib/NavItem';
 import config from '../../config';
 import { logoff, User } from '../../redux/modules/account';
 import TwoFactorModal from './Modals/TwoFactorModal';
@@ -21,7 +21,7 @@ export interface AppProps {
 }
 
 class App extends React.Component<AppProps> {
-  public constructor(props) {
+  public constructor(props: AppProps) {
     super(props);
     this.logoffClick = this.logoffClick.bind(this);
   }
@@ -29,7 +29,7 @@ class App extends React.Component<AppProps> {
     this.props.logoff();
     this.props.pushState('/');
   }
-  private renderLoggedInLinks(user) {
+  private renderLoggedInLinks(user: User) {
     return (
       <Nav navbar pullRight>
         <LinkContainer to="/manage">

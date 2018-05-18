@@ -11,12 +11,12 @@ export interface LoginProps {
   user?: User;
   pushState: (page: string) => any;
   externalLogin: ExternalLoginState;
-  rehydrateLogin: (any) => any;
+  rehydrateLogin: (externalLogin: ExternalLoginState) => any;
   location: any; // eslint-disable-line no-restricted-globals
 }
 
 class Login extends React.Component<LoginProps> {
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: LoginProps) {
     // if the user logged in, redirect the user.
     if (!this.props.user && nextProps.user) {
       if (this.props.location.query && this.props.location.query.returnUrl) {

@@ -69,6 +69,6 @@ export function renderView(callback: callbackFunction, path: string, model: any,
   callback(null, result);
 }
 
-export function renderPartialView(callback) {
+export function renderPartialView(callback: callbackFunction) {
   callback('TODO', null);
 }

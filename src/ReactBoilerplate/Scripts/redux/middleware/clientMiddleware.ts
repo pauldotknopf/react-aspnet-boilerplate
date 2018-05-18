@@ -1,6 +1,8 @@
-export default function clientMiddleware(client) {
-  return ({ dispatch, getState }) =>
-    (next) => (action) => {
+import ApiClient from '../../helpers/ApiClient';
+
+export default function clientMiddleware(client?: ApiClient) {
+  return ({ dispatch, getState }: any) =>
+    (next: any) => (action: any) => {
       if (typeof action === 'function') {
         return action(dispatch, getState);
       }
@@ -15,9 +17,9 @@ export default function clientMiddleware(client) {
 
       const actionPromise = promise(client);
       actionPromise.then(
-        (result) => next({ ...rest, result, type: SUCCESS }),
-        (error) => next({ ...rest, error, type: FAILURE })
-      ).catch((error) => {
+        (result: any) => next({ ...rest, result, type: SUCCESS }),
+        (error: any) => next({ ...rest, error, type: FAILURE })
+      ).catch((error: any) => {
         console.error('MIDDLEWARE ERROR:', error);
         console.error('MIDDLEWARE ERROR:', error.stack);
         next({ ...rest, error, type: FAILURE });

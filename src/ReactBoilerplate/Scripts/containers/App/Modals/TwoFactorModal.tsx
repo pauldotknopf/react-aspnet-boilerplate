@@ -11,7 +11,7 @@ export interface TwoFactorModalProps {
 }
 
 class TwoFactorModal extends React.Component<TwoFactorModalProps> {
-  public constructor(props) {
+  public constructor(props: TwoFactorModalProps) {
     super(props);
     this.close = this.close.bind(this);
   }

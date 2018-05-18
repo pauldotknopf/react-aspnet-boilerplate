@@ -11,7 +11,7 @@ export interface RegisterProps {
 }
 
 class Register extends React.Component<RegisterProps> {
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: RegisterProps) {
     if (!this.props.user && nextProps.user) {
       this.props.pushState('/');
     }

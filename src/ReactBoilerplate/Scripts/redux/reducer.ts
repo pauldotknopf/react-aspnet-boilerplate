@@ -17,7 +17,7 @@ export type RootState = {
   viewBag: any;
 };
 
-export const reducer = combineReducers({
+export const reducer = combineReducers<RootState>({
   form: formReducer,
   routing: routerReducer,
   auth,

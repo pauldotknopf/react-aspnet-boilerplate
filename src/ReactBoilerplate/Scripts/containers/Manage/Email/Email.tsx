@@ -13,7 +13,7 @@ export interface EmailProps {
 }
 
 class Email extends React.Component<EmailProps, { sendingEmailVerification: boolean }> {
-  public constructor(props) {
+  public constructor(props: EmailProps) {
     super(props);
     this.verifyClick = this.verifyClick.bind(this);
     this.state = { sendingEmailVerification: false };
@@ -24,7 +24,7 @@ class Email extends React.Component<EmailProps, { sendingEmailVerification: bool
   public componentWillUnmount() {
     this.props.destroyEmail();
   }
-  public verifyClick(event) {
+  public verifyClick(event: any) {
     event.preventDefault();
     this.setState({ sendingEmailVerification: true });
     this.props.verifyEmail()

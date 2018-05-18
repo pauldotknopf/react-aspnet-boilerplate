@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 const bootstrapSocial = require('bootstrap-social');
 const fontAwesome = require('font-awesome/scss/font-awesome.scss');
 
-export default (props) =>
+export default (props: any) =>
   (
     <Button
       {...props}
