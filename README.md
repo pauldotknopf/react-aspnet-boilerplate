@@ -51,16 +51,16 @@ dotnet run
 
 Additionally, other gulp actions are available to aid in development.
 
-Build bundles in production mode:
+Build bundles and server-side code in production mode:
 ```bash
 gulp prod build
 ```
-Build and watch both the bundles (in development mode) and the server-side code:
+Build and watch both the bundles and the server-side code (in development mode), and run a browsersync proxy to serve both:
 ```bash
 gulp start
 ```
 
-Build and watch both the bundles (in production mode) and the server-side code:
+Build both the bundles and the server-side code (in production mode), and execute "dotnet run" to serve both:
 ```bash
 gulp prod start
 ```
