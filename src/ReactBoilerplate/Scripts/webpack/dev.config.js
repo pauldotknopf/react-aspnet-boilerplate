@@ -100,6 +100,7 @@ module.exports = {
     entry: {
       client: [
         'babel-polyfill',
+        'bootstrap-loader',
         'react-hot-loader/patch',
         'webpack-hot-middleware/client',
         path.resolve(__dirname, '..', '..', 'Scripts', 'client.tsx')

@@ -14,21 +14,25 @@ const webpackProdConfig = require('./Scripts/webpack/prod.config.js');
 
 const packDir = './wwwroot/pack/';
 
+const isProduction = () => process.env.NODE_ENV === 'production';
+const setProduction = (val) => { process.env.NODE_ENV = val ? 'production' : 'development'; };
+
+log('initial NODE_ENV =     ' + process.env.NODE_ENV);
+setProduction(isProduction()); // Normalize NODE_ENV
+log('initial isProduction = ' + isProduction());
+
 const getChildProcessOptions = () =>
   ({
     cwd: path.resolve(__dirname),
     stdio: ['ignore', 'pipe', 'inherit'],
     env: Object.assign({}, process.env, {
-      ASPNETCORE_ENVIRONMENT: global.isProduction ? 'Production' : 'Development',
+      ASPNETCORE_ENVIRONMENT: isProduction() ? 'Production' : 'Development',
     }),
   });
 
-global.isProduction = false;
-log('isProduction=' + global.isProduction);
-
 let webpackConfig;
 const setWebpackConfig = () => {
-  if (global.isProduction) {
+  if (isProduction()) {
     webpackConfig = {
       config: webpackProdConfig
     };
@@ -78,8 +82,15 @@ const getBundleWatcher = (taskToTrigger) => {
 
 // Set production build flag
 gulp.task('prod', (callback) => {
-  global.isProduction = true;
-  log('isProduction=' + global.isProduction);
+  setProduction(true);
+  log('isProduction = ' + isProduction());
+  setWebpackConfig();
+  callback();
+});
+
+gulp.task('dev', (callback) => {
+  setProduction(false);
+  log('isProduction = ' + isProduction());
   setWebpackConfig();
   callback();
 });
@@ -148,7 +159,7 @@ gulp.task('restore-dotnet-packages', () =>
   const buildProject = () =>
     Promise.resolve()
       .then(() => new Promise((resolve) => {
-        const config = global.isProduction ? '--configuration Release' : '--configuration Debug';
+        const config = isProduction() ? '--configuration Release' : '--configuration Debug';
         const dotnetBuild = childProcess.exec(`dotnet build ${config}`, getChildProcessOptions());
         dotnetBuild.stdout.pipe(process.stdout);
         dotnetBuild.on('exit', () => {
@@ -175,7 +186,7 @@ gulp.task('clean-dotnet', () =>
 // Run everything
 (() => {
   const selectiveBuild = (resolve) => {
-    if (global.isProduction) {
+    if (isProduction()) {
       // In production mode, just build client and server bundles once
       gulp.parallel('build-client-bundle', 'build-server-bundle')(resolve);
     } else {
@@ -196,7 +207,7 @@ gulp.task('clean-dotnet', () =>
       });
     };
 
-    if (global.isProduction) {
+    if (isProduction()) {
       // If running in production mode, just spawn the server and be done
       spawnCore();
       resolve();

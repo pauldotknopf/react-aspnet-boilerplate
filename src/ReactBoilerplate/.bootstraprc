@@ -1,11 +1,18 @@
-{
-  "bootstrapVersion": 3,
+bootstrapVersion: 3
 
-	"useFlexbox": true,
-  "extractStyles": true,
-	"styleLoaders": ["style", "css", "sass"],
+env:
+  development:
+    extractStyles: false
+    styleLoaders:
+      - style-loader
+      - css-loader
+      - sass-loader
+  production:
+    extractStyles: true
+    styleLoaders:
+      - css-loader
+      - sass-loader
 
-  "styles": true,
+styles: true
 
-  "scripts": false
-}
+scripts: false

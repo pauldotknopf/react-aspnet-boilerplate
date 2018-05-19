@@ -101,6 +101,7 @@ module.exports = {
     entry: {
       client: [
         'babel-polyfill',
+        'bootstrap-loader',
         path.resolve(__dirname, '..', '..', 'Scripts', 'client.tsx')
       ]
     },
