@@ -2,6 +2,10 @@
   "name": "ASP.NET",
   "version": "0.0.0",
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.47",
+    "@babel/plugin-syntax-decorators": "^7.0.0-beta.47",
+    "@babel/plugin-syntax-jsx": "^7.0.0-beta.47",
+    "@babel/plugin-syntax-typescript": "^7.0.0-beta.47",
     "@types/classnames": "^2.2.3",
     "@types/history": "^4.6.2",
     "@types/react": "^16.3.14",
@@ -16,6 +20,7 @@
     "@types/superagent": "^3.5.8",
     "@types/webpack-env": "^1.13.6",
     "awesome-typescript-loader": "^5.0.0",
+    "babel-loader": "^8.0.0-beta.3",
     "browser-sync": "^2.24.4",
     "css-loader": "^0.28.11",
     "del": "^3.0.0",

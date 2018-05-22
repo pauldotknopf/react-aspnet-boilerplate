@@ -6,7 +6,6 @@ import { ConnectedRouter } from 'react-router-redux';
 import { AppContainer } from 'react-hot-loader';
 import configureStore from './redux/configureStore';
 import ApiClient from './helpers/ApiClient';
-import getRoutes from './routes';
 
 // Need to import App directly from its file so that this module is dependent on it directly for HMR
 import App from './containers/App/App';
@@ -20,9 +19,7 @@ const render = () => {
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <AppContainer>
-          <App>
-            {getRoutes(store)}
-          </App>
+          <App />
         </AppContainer>
       </ConnectedRouter>
     </Provider>,

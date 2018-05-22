@@ -101,7 +101,6 @@ module.exports = {
       client: [
         'babel-polyfill',
         'bootstrap-loader',
-        'react-hot-loader/patch',
         'webpack-hot-middleware/client',
         path.resolve(__dirname, '..', '..', 'Scripts', 'client.tsx')
       ]
@@ -124,7 +123,15 @@ module.exports = {
         {
           test: /\.(t|j)sx?$/,
           exclude: /node_modules/,
-          loader: 'awesome-typescript-loader'
+          loader: 'awesome-typescript-loader',
+          options: {
+            useBabel: true,
+            babelOptions: {
+              babelrc: false,
+              plugins: ['react-hot-loader/babel']
+            },
+            babelCore: '@babel/core'
+          }
         },
         {
           enforce: 'pre',

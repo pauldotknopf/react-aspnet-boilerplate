@@ -7,7 +7,6 @@ import isEmpty from './utils/isEmpty';
 import configureStore from './redux/configureStore';
 import Html from './helpers/Html';
 import { App } from './containers';
-import getRoutes from './routes';
 
 /* eslint-disable no-restricted-globals */
 interface RenderContext {
@@ -46,9 +45,7 @@ export function renderView(callback: callbackFunction, path: string, model: any,
   (
     <Provider store={store}>
       <StaticRouter location={path} context={context}>
-        <App>
-          {getRoutes(store)}
-        </App>
+        <App />
       </StaticRouter>
     </Provider>
   );

@@ -11,6 +11,7 @@ import config from '../../config';
 import { logoff, User } from '../../redux/modules/account';
 import TwoFactorModal from './Modals/TwoFactorModal';
 import { RootState } from '../../redux/reducer';
+import Routes from '../../routes';
 
 require('./App.scss');
 
@@ -92,7 +93,7 @@ class App extends React.Component<AppProps> {
           </Navbar.Collapse>
         </Navbar>
         <div className="container body-content">
-          {this.props.children}
+          <Routes />
           <hr />
           <footer>
             <p>&copy; 2018 - {config.app.title}</p>
