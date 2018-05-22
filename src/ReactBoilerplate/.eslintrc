@@ -4,35 +4,76 @@
     "browser": true,
     "node": true
   },
-  "parser": "babel-eslint",
+  "parser": "typescript-eslint-parser",
   "plugins": [
     "react",
-    "import"
+    "import",
+    "typescript"
   ],
   "rules": {
-    "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
-    "indent": [2, 2, {"SwitchCase": 1}],
-    "react/prefer-stateless-function": 0,
-    "react/prop-types": 0,
-    "react/jsx-closing-bracket-location": 0,
-    "no-console": 0,
-    "prefer-template": 0,
-    "max-len": 0,
-    "no-underscore-dangle": [2, {"allow": ["__data"]}],
-    "global-require": 0,
-    "no-restricted-syntax": 0,
-    "linebreak-style": 0,
-    "react/jsx-filename-extension": 0,
-    "import/imports-first": 0,
-    "no-class-assign": 0
+    "comma-dangle": "off",         // Not sure why airbnb turned this on. Gross!
+    "indent": ["error", 2, {"SwitchCase": 1}],
+    "react/prefer-stateless-function": "off",
+    "react/prop-types": "off",
+    "react/jsx-closing-bracket-location": "off",
+    "no-console": "off",
+    "prefer-template": "off",
+    "max-len": "off",
+    "no-underscore-dangle": ["error", {"allow": ["__data"]}],
+    "global-require": "off",
+    "no-restricted-syntax": "off",
+    "linebreak-style": "off",
+    "react/jsx-filename-extension": "off",
+    "arrow-parens": ["error", "always"],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "jsx-a11y/anchor-is-valid": ["error", {
+      "specialLink": ["to"]        // Allow "to" property in react-router-dom Link element
+    }],
+    "no-undef": "off",             // TypeScript lint parser produces false positves; the compiler will error anyway
+    "no-unused-vars": "off",       // TypeScript lint parser produces false positves; the compiler is set to error instead
+    "import/extensions": ["error", "ignorePackages", {
+      "js": "never",
+      "jsx": "never",
+      "ts": "never",
+      "tsx": "never"
+    }],
+    "react/sort-comp": ["error", { // Add type-annotations to the top
+      "order": [
+        "static-methods",
+        "type-annotations",
+        "instance-variables",
+        "lifecycle",
+        "/^on.+$/",
+        "getters",
+        "setters",
+        "/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/",
+        "instance-methods",
+        "everything-else",
+        "rendering"
+      ]
+    }],
+    "typescript/adjacent-overload-signatures": ["error"],
+    "typescript/class-name-casing": ["error"],
+    "typescript/explicit-member-accessibility": ["error"],
+    "typescript/interface-name-prefix": ["error", "never"],
+    "typescript/member-delimiter-style": ["error"],
+    "typescript/no-angle-bracket-type-assertion": ["error"],
+    "typescript/no-array-constructor": ["error"],
+    "typescript/no-empty-interface": ["error"],
+    "typescript/no-inferrable-types": ["error"],
+    "typescript/no-unused-vars": ["error"],
+    "typescript/no-use-before-define": ["error"],
+    "typescript/type-annotation-spacing": ["error"]
   },
   "settings": {
-    "import/parser": "babel-eslint",
-    "import/resolver": { 
+    "import/parser": "typescript-eslint-parser",
+    "import/resolver": {
       "node": {
-        "moduleDirectory": ["node_modules", "Scripts"]
+        "moduleDirectory": ["node_modules", "Scripts"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     },
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     "no-underscore-dangle": {
       "allow": ["__data"]
     }
